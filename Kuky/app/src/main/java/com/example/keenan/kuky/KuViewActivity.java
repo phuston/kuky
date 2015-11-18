@@ -74,11 +74,10 @@ public class KuViewActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new FeedFragment(), "ONE");
-        adapter.addFrag(new ProfileFragment(), "TWO");
+        adapter.addFrag(new FeedFragment(), "FEED");
+        adapter.addFrag(new ProfileFragment(), "PROFILE");
         viewPager.setAdapter(adapter);
     }
 
