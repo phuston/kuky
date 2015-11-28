@@ -1,6 +1,5 @@
 package com.example.keenan.kuky.Fragments;
 
-import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -12,20 +11,37 @@ import android.widget.Button;
 
 import com.example.keenan.kuky.R;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link FeedFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link FeedFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class FeedFragment extends Fragment {
 
-    private Button hotButton;
-    private Button topButton;
-    private Button recentButton;
+    @Bind(R.id.hotButton) Button mHotButton;
+    @Bind(R.id.topButton) Button mTopButton;
+    @Bind(R.id.recentButton) Button mRecentButton;
+
+    @OnClick(R.id.hotButton)
+    public void onHotButtonClicked(View view) {
+        // Make call to reload the data in the correct order
+        Snackbar.make(view, "Showing hottest Kus!", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+    }
+
+    @OnClick(R.id.topButton)
+    public void onTopButtonClicked(View view) {
+        // Make call to reload the data in the correct order
+        Snackbar.make(view, "Showing top Kus!", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+    }
+
+    @OnClick(R.id.recentButton)
+    public void onRecentButtonClicked(View view) {
+        //Make call to reload the data in the correct order
+        Snackbar.make(view, "Showing recent Kus!", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+    }
 
     public FeedFragment() {
         // Required empty public constructor
@@ -41,47 +57,17 @@ public class FeedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.fragment_feed, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_feed, container, false);
+        ButterKnife.bind(this, rootView);
+
+        return rootView;
     }
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState)
     {
-        hotButton = (Button)view.findViewById(R.id.hotButton);
-        topButton = (Button)view.findViewById(R.id.topButton);
-        recentButton = (Button)view.findViewById(R.id.recentButton);
 
-        hotButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // RE ARRANGE CARD VIEW
-                Snackbar.make(view, "Showing hottest Kus!", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        topButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // RE ARRANGE CARD VIEW
-                Snackbar.make(view, "Showing top Kus!", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        recentButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // RE ARRANGE CARD VIEW
-                Snackbar.make(view, "Showing most recent Kus!", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
     }
-
-
-
-
 
 
 //    // TODO: Rename method, update argument and hook method into UI event
@@ -108,16 +94,7 @@ public class FeedFragment extends Fragment {
 //        mListener = null;
 //    }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);

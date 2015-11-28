@@ -1,4 +1,4 @@
-package com.example.keenan.kuky;
+package com.example.keenan.kuky.Activities;
 
 
 import android.os.Bundle;
@@ -17,6 +17,7 @@ import android.view.MenuItem;
 
 import com.example.keenan.kuky.Fragments.FeedFragment;
 import com.example.keenan.kuky.Fragments.ProfileFragment;
+import com.example.keenan.kuky.R;
 
 import java.util.ArrayList;
 import java.util.List;
