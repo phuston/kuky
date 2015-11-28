@@ -1,4 +1,4 @@
-package com.example.keenan.kuky.Models;
+package com.example.keenan.kuky.models;
 
 import java.util.ArrayList;
 import java.util.List;

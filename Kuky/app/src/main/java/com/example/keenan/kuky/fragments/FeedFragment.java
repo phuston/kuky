@@ -1,4 +1,4 @@
-package com.example.keenan.kuky.Fragments;
+package com.example.keenan.kuky.fragments;
 
 import android.net.Uri;
 import android.os.Bundle;

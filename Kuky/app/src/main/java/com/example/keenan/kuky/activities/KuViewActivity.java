@@ -1,4 +1,4 @@
-package com.example.keenan.kuky.Activities;
+package com.example.keenan.kuky.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -14,8 +14,8 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.keenan.kuky.Fragments.FeedFragment;
-import com.example.keenan.kuky.Fragments.ProfileFragment;
+import com.example.keenan.kuky.fragments.FeedFragment;
+import com.example.keenan.kuky.fragments.ProfileFragment;
 import com.example.keenan.kuky.R;
 
 import java.util.ArrayList;

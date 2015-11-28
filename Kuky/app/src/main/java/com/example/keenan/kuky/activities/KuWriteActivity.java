@@ -1,4 +1,4 @@
-package com.example.keenan.kuky.Activities;
+package com.example.keenan.kuky.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
