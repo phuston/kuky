@@ -40,7 +40,7 @@
         android:layout_alignParentTop="true" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+        android:id="@+id/ku_feed_rv"
         android:layout_below="@+id/topButton"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

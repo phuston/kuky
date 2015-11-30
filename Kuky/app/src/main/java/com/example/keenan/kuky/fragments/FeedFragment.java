@@ -4,12 +4,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.keenan.kuky.R;
+import com.example.keenan.kuky.adapters.KuCardAdapter;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -17,6 +20,13 @@ import butterknife.OnClick;
 
 
 public class FeedFragment extends Fragment {
+
+    private String[] mKus = {"this is my first ku", "This is my second ku", "This is my third ku", "This is my fourth ku", "This is my fifth ku", "This is my sixth ku", "This is my seventh ku", "This is my eigth ku", "this is my ninth ku", "this is my tenth ku"};
+
+    private KuCardAdapter mKuCardAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
+    @Bind(R.id.ku_feed_rv) RecyclerView mKuRecyclerView;
 
     @Bind(R.id.hotButton) Button mHotButton;
     @Bind(R.id.topButton) Button mTopButton;
@@ -59,6 +69,16 @@ public class FeedFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_feed, container, false);
         ButterKnife.bind(this, rootView);
+
+        mKuRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mKuRecyclerView.setLayoutManager(mLayoutManager);
+
+        mKuCardAdapter = new KuCardAdapter(mKus);
+        mKuRecyclerView.setAdapter(mKuCardAdapter);
+
+
+
 
         return rootView;
     }

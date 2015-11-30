@@ -1,21 +1,24 @@
 package com.example.keenan.kuky.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.keenan.kuky.R;
 
 
 public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
     private String[] mDataset;
+    private Context mContext;
 
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public KuCardAdapter(String[] Kus) {
-
+    public KuCardAdapter(String[] Kus, Context context) {
         mDataset = Kus;
+        mContext = context;
     }
 
     // Create new views (invoked by the layout manager)
@@ -36,6 +39,18 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
     public void onBindViewHolder(KuViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
+
+        holder.setClickListener(new KuViewHolder.ClickListener() {
+            @Override
+            public void onClick(View v, int pos, boolean isLongClick){
+                if (isLongClick) {
+                    Toast.makeText(mContext, "Ku was long clicked", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(mContext, "Ku was clicked", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
         holder.vKuContent.setText(mDataset[position]);
 
     }

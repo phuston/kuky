@@ -7,14 +7,37 @@ import android.widget.TextView;
 
 import com.example.keenan.kuky.R;
 
-public class KuViewHolder extends RecyclerView.ViewHolder {
+public class KuViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
 
     protected CardView vCardView;
     protected TextView vKuContent;
+
+    private ClickListener vClickListener;
 
     public KuViewHolder(View v) {
         super(v);
         vCardView = (CardView) v.findViewById(R.id.ku_card_view);
         vKuContent = (TextView) v.findViewById(R.id.ku_content);
+
+        v.setOnClickListener(this);
+    }
+
+    public interface ClickListener {
+        public void onClick(View v, int position, boolean isLongClick);
+    }
+
+    public void setClickListener(ClickListener clickListener) {
+        this.vClickListener = clickListener;
+    }
+
+    @Override
+    public void onClick(View v){
+        vClickListener.onClick(v, getPosition(), false);
+    }
+
+    @Override
+    public boolean onLongClick(View v){
+        vClickListener.onClick(v, getPosition(), true);
+        return true;
     }
 }
