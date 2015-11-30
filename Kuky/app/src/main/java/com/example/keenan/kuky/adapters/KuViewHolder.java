@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.example.keenan.kuky.R;
 
-public class KuViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
+public class KuViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
     protected CardView vCardView;
     protected TextView vKuContent;
@@ -23,7 +23,7 @@ public class KuViewHolder extends RecyclerView.ViewHolder implements View.OnClic
     }
 
     public interface ClickListener {
-        public void onClick(View v, int position, boolean isLongClick);
+        public void onClick(View v, int position);
     }
 
     public void setClickListener(ClickListener clickListener) {
@@ -32,12 +32,7 @@ public class KuViewHolder extends RecyclerView.ViewHolder implements View.OnClic
 
     @Override
     public void onClick(View v){
-        vClickListener.onClick(v, getPosition(), false);
+        vClickListener.onClick(v, getPosition());
     }
 
-    @Override
-    public boolean onLongClick(View v){
-        vClickListener.onClick(v, getPosition(), true);
-        return true;
-    }
 }

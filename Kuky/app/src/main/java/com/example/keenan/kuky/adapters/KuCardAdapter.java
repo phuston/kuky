@@ -42,12 +42,9 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
 
         holder.setClickListener(new KuViewHolder.ClickListener() {
             @Override
-            public void onClick(View v, int pos, boolean isLongClick){
-                if (isLongClick) {
-                    Toast.makeText(mContext, "Ku was long clicked", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(mContext, "Ku was clicked", Toast.LENGTH_LONG).show();
-                }
+            public void onClick(View v, int pos){
+                String Ku = mDataset[pos];
+                Toast.makeText(mContext, Ku, Toast.LENGTH_LONG).show();
             }
         });
 

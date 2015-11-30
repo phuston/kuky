@@ -74,11 +74,8 @@ public class FeedFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         mKuRecyclerView.setLayoutManager(mLayoutManager);
 
-        mKuCardAdapter = new KuCardAdapter(mKus);
+        mKuCardAdapter = new KuCardAdapter(mKus, getActivity());
         mKuRecyclerView.setAdapter(mKuCardAdapter);
-
-
-
 
         return rootView;
     }
