@@ -8,19 +8,20 @@ import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.POST;
 import retrofit.http.Path;
+import rx.Observable;
 
 public interface KukyApiEndpointInterface {
 
     // Kus Endpoints
 
     @GET("/kus/all/recent")
-    KuResponse getKusNew();
+    Observable<KuResponse> getKusNew();
 
     @GET("/kus/all/hot")
-    KuResponse getKusHot();
+    Observable<KuResponse> getKusHot();
 
     @POST("/kus/compose")
-    KuComposeResponse postKu(@Body KuRequest body);
+    Observable<KuComposeResponse> postKu(@Body KuRequest body);
 
     @POST("/kus/new/favorited")
     void favoriteKu();
