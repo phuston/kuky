@@ -8,15 +8,18 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.keenan.kuky.R;
+import com.example.keenan.kuky.models.Ku;
+
+import java.util.ArrayList;
 
 
 public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
-    private String[] mDataset;
+    private ArrayList<Ku> mDataset;
     private Context mContext;
 
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public KuCardAdapter(String[] Kus, Context context) {
+    public KuCardAdapter(ArrayList<Ku> Kus, Context context) {
         mDataset = Kus;
         mContext = context;
     }
@@ -43,8 +46,8 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
         holder.setClickListener(new KuViewHolder.ClickListener() {
             @Override
             public void onClick(View v, int pos){
-                String Ku = mDataset[pos];
-                Toast.makeText(mContext, Ku, Toast.LENGTH_LONG).show();
+                Ku ku = mDataset.get(pos);
+                Toast.makeText(mContext, ku.getContent(), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -56,6 +59,6 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
     @Override
     public int getItemCount() {
 
-        return mDataset.length;
+        return mDataset.size();
     }
 }
