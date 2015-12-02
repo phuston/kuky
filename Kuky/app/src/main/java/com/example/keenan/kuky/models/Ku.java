@@ -11,6 +11,11 @@ public class Ku {
     private String createdAt;
     private String updatedAt;
 
+    public Ku(Integer id, String content, Integer upvotes, Integer downvotes, Double lat, Double lon, String createdAt, String updatedAt){
+
+
+    }
+
     public Integer getId() {
         return id;
     }
