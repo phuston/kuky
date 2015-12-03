@@ -17,7 +17,7 @@ public class KuViewHolder extends RecyclerView.ViewHolder implements View.OnClic
     public KuViewHolder(View v) {
         super(v);
         vCardView = (CardView) v.findViewById(R.id.ku_card_view);
-        vKuContent = (TextView) v.findViewById(R.id.ku_content);
+        vKuContent = (TextView) v.findViewById(R.id.ku_content1);
 
         v.setOnClickListener(this);
     }

@@ -61,4 +61,9 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
 
         return mDataset.size();
     }
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+    }
 }
