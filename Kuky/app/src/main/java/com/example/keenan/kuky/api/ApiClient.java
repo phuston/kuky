@@ -2,22 +2,18 @@ package com.example.keenan.kuky.api;
 
 import retrofit.RestAdapter;
 
-/**
- * Created by patrick on 8/27/15.
- */
-
 public class ApiClient {
-    private static KukyApiEndpointInterface sMovieDbService;
+    private static KukyApiEndpointInterface sKukyApiClient;
 
-    public static KukyApiEndpointInterface getMovieDbClient() {
-        if (sMovieDbService == null) {
+    public static KukyApiEndpointInterface getKukyApiClient() {
+        if (sKukyApiClient == null) {
             RestAdapter restAdapter = new RestAdapter.Builder()
-                    .setEndpoint("http://api.themoviedb.org/3")
+                    .setEndpoint("http://localhost:3000")
                     .build();
 
-            sMovieDbService = restAdapter.create(KukyApiEndpointInterface.class);
+            sKukyApiClient = restAdapter.create(KukyApiEndpointInterface.class);
         }
 
-        return sMovieDbService;
+        return sKukyApiClient;
     }
 }
