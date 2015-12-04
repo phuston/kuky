@@ -25,6 +25,7 @@ public interface KukyApiEndpointInterface {
 
     @POST("/kus/new/favorited")
     void favoriteKu();
+    Observable<KuFavoriteResponse> postFavKu(@Body )
 
     @POST("/kus/{id}/upvote")
     void upvoteKu();
@@ -33,16 +34,16 @@ public interface KukyApiEndpointInterface {
     void downvoteKu();
 
     // Users Endpoints
-    @POST("/users/login/{userid}/{api_key}")
+    @POST("/users/login/{userid}/{pw}")
     void login(
         @Path("userid") String userid,
-        @Path("api_key") String api_key);
+        @Path("pw") String pw);
 
-    @POST("/users/register")
+    @POST("/users/register/{uname}/{pw}")
     void register();
 
-    @GET("/users/{id}")
-    void getUser(@Path("id") String id);
+    @GET("/users/{uname}")
+    void getUser(@Path("uname") String id);
 
 
     // Comments Endpoints

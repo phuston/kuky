@@ -9,6 +9,10 @@
     <string name="hot">Hot</string>
     <string name="top">Top</string>
     <string name="recent">Recent</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="login">Log In</string>
+
+    <string name="hello_world">Hello world!</string>
 
 
 </resources>
