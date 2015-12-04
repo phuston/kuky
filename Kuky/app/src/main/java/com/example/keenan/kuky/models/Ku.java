@@ -12,7 +12,14 @@ public class Ku {
     private String updatedAt;
 
     public Ku(Integer id, String content, Integer upvotes, Integer downvotes, Double lat, Double lon, String createdAt, String updatedAt){
-
+        this.id = id;
+        this.content = content;
+        this.upvotes = upvotes;
+        this.downvotes = downvotes;
+        this.lat = lat;
+        this.lon = lon;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
 
     }
 
@@ -20,8 +27,8 @@ public class Ku {
         return id;
     }
 
-    public String getContent() {
-        return content;
+    public String[] getContent() {
+        return content.split(";");
     }
 
     public Integer getUpvotes() {
