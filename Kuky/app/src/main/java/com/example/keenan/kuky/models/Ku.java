@@ -20,7 +20,6 @@ public class Ku {
         this.lon = lon;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-
     }
 
     public Integer getId() {

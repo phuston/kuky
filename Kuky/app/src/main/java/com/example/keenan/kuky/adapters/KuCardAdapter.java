@@ -48,20 +48,26 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
 
         holder.setClickListener(new KuViewHolder.ClickListener() {
             @Override
-            public void onClick(View v, int pos){
+            public void onClick(View v, int pos) {
                 String id = Integer.toString(mDataset.get(pos).getId());
                 Toast.makeText(mContext, id, Toast.LENGTH_LONG).show();
             }
         });
 
-        //TODO: Make adapter split up the content based off of <semicolons> into three lines
         Log.wtf("SIZE", Integer.toString(mDataset.size()));
 
-        String[] lines = mDataset.get(position).getContent();
+        Ku mKu = mDataset.get(position);
+
+        String[] lines = mKu.getContent();
+        Integer upvotes = mKu.getUpvotes();
+        Integer downvotes = mKu.getDownvotes();
+
+        Integer ku_karma = upvotes - downvotes;
 
         holder.vKuContent1.setText(lines[0]);
         holder.vKuContent2.setText(lines[1]);
         holder.vKuContent3.setText(lines[2]);
+        holder.vKuKarma.setText(Integer.toString(ku_karma));
     }
 
     // Return the size of your dataset (invoked by the layout manager)
