@@ -2,6 +2,7 @@ package com.example.keenan.kuky.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,15 +44,20 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 
+//        String kuContent = mDataset.get(position).getContent();
+
         holder.setClickListener(new KuViewHolder.ClickListener() {
             @Override
             public void onClick(View v, int pos){
-                Ku ku = mDataset.get(pos);
-                Toast.makeText(mContext, ku.getContent(), Toast.LENGTH_LONG).show();
+                String kuContent = mDataset.get(pos).getContent();
+                Toast.makeText(mContext, kuContent, Toast.LENGTH_LONG).show();
             }
         });
 
-        holder.vKuContent.setText(mDataset[position]);
+        //TODO: Make adapter split up the content based off of <semicolons> into three lines
+        Log.wtf("BOUND", mDataset.get(position).getContent());
+
+        holder.vKuContent1.setText(mDataset.get(position).getContent());         //Should be taking from ArrayAdapter
 
     }
 

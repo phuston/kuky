@@ -31,7 +31,6 @@
                 android:paddingTop="24dp"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
-                android:text="This is the first line"
                 />
             <TextView
                 android:id="@+id/ku_content2"
@@ -41,7 +40,6 @@
                 android:layout_below="@id/ku_content1"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
-                android:text="This is the second line son"
                 />
             <TextView
                 android:id="@+id/ku_content3"
@@ -52,8 +50,6 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:paddingBottom="24dp"
-                android:text="This is the third line"
-
                 />
 
             <ImageButton
@@ -96,4 +92,5 @@
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
+
 </LinearLayout>

@@ -15,6 +15,8 @@ import com.example.keenan.kuky.R;
 import com.example.keenan.kuky.adapters.KuCardAdapter;
 import com.example.keenan.kuky.models.Ku;
 
+import java.util.ArrayList;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -22,11 +24,10 @@ import butterknife.OnClick;
 
 public class FeedFragment extends Fragment {
 
-    private String[] mKus = {"this is my first ku", "This is my second ku", "This is my third ku", "This is my fourth ku", "This is my fifth ku", "This is my sixth ku", "This is my seventh ku", "This is my eigth ku", "this is my ninth ku", "this is my tenth ku"};
+//    private String[] mKus = {"this is my first ku", "This is my second ku", "This is my third ku", "This is my fourth ku", "This is my fifth ku", "This is my sixth ku", "This is my seventh ku", "This is my eigth ku", "this is my ninth ku", "this is my tenth ku"};
 
     private KuCardAdapter mKuCardAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-
 
     Ku ku1 = new Ku(1, "This is my first ku; I really like it so much; do you like it too", 120, 30, 42.294, -71.303, "today", "now");
     Ku ku2 = new Ku(2, "waiting for the train; wet ones on my hairy legs; slowly passing gas", 80, 39, 42.294, -71.303, "today", "now");
@@ -34,6 +35,7 @@ public class FeedFragment extends Fragment {
     Ku ku4 = new Ku(4, "Haikus are easy; but sometimes they don't make sense; refrigerator", 254, 28, 42.294, -71.303, "today", "now");
     Ku ku5 = new Ku(5, "fat man sees small door; he knows he cannot fit through; tears flow freely now", 9, 3, 42.294, -71.303, "today", "now");
 
+    ArrayList<Ku> mkuList = new ArrayList<Ku>();
 
     @Bind(R.id.ku_feed_rv) RecyclerView mKuRecyclerView;
     @Bind(R.id.hotButton) Button mHotButton;
@@ -68,12 +70,19 @@ public class FeedFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mkuList.add(ku1);
+        mkuList.add(ku2);
+        mkuList.add(ku3);
+        mkuList.add(ku4);
+        mkuList.add(ku5);
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
 
         View rootView = inflater.inflate(R.layout.fragment_feed, container, false);
         ButterKnife.bind(this, rootView);
@@ -82,7 +91,8 @@ public class FeedFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         mKuRecyclerView.setLayoutManager(mLayoutManager);
 
-        mKuCardAdapter = new KuCardAdapter(mKus, getActivity());
+        mKuCardAdapter = new KuCardAdapter(mkuList, getActivity());
+
         mKuRecyclerView.setAdapter(mKuCardAdapter);
 
         return rootView;

@@ -10,14 +10,20 @@ import com.example.keenan.kuky.R;
 public class KuViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
     protected CardView vCardView;
-    protected TextView vKuContent;
+    protected TextView vKuContent1;
+    protected TextView vKuContent2;
+    protected TextView vKuContent3;
+    protected TextView vKuKarma;
 
     private ClickListener vClickListener;
 
     public KuViewHolder(View v) {
         super(v);
         vCardView = (CardView) v.findViewById(R.id.ku_card_view);
-        vKuContent = (TextView) v.findViewById(R.id.ku_content1);
+        vKuContent1 = (TextView) v.findViewById(R.id.ku_content1);
+        vKuContent2 = (TextView) v.findViewById(R.id.ku_content2);
+        vKuContent3 = (TextView) v.findViewById(R.id.ku_content3);
+        vKuKarma = (TextView) v.findViewById(R.id.ku_karma);
 
         v.setOnClickListener(this);
     }
