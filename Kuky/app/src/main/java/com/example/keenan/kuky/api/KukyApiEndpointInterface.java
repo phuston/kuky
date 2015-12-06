@@ -3,6 +3,8 @@ package com.example.keenan.kuky.api;
 import com.example.keenan.kuky.models.KuComposeResponse;
 import com.example.keenan.kuky.models.KuRequest;
 import com.example.keenan.kuky.models.KuResponse;
+import com.example.keenan.kuky.models.UserApiKeyResponse;
+import com.example.keenan.kuky.models.UserRequest;
 
 import retrofit.http.Body;
 import retrofit.http.GET;
@@ -25,7 +27,6 @@ public interface KukyApiEndpointInterface {
 
     @POST("/kus/new/favorited")
     void favoriteKu();
-    Observable<KuFavoriteResponse> postFavKu(@Body )
 
     @POST("/kus/{id}/upvote")
     void upvoteKu();
@@ -34,13 +35,11 @@ public interface KukyApiEndpointInterface {
     void downvoteKu();
 
     // Users Endpoints
-    @POST("/users/login/{userid}/{pw}")
-    void login(
-        @Path("userid") String userid,
-        @Path("pw") String pw);
+    @POST("/users/login")
+    Observable<UserApiKeyResponse> login(@Body UserRequest body);
 
-    @POST("/users/register/{uname}/{pw}")
-    void register();
+    @POST("/users/register")
+    Observable<UserApiKeyResponse> register(@Body UserRequest body);
 
     @GET("/users/{uname}")
     void getUser(@Path("uname") String id);
