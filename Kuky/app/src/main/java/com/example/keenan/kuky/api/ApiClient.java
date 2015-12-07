@@ -1,7 +1,6 @@
 package com.example.keenan.kuky.api;
 
 import android.util.Log;
-
 import retrofit.RestAdapter;
 
 public class ApiClient {
