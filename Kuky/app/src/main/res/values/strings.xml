@@ -12,6 +12,8 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="login">Log In</string>
     <string name="signup">Sign Up</string>
+    <string name="my_profile">Me</string>
+    <string name="my_kus">My Kus</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="favorites">Favorites</string>

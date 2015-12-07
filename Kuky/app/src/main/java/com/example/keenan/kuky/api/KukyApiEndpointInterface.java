@@ -4,6 +4,7 @@ import com.example.keenan.kuky.models.KuComposeResponse;
 import com.example.keenan.kuky.models.KuRequest;
 import com.example.keenan.kuky.models.KuResponse;
 import com.example.keenan.kuky.models.UserApiKeyResponse;
+import com.example.keenan.kuky.models.UserProfileResponse;
 import com.example.keenan.kuky.models.UserRequest;
 
 import retrofit.http.Body;
@@ -42,7 +43,7 @@ public interface KukyApiEndpointInterface {
     Observable<UserApiKeyResponse> register(@Body UserRequest body);
 
     @GET("/users/{uname}")
-    void getUser(@Path("uname") String id);
+    Observable<UserProfileResponse> getUser(@Path("uname") String id);
 
 
     // Comments Endpoints

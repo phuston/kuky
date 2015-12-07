@@ -8,7 +8,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/top"
+        android:text="@string/my_profile"
         android:id="@+id/topButtonProfile"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
@@ -17,7 +17,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/recent"
+        android:text="@string/my_kus"
         android:id="@+id/recentButtonProfile"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />

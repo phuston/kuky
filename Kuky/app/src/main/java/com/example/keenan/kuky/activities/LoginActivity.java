@@ -48,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         uname = username.getText().toString();
         pw = password.getText().toString();
         // Makes call to attempt to log in with info provided
-        ApiClient.getKukyApiClient().login(new UserRequest(uname, pw))
+        ApiClient.getKukyApiClient().login(new UserRequest("thecardkid", "kukyserver"))//uname, pw))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<UserApiKeyResponse>() {

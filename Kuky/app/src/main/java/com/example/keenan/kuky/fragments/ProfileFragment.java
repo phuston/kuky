@@ -3,50 +3,36 @@ package com.example.keenan.kuky.fragments;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.keenan.kuky.R;
+import com.example.keenan.kuky.api.ApiClient;
+import com.example.keenan.kuky.models.ShortKu;
+import com.example.keenan.kuky.models.User;
+import com.example.keenan.kuky.models.UserProfileResponse;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
+import org.json.JSONObject;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ProfileFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ProfileFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.Map;
+
+import butterknife.ButterKnife;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 public class ProfileFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    private static final String TAG = ProfileFragment.class.getSimpleName();
+    private ArrayList<ShortKu> composedKus = new ArrayList<>();
+    private ArrayList<ShortKu> favoritedKus = new ArrayList<>();
+    private User user;
     private OnFragmentInteractionListener mListener;
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ProfileFragment newInstance(String param1, String param2) {
-        ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -61,7 +47,61 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
+        ButterKnife.bind(this, rootView);
+
+        updateProfile();
+        return rootView;
+    }
+
+    public void updateProfile() {
+        ApiClient.getKukyApiClient().getUser("thecardkid")
+            .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<UserProfileResponse>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(UserProfileResponse userProfileResponse) {
+                        Log.d(TAG, userProfileResponse.toString());
+                        processKus(userProfileResponse.getComposedKus(), "composed");
+                        processKus(userProfileResponse.getFavoritedKus(), "favorited");
+                        processUserInfo(userProfileResponse.getBasicInfo());
+                    }
+                });
+    }
+
+    public void processKus(JsonObject composed, String type) {
+        for (Map.Entry<String, JsonElement> entry: composed.entrySet()) {
+            Log.d(TAG, entry.getKey());
+            JsonObject ku = entry.getValue().getAsJsonObject();
+            int id = Integer.parseInt(entry.getKey());
+            String content = ku.get("content").getAsString();
+            int karma = ku.get("karma").getAsInt();
+            double lat = ku.get("lat").getAsDouble();
+            double lon = ku.get("lon").getAsDouble();
+            if (type.equals("composed")) {
+                composedKus.add(new ShortKu(id, content, karma, lat, lon));
+            } else {
+                favoritedKus.add(new ShortKu(id, content, karma, lat, lon));
+            }
+        }
+    }
+
+    public void processUserInfo(JsonObject userInfo) {
+        user = new User(userInfo.get("id").getAsInt(),
+                userInfo.get("username").getAsString(),
+                userInfo.get("score").getAsInt(),
+                userInfo.get("radiusLimit").getAsDouble());
+        Log.d(TAG, user.toString());
     }
 
 //    // TODO: Rename method, update argument and hook method into UI event
