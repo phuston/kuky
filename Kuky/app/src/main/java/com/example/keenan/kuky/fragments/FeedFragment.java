@@ -29,13 +29,13 @@ public class FeedFragment extends Fragment {
     private KuCardAdapter mKuCardAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    Ku ku1 = new Ku(1, "This is my first ku; I really like it so much; do you like it too", 120, 30, 42.294, -71.303, "today", "now");
-    Ku ku2 = new Ku(2, "waiting for the train; wet ones on my hairy legs; slowly passing gas", 80, 39, 42.294, -71.303, "today", "now");
-    Ku ku3 = new Ku(3, "Hippopotamus; anti-Hippopotamus; annihilation", 75, 5, 42.294, -71.303, "today", "now");
-    Ku ku4 = new Ku(4, "Haikus are easy; but sometimes they don't make sense; refrigerator", 254, 28, 42.294, -71.303, "today", "now");
-    Ku ku5 = new Ku(5, "fat man sees small door; he knows he cannot fit through; tears flow freely now", 9, 3, 42.294, -71.303, "today", "now");
+    Ku ku1 = new Ku(1, "This is my first ku; I really like it so much; do you like it too", 120, 30, 90, 42.294, -71.303, "today", "now");
+    Ku ku2 = new Ku(2, "waiting for the train; wet ones on my hairy legs; slowly passing gas", 80, 39, 41, 42.294, -71.303, "today", "now");
+    Ku ku3 = new Ku(3, "Hippopotamus; anti-Hippopotamus; annihilation", 75, 5, 70, 42.294, -71.303, "today", "now");
+    Ku ku4 = new Ku(4, "Haikus are easy; but sometimes they don't make sense; refrigerator", 254, 28, 226, 42.294, -71.303, "today", "now");
+    Ku ku5 = new Ku(5, "fat man sees small door; he knows he cannot fit through; tears flow freely now", 9, 3, 6, 42.294, -71.303, "today", "now");
 
-    ArrayList<Ku> mkuList = new ArrayList<Ku>();
+    ArrayList<Ku> mkuList = new ArrayList<>();
 
     @Bind(R.id.ku_feed_rv) RecyclerView mKuRecyclerView;
     @Bind(R.id.hotButton) Button mHotButton;

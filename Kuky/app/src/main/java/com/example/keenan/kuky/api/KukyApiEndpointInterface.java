@@ -1,5 +1,7 @@
 package com.example.keenan.kuky.api;
 
+import com.example.keenan.kuky.models.KuActionRequest;
+import com.example.keenan.kuky.models.KuActionResponse;
 import com.example.keenan.kuky.models.KuComposeResponse;
 import com.example.keenan.kuky.models.KuRequest;
 import com.example.keenan.kuky.models.KuResponse;
@@ -26,14 +28,14 @@ public interface KukyApiEndpointInterface {
     @POST("/kus/compose")
     Observable<KuComposeResponse> postKu(@Body KuRequest body);
 
-    @POST("/kus/new/favorited")
-    void favoriteKu();
+    @POST("/kus/favorite")
+    Observable<KuActionResponse> favoriteKu(@Body KuActionRequest body);
 
-    @POST("/kus/{id}/upvote")
-    void upvoteKu();
+    @POST("/kus/upvote")
+    Observable<KuActionResponse> upvoteKu(@Body KuActionRequest body);
 
-    @POST("/kus/{id}/downvote")
-    void downvoteKu();
+    @POST("/kus/downvote")
+    Observable<KuActionResponse> downvoteKu(@Body KuActionRequest body);
 
     // Users Endpoints
     @POST("/users/login")

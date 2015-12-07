@@ -12,11 +12,15 @@ public class UserApiKeyResponse {
     @SerializedName("newKey")
     private String newKey;
 
+    @SerializedName("userId")
+    private int userId;
+
     @SerializedName("error")
     private String errorMessage;
 
-    public UserApiKeyResponse(String newKey, String errorMessage) {
+    public UserApiKeyResponse(String newKey, int userId, String errorMessage) {
         this.newKey = newKey;
+        this.userId = userId;
         this.errorMessage = errorMessage;
     }
 
@@ -30,6 +34,10 @@ public class UserApiKeyResponse {
 
     public String getNewKey() {
         return newKey;
+    }
+
+    public int getUserId() {
+        return userId;
     }
 
     public String getErrorMessage() {

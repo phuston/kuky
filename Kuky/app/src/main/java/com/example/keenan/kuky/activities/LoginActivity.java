@@ -36,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     private String uname;
     private String pw;
     private String apiKey;
+    private int userId;
     private String errorMessage;
 
     @Bind(R.id.login_username) EditText username;
@@ -62,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onNext(UserApiKeyResponse apiKeyResponse) {
                         Log.d(TAG, apiKeyResponse.toString());
                         apiKey = apiKeyResponse.getNewKey();
+                        userId = apiKeyResponse.getUserId();
                         errorMessage = apiKeyResponse.getErrorMessage();
                         if (errorMessage != null) {
                             // If error exists, displays it
@@ -70,6 +72,7 @@ public class LoginActivity extends AppCompatActivity {
                             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
                             SharedPreferences.Editor editor = settings.edit();
                             editor.putString("username", username.getText().toString());
+                            editor.putInt("userId", userId);
                             editor.putString("apiKey", apiKey);
                             editor.apply();
                             changeActivity();
@@ -98,6 +101,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onNext(UserApiKeyResponse apiKeyResponse) {
                         Log.d(TAG, apiKeyResponse.toString());
                         apiKey = apiKeyResponse.getNewKey();
+                        userId = apiKeyResponse.getUserId();
                         errorMessage = apiKeyResponse.getErrorMessage();
                         if (errorMessage != null) {
                             if (errorMessage.equals("SequelizeUniqueConstraintError")) {
@@ -109,6 +113,7 @@ public class LoginActivity extends AppCompatActivity {
                             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
                             SharedPreferences.Editor editor = settings.edit();
                             editor.putString("username", username.getText().toString());
+                            editor.putInt("userId", userId);
                             editor.putString("apiKey", apiKey);
                             editor.apply();
                             changeActivity();
