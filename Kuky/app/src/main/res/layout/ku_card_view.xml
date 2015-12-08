@@ -31,7 +31,6 @@
                 android:paddingTop="24dp"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
-                android:text="This is the first line"
                 />
             <TextView
                 android:id="@+id/ku_content2"
@@ -41,7 +40,6 @@
                 android:layout_below="@id/ku_content1"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
-                android:text="This is the second line son"
                 />
             <TextView
                 android:id="@+id/ku_content3"
@@ -52,14 +50,12 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:paddingBottom="24dp"
-                android:text="This is the third line"
-
                 />
 
             <ImageButton
                 android:id="@+id/upvoteButton"
-                android:layout_width="30dp"
-                android:layout_height="24dp"
+                android:layout_width="36dp"
+                android:layout_height="28dp"
                 android:paddingTop="16dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
@@ -73,18 +69,19 @@
                 android:layout_below="@id/upvoteButton"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:text="125"
-                />
+                android:textSize="24sp"/>
+
             <ImageButton
                 android:id="@+id/downvoteButton"
-                android:layout_width="30dp"
-                android:layout_height="24dp"
+                android:layout_width="36dp"
+                android:layout_height="28dp"
                 android:layout_below="@id/ku_karma"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:background="@drawable/downvote"
                 />
             <ImageButton
+                android:id="@+id/favoriteButton"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_centerInParent="true"
@@ -96,4 +93,5 @@
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
+
 </LinearLayout>

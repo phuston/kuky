@@ -4,13 +4,45 @@
     android:layout_height="match_parent"
     tools:context="com.example.keenan.kuky.fragments.FeedFragment">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:id="@+id/ku_choice">
+
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="@string/my_kus"
+            android:id="@+id/composed_kus_profile"
+            android:background="@color/grey_100"
+            android:layout_weight="1" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/favorites"
+            android:id="@+id/favorite_kus_profile"
+            android:background="@color/red_100"
+            android:layout_weight="1" />
+
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/profile"
-        android:textSize="40dp"
-        android:textStyle="bold"
-        android:layout_centerInParent="true"/>
+        android:id="@+id/kudos_display"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/ku_choice"
+        android:textSize="36sp"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/ku_profile_feed"
+        android:layout_below="@+id/kudos_display"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
 
 </RelativeLayout>
