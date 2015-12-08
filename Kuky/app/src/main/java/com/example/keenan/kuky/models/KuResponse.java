@@ -1,13 +1,12 @@
 package com.example.keenan.kuky.models;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class KuResponse {
 
-    private List<Ku> kus = new ArrayList<Ku>();
+    private ArrayList<Ku> kus;
 
-    public List<Ku> getKus() {
+    public ArrayList<Ku> getKus() {
         return kus;
     }
 }
