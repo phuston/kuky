@@ -30,6 +30,8 @@ import rx.schedulers.Schedulers;
 
 public class FeedFragment extends Fragment {
 
+    private static final String TAG = FeedFragment.class.getSimpleName();
+
 //    private String[] mKus = {"this is my first ku", "This is my second ku", "This is my third ku", "This is my fourth ku", "This is my fifth ku", "This is my sixth ku", "This is my seventh ku", "This is my eigth ku", "this is my ninth ku", "this is my tenth ku"};
 
     private KuCardAdapter mKuCardAdapter;
@@ -108,27 +110,25 @@ public class FeedFragment extends Fragment {
     }
 
     public void UpdateKus(String sort){
-        final KuResponse kuResponse;
-        if(sort == KuRequest.KU_SORT_HOT) {
-            ApiClient.getKukyApiClient().getKusHot()
-                    .subscribeOn(Schedulers.newThread())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<KuResponse>() {
-                        @Override
-                        public final void onCompleted() {
-                            // do nothing
-                        }
+        ApiClient.getKukyApiClient().getKus(sort)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<KuResponse>() {
+                    @Override
+                    public final void onCompleted() {
+                        // do nothing
+                    }
 
-                        @Override
-                        public final void onError(Throwable e) {
-                            Log.e("KukyAPI Error", e.getMessage());
-                        }
+                    @Override
+                    public final void onError(Throwable e) {
+                        Log.e("KukyAPI Error", e.getMessage());
+                    }
 
-                        @Override
-                        public final void onNext(KuResponse response) {
-                            mkuList = response.getKus();
-                        }
-                    });
-        }
+                    @Override
+                    public final void onNext(KuResponse response) {
+                        mkuList = response.getKus();
+                        Log.d(TAG, "Received data");
+                    }
+                });
     }
 }

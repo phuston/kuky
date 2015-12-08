@@ -14,35 +14,43 @@ public interface KukyApiEndpointInterface {
 
     // Kus Endpoints
 
-    @GET("/kus/all/recent")
-    Observable<KuResponse> getKusNew();
-
-    @GET("/kus/all/hot")
-    Observable<KuResponse> getKusHot();
+    @GET("/kus/all/{sort}")
+    Observable<KuResponse> getKus(
+        @Path("sort") String sort
+    );
 
     @POST("/kus/compose")
-    Observable<KuComposeResponse> postKu(@Body KuRequest body);
+    Observable<KuComposeResponse> postKu(
+        @Body KuRequest body
+    );
 
     @POST("/kus/new/favorited")
     void favoriteKu();
 
     @POST("/kus/{id}/upvote")
-    void upvoteKu();
+    void upvoteKu(
+        @Path("id") String id
+    );
 
     @POST("/kus/{id}/downvote")
-    void downvoteKu();
+    void downvoteKu(
+        @Path("id") String id
+    );
 
     // Users Endpoints
     @POST("/users/login/{userid}/{api_key}")
     void login(
         @Path("userid") String userid,
-        @Path("api_key") String api_key);
+        @Path("api_key") String api_key
+    );
 
     @POST("/users/register")
     void register();
 
     @GET("/users/{id}")
-    void getUser(@Path("id") String id);
+    void getUser(
+        @Path("id") String id
+    );
 
 
     // Comments Endpoints
