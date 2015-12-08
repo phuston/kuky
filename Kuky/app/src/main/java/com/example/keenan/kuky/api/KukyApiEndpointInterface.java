@@ -19,33 +19,46 @@ public interface KukyApiEndpointInterface {
 
     // Kus Endpoints
 
-    @GET("/kus/all/recent")
-    Observable<KuResponse> getKusNew();
-
-    @GET("/kus/all/hot")
-    Observable<KuResponse> getKusHot();
+    @GET("/kus/all/{sort}")
+    Observable<KuResponse> getKus(
+            @Path("sort") String sort
+    );
 
     @POST("/kus/compose")
-    Observable<KuComposeResponse> postKu(@Body KuRequest body);
+    Observable<KuComposeResponse> postKu(
+            @Body KuRequest body
+    );
 
     @POST("/kus/favorite")
-    Observable<KuActionResponse> favoriteKu(@Body KuActionRequest body);
+    Observable<KuActionResponse> favoriteKu(
+            @Body KuActionRequest body
+    );
 
     @POST("/kus/upvote")
-    Observable<KuActionResponse> upvoteKu(@Body KuActionRequest body);
+    Observable<KuActionResponse> upvoteKu(
+            @Body KuActionRequest body
+    );
 
     @POST("/kus/downvote")
-    Observable<KuActionResponse> downvoteKu(@Body KuActionRequest body);
+    Observable<KuActionResponse> downvoteKu(
+            @Body KuActionRequest body
+    );
 
     // Users Endpoints
     @POST("/users/login")
-    Observable<UserApiKeyResponse> login(@Body UserRequest body);
+    Observable<UserApiKeyResponse> login(
+            @Body UserRequest body
+    );
 
     @POST("/users/register")
-    Observable<UserApiKeyResponse> register(@Body UserRequest body);
+    Observable<UserApiKeyResponse> register(
+            @Body UserRequest body
+    );
 
     @GET("/users/{uname}")
-    Observable<UserProfileResponse> getUser(@Path("uname") String id);
+    Observable<UserProfileResponse> getUser(
+            @Path("uname") String id
+    );
 
 
     // Comments Endpoints

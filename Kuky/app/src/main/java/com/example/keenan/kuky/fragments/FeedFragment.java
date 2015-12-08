@@ -1,11 +1,11 @@
 package com.example.keenan.kuky.fragments;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,16 +13,24 @@ import android.widget.Button;
 
 import com.example.keenan.kuky.R;
 import com.example.keenan.kuky.adapters.KuCardAdapter;
+import com.example.keenan.kuky.api.ApiClient;
 import com.example.keenan.kuky.models.Ku;
+import com.example.keenan.kuky.models.KuRequest;
+import com.example.keenan.kuky.models.KuResponse;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 
 public class FeedFragment extends Fragment {
+
+    private static final String TAG = FeedFragment.class.getSimpleName();
 
 //    private String[] mKus = {"this is my first ku", "This is my second ku", "This is my third ku", "This is my fourth ku", "This is my fifth ku", "This is my sixth ku", "This is my seventh ku", "This is my eigth ku", "this is my ninth ku", "this is my tenth ku"};
 
@@ -44,21 +52,20 @@ public class FeedFragment extends Fragment {
 
     @OnClick(R.id.hotButton)
     public void onHotButtonClicked(View view) {
-        // Make call to reload the data in the correct order
+        UpdateKus(KuRequest.KU_SORT_HOT);
         Snackbar.make(view, "Showing hottest Kus!", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
     }
 
     @OnClick(R.id.topButton)
     public void onTopButtonClicked(View view) {
-        // Make call to reload the data in the correct order
         Snackbar.make(view, "Showing top Kus!", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
     }
 
     @OnClick(R.id.recentButton)
     public void onRecentButtonClicked(View view) {
-        //Make call to reload the data in the correct order
+        UpdateKus(KuRequest.KU_SORT_RECENT);
         Snackbar.make(view, "Showing recent Kus!", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
     }
@@ -70,19 +77,12 @@ public class FeedFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mkuList.add(ku1);
-        mkuList.add(ku2);
-        mkuList.add(ku3);
-        mkuList.add(ku4);
-        mkuList.add(ku5);
-
+        UpdateKus(KuRequest.KU_SORT_HOT);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
 
         View rootView = inflater.inflate(R.layout.fragment_feed, container, false);
         ButterKnife.bind(this, rootView);
@@ -104,9 +104,27 @@ public class FeedFragment extends Fragment {
 
     }
 
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
-    }
+    public void UpdateKus(String sort){
+        ApiClient.getKukyApiClient().getKus(sort)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<KuResponse>() {
+                    @Override
+                    public final void onCompleted() {
+                        // do nothing
+                    }
 
+                    @Override
+                    public final void onError(Throwable e) {
+                        Log.e("KukyAPI Error", e.getMessage());
+                    }
+
+                    @Override
+                    public final void onNext(KuResponse response) {
+                        mKuCardAdapter.updateKus(response.getKus());
+                        mKuCardAdapter.notifyDataSetChanged();
+                        Log.d(TAG, "Received data");
+                    }
+                });
+    }
 }

@@ -3,7 +3,6 @@ package com.example.keenan.kuky.adapters;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,7 +66,11 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
             }
         });
 
+<<<<<<< HEAD
+        Ku mKu = mDataset.get(position);
+=======
         final Ku mKu = mDataset.get(position);
+>>>>>>> 8d15d78a4e83337990df53a1d4c4bcc00c13189e
 
         String[] lines = mKu.getContent();
         Integer ku_karma = mKu.getKarma();
