@@ -3,10 +3,10 @@ package com.example.keenan.kuky.adapters;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.keenan.kuky.R;
@@ -18,9 +18,7 @@ import com.example.keenan.kuky.models.KuActionResponse;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -66,11 +64,7 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
             }
         });
 
-<<<<<<< HEAD
-        Ku mKu = mDataset.get(position);
-=======
         final Ku mKu = mDataset.get(position);
->>>>>>> 8d15d78a4e83337990df53a1d4c4bcc00c13189e
 
         String[] lines = mKu.getContent();
         Integer ku_karma = mKu.getKarma();
@@ -188,7 +182,6 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
     }
 
     public void setList(ArrayList<Ku> newList) {
-        this.mDataset = newList;
-        this.notifyDataSetChanged();
+        mDataset = newList;
     }
 }

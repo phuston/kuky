@@ -50,6 +50,7 @@ public class ProfileFragment extends Fragment {
     @OnClick(R.id.favorite_kus_profile)
     public void onFavoritesSelected(View view) {
         mKuCardAdapter.setList(favoritedKus);
+        mKuCardAdapter.notifyDataSetChanged();
         favoritesButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.red_100));
         composedButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.grey_100));
     }
@@ -57,6 +58,7 @@ public class ProfileFragment extends Fragment {
     @OnClick(R.id.composed_kus_profile)
     public void onComposedSelected(View view) {
         mKuCardAdapter.setList(composedKus);
+        mKuCardAdapter.notifyDataSetChanged();
         composedButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.red_100));
         favoritesButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.grey_100));
     }
