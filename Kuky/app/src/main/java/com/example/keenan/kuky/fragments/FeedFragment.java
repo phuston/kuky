@@ -77,12 +77,7 @@ public class FeedFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mkuList.add(ku1);
-        mkuList.add(ku2);
-        mkuList.add(ku3);
-        mkuList.add(ku4);
-        mkuList.add(ku5);
-
+        UpdateKus(KuRequest.KU_SORT_HOT);
     }
 
     @Override
@@ -126,7 +121,8 @@ public class FeedFragment extends Fragment {
 
                     @Override
                     public final void onNext(KuResponse response) {
-                        mkuList = response.getKus();
+                        mKuCardAdapter.updateKus(response.getKus());
+                        mKuCardAdapter.notifyDataSetChanged();
                         Log.d(TAG, "Received data");
                     }
                 });

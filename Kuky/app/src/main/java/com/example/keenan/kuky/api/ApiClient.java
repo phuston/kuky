@@ -8,7 +8,7 @@ public class ApiClient {
     public static KukyApiEndpointInterface getKukyApiClient() {
         if (sKukyApiClient == null) {
             RestAdapter restAdapter = new RestAdapter.Builder()
-                    .setEndpoint("http://localhost:3000")
+                    .setEndpoint("http://104.236.85.252:8080")
                     .build();
 
             sKukyApiClient = restAdapter.create(KukyApiEndpointInterface.class);

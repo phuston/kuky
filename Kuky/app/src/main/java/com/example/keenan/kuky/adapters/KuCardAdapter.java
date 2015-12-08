@@ -2,7 +2,6 @@ package com.example.keenan.kuky.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,8 +53,6 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
             }
         });
 
-        Log.wtf("SIZE", Integer.toString(mDataset.size()));
-
         Ku mKu = mDataset.get(position);
 
         String[] lines = mKu.getContent();
@@ -73,12 +70,15 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-
         return mDataset.size();
     }
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    public void updateKus(ArrayList<Ku> newKus){
+        mDataset = newKus;
     }
 }
