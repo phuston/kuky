@@ -86,7 +86,6 @@ public class ProfileFragment extends Fragment {
         mKuRecyclerView.setLayoutManager(mLayoutManager);
 
         mKuCardAdapter = new KuCardAdapter(favoritedKus, getActivity());
-
         mKuRecyclerView.setAdapter(mKuCardAdapter);
 
         return rootView;
@@ -113,6 +112,7 @@ public class ProfileFragment extends Fragment {
                         processKus(userProfileResponse.getComposedKus(), "composed");
                         processKus(userProfileResponse.getFavoritedKus(), "favorited");
                         processUserInfo(userProfileResponse.getBasicInfo());
+                        mKuCardAdapter.notifyDataSetChanged();
                     }
                 });
     }
@@ -125,13 +125,17 @@ public class ProfileFragment extends Fragment {
             int karma = ku.get("karma").getAsInt();
             double lat = ku.get("lat").getAsDouble();
             double lon = ku.get("lon").getAsDouble();
+            boolean upvoted = ku.get("upvoted").getAsBoolean();
+            boolean downvoted = ku.get("downvoted").getAsBoolean();
+            Ku thisKu = new Ku(id, content, karma, lat, lon, upvoted, downvoted);
             if (type.equals("composed")) {
-                composedKus.add(new Ku(id, content, karma, lat, lon));
+                composedKus.add(thisKu);
+                Log.d(TAG, "COMPOSED " + composedKus.toString());
             } else {
-                favoritedKus.add(new Ku(id, content, karma, lat, lon));
+                favoritedKus.add(thisKu);
+                Log.d(TAG, "FAVORITED " + favoritedKus.toString());
             }
         }
-        Log.d(TAG, "FAVORITED " + favoritedKus.toString());
     }
 
     public void processUserInfo(JsonObject userInfo) {
