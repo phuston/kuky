@@ -15,12 +15,8 @@ import android.widget.TextView;
 
 import com.example.keenan.kuky.R;
 import com.example.keenan.kuky.api.ApiClient;
-import com.example.keenan.kuky.api.KukyApiEndpointInterface;
-import com.example.keenan.kuky.models.KuResponse;
 import com.example.keenan.kuky.models.UserApiKeyResponse;
 import com.example.keenan.kuky.models.UserRequest;
-
-import java.util.Observable;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

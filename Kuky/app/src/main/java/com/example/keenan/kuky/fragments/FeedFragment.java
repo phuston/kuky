@@ -17,7 +17,7 @@ import com.example.keenan.kuky.adapters.KuCardAdapter;
 import com.example.keenan.kuky.api.ApiClient;
 import com.example.keenan.kuky.models.Ku;
 import com.example.keenan.kuky.models.KuRequest;
-import com.example.keenan.kuky.models.KuResponse;
+import com.example.keenan.kuky.models.KuListResponse;
 
 import java.util.ArrayList;
 
@@ -98,7 +98,7 @@ public class FeedFragment extends Fragment {
         ApiClient.getKukyApiClient().getKus(sort)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<KuResponse>() {
+                .subscribe(new Subscriber<KuListResponse>() {
                     @Override
                     public final void onCompleted() {
                         // do nothing
@@ -110,7 +110,7 @@ public class FeedFragment extends Fragment {
                     }
 
                     @Override
-                    public final void onNext(KuResponse response) {
+                    public final void onNext(KuListResponse response) {
                         mKuCardAdapter.setList(response.getKus());
                         mKuCardAdapter.notifyDataSetChanged();
                         Log.d(TAG, "Received data");

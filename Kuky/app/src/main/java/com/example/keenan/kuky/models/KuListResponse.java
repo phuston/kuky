@@ -2,7 +2,7 @@ package com.example.keenan.kuky.models;
 
 import java.util.ArrayList;
 
-public class KuResponse {
+public class KuListResponse {
 
     private ArrayList<Ku> kus;
 

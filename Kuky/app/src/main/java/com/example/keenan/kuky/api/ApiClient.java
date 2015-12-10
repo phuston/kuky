@@ -9,7 +9,7 @@ public class ApiClient {
     public static KukyApiEndpointInterface getKukyApiClient() {
         if (sKukyApiClient == null) {
             RestAdapter restAdapter = new RestAdapter.Builder()
-                    .setEndpoint("http://104.236.85.252:8080")
+                    .setEndpoint("http://104.236.85.252:3000")
                     .setLogLevel(RestAdapter.LogLevel.FULL)
                     .setLog(new RestAdapter.Log() {
                         @Override

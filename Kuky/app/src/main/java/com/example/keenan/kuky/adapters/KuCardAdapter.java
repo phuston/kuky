@@ -1,15 +1,16 @@
 package com.example.keenan.kuky.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.keenan.kuky.R;
+import com.example.keenan.kuky.activities.DetailActivity;
 import com.example.keenan.kuky.activities.LoginActivity;
 import com.example.keenan.kuky.api.ApiClient;
 import com.example.keenan.kuky.models.Ku;
@@ -60,7 +61,9 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
             @Override
             public void onClick(View v, int pos) {
                 String id = Integer.toString(mDataset.get(pos).getId());
-                Toast.makeText(mContext, id, Toast.LENGTH_LONG).show();
+                Intent dIntent = new Intent(mContext, DetailActivity.class);
+                dIntent.putExtra(DetailActivity.KU_ID, id);
+                mContext.startActivity(dIntent);
             }
         });
 
