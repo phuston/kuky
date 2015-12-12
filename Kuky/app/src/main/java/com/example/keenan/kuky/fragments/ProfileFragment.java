@@ -1,5 +1,6 @@
 package com.example.keenan.kuky.fragments;
 
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.keenan.kuky.R;
+import com.example.keenan.kuky.activities.LoginActivity;
 import com.example.keenan.kuky.adapters.KuCardAdapter;
 import com.example.keenan.kuky.api.ApiClient;
 import com.example.keenan.kuky.models.Ku;
@@ -92,7 +94,12 @@ public class ProfileFragment extends Fragment {
     }
 
     public void updateProfile() {
-        ApiClient.getKukyApiClient().getUser("thecardkid")
+        SharedPreferences settings = getContext().getSharedPreferences(LoginActivity.PREFS_NAME, 0);
+
+        ApiClient.getKukyApiClient(
+                settings.getString("username", null),
+                settings.getString("apiKey", null)
+        ).getUser("thecardkid")
             .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<UserProfileResponse>() {

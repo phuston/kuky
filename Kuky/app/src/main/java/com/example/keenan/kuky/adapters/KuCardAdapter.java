@@ -30,6 +30,8 @@ import rx.schedulers.Schedulers;
 
 public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
 
+    //TODO: Update view whenever upvote/downvote/favorite request is sent
+
     private static final String TAG = KuCardAdapter.class.getSimpleName();
     private ArrayList<Ku> mDataset;
     private Context mContext;
@@ -87,10 +89,10 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
                 int kuId = mKu.getId();
                 holder.vUpvotePressed = !holder.vUpvotePressed;
                 if (userId > 0) {
-                    sendUpvoteRequest(new KuActionRequest(userId, kuId), holder.vKuKarma);
+                    sendUpvoteRequest(new KuActionRequest(userId, kuId));
                     if (holder.vDownvotePressed) {
                         holder.vDownvotePressed = false;
-                        sendDownvoteRequest(new KuActionRequest(userId, kuId), holder.vKuKarma);
+                        sendDownvoteRequest(new KuActionRequest(userId, kuId));
                     }
                 }
             }
@@ -103,10 +105,10 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
                 int kuId = mKu.getId();
                 holder.vDownvotePressed = !holder.vDownvotePressed;
                 if (userId > 0) {
-                    sendDownvoteRequest(new KuActionRequest(userId, kuId), holder.vKuKarma);
+                    sendDownvoteRequest(new KuActionRequest(userId, kuId));
                     if (holder.vUpvotePressed) {
                         holder.vUpvotePressed = false;
-                        sendUpvoteRequest(new KuActionRequest(userId, kuId), holder.vKuKarma);
+                        sendUpvoteRequest(new KuActionRequest(userId, kuId));
                     }
                 }
             }
@@ -139,7 +141,7 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
         });
     }
 
-    public void sendUpvoteRequest(KuActionRequest request, final TextView karma) {
+    public void sendUpvoteRequest(KuActionRequest request) {
         ApiClient.getKukyApiClient().upvoteKu(request)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
@@ -152,13 +154,12 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
 
                 @Override
                 public void onNext(KuActionResponse kuActionResponse) {
-                    karma.setText(kuActionResponse.getStatus());
                     Log.d(TAG, kuActionResponse.getStatus());
                 }
             });
     }
 
-    public void sendDownvoteRequest(KuActionRequest request, final TextView karma) {
+    public void sendDownvoteRequest(KuActionRequest request) {
         ApiClient.getKukyApiClient().downvoteKu(request)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
@@ -171,7 +172,6 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
 
                 @Override
                 public void onNext(KuActionResponse kuActionResponse) {
-                    karma.setText(kuActionResponse.getStatus());
                     Log.d(TAG, kuActionResponse.getStatus());
                 }
             });
