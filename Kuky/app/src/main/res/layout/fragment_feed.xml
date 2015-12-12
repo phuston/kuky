@@ -27,7 +27,7 @@
             android:id="@+id/recentButton"
             android:layout_weight="1"/>
 
-</LinearLayout>
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/ku_feed_rv"
