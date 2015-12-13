@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.keenan.kuky.R;
+import com.example.keenan.kuky.adapters.CommentCardAdapter;
 import com.example.keenan.kuky.api.ApiClient;
 import com.example.keenan.kuky.models.Comment;
 import com.example.keenan.kuky.models.Ku;
@@ -32,7 +34,10 @@ public class DetailActivity extends AppCompatActivity {
     public static final String KU_ID = "ku_id";
     private int ku_id;
     private Ku mKu;
-    private ArrayList<Comment> mComments;
+    private ArrayList<Comment> mCommentList = new ArrayList<Comment>();
+    private RecyclerView.LayoutManager mLayoutManager;
+    private CommentCardAdapter mCommentCardAdapter;
+
 
     @Bind(R.id.detail_back_button) Button mBackButton;
     @Bind(R.id.ku_card_detail_view) CardView mKuCard;
@@ -43,14 +48,9 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent = getIntent();
-        String ku_id = intent.getStringExtra(DetailActivity.KU_ID);
-//        ButterKnife.bind(this);
-
-        fetchKuInfo(ku_id);
-
 
         setContentView(R.layout.activity_detail);
+        ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -62,6 +62,19 @@ public class DetailActivity extends AppCompatActivity {
                         .setAction("New Ku!", null).show();
             }
         });
+
+        Intent intent = getIntent();
+        String ku_id = intent.getStringExtra(DetailActivity.KU_ID);
+
+        fetchKuInfo(ku_id);
+
+        mCommentRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(this);
+        mCommentRecyclerView.setLayoutManager(mLayoutManager);
+
+        mCommentCardAdapter = new CommentCardAdapter(mCommentList, this);
+
+        mCommentRecyclerView.setAdapter(mCommentCardAdapter);
     }
 
     @OnClick(R.id.detail_back_button)
@@ -98,7 +111,8 @@ public class DetailActivity extends AppCompatActivity {
                                @Override
                                public void onNext(KuDetailResponse kuDetailResponse) {
                                    mKu = kuDetailResponse.getKu();
-                                   mComments = kuDetailResponse.getComments();
+                                   mCommentList = kuDetailResponse.getComments();
+                                   mCommentCardAdapter.setList(mCommentList);
                                }
                            }
                 );
