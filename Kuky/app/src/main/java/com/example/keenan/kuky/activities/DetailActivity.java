@@ -9,9 +9,11 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.keenan.kuky.R;
 import com.example.keenan.kuky.adapters.CommentCardAdapter;
@@ -31,6 +33,8 @@ import rx.schedulers.Schedulers;
 
 public class DetailActivity extends AppCompatActivity {
 
+    public static final String TAG = DetailActivity.class.getSimpleName();
+
     public static final String KU_ID = "ku_id";
     private int ku_id;
     private Ku mKu;
@@ -38,7 +42,10 @@ public class DetailActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     private CommentCardAdapter mCommentCardAdapter;
 
-
+    @Bind(R.id.ku_content1_tv) TextView mKuContent1Tv;
+    @Bind(R.id.ku_content2_tv) TextView mKuContent2Tv;
+    @Bind(R.id.ku_content3_tv) TextView mKuContent3Tv;
+    @Bind(R.id.ku_karma_tv) TextView mKuKarmaTv;
     @Bind(R.id.detail_back_button) Button mBackButton;
     @Bind(R.id.ku_card_detail_view) CardView mKuCard;
     @Bind(R.id.comment_submit_button) Button mCommentSubmitButton;
@@ -72,7 +79,9 @@ public class DetailActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mCommentRecyclerView.setLayoutManager(mLayoutManager);
 
-        mCommentCardAdapter = new CommentCardAdapter(mCommentList, this);
+        Log.d(TAG, Integer.toString(mCommentList.size()));
+
+        mCommentCardAdapter = new CommentCardAdapter(mCommentList, this, Integer.parseInt(ku_id));
 
         mCommentRecyclerView.setAdapter(mCommentCardAdapter);
     }
@@ -110,12 +119,22 @@ public class DetailActivity extends AppCompatActivity {
 
                                @Override
                                public void onNext(KuDetailResponse kuDetailResponse) {
-                                   mKu = kuDetailResponse.getKu();
                                    mCommentList = kuDetailResponse.getComments();
                                    mCommentCardAdapter.setList(mCommentList);
+                                   mCommentCardAdapter.notifyDataSetChanged();
+                                   mKu = kuDetailResponse.getKu();
+                                   setKuCardViewContent(mKu);
                                }
                            }
                 );
+    }
+
+    public void setKuCardViewContent(Ku ku){
+        String[] ku_content = ku.getContent();
+        mKuContent1Tv.setText(ku_content[0]);
+        mKuContent2Tv.setText(ku_content[1]);
+        mKuContent3Tv.setText(ku_content[2]);
+        mKuKarmaTv.setText(ku.getKarma());
     }
 
 }

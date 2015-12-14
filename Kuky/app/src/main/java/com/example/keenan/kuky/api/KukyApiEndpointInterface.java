@@ -1,5 +1,7 @@
 package com.example.keenan.kuky.api;
 
+import com.example.keenan.kuky.models.CommentActionRequest;
+import com.example.keenan.kuky.models.CommentActionResponse;
 import com.example.keenan.kuky.models.KuActionRequest;
 import com.example.keenan.kuky.models.KuActionResponse;
 import com.example.keenan.kuky.models.KuComposeResponse;
@@ -66,7 +68,20 @@ public interface KukyApiEndpointInterface {
             @Path("uname") String id
     );
 
-
     // Comments Endpoints
+//    @GET("/comments/{id}")
+//    Observable<CommentListResponse> getComments(
+//            @Path("id") String id
+//    );
+
+    @POST("/comments/upvote")
+    Observable<CommentActionResponse> upvoteComment(
+            @Body CommentActionRequest body
+    );
+
+    @POST("/comments/downvote")
+    Observable<CommentActionResponse> downvoteComment(
+            @Body CommentActionRequest body
+    );
 
 }

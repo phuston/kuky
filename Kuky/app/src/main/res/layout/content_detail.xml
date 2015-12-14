@@ -15,8 +15,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:text="Back"
-        android:id="@+id/detail_back_button"
-        />
+        android:id="@+id/detail_back_button" />
 
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -31,111 +30,103 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-        <TextView
-            android:text="This is a test ku"
-            android:id="@+id/ku_content1"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingTop="24dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            />
-        <TextView
-            android:text="It isn't a very good ku"
-            android:id="@+id/ku_content2"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_below="@id/ku_content1"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            />
-        <TextView
-            android:text="This is a problem"
-            android:id="@+id/ku_content3"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_below="@id/ku_content2"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:paddingBottom="24dp"
-            />
 
-        <ImageButton
-            android:id="@+id/upvoteButton"
-            android:layout_width="48dp"
-            android:layout_height="36dp"
-            android:paddingTop="16dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:background="@drawable/ic_arrow_drop_up_black_24dp"
-            />
-        <TextView
-            android:id="@+id/ku_karma"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/upvoteButton"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:paddingRight="20dp"
-            android:paddingEnd="20dp"
-            android:textSize="18sp"/>
+            <TextView
+                android:text="This is a test ku"
+                android:id="@+id/ku_content1_tv"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="24dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"/>
 
-        <ImageButton
-            android:id="@+id/downvoteButton"
-            android:layout_width="48dp"
-            android:layout_height="36dp"
-            android:layout_below="@id/ku_karma"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/ic_arrow_drop_down_black_24dp"
-            />
-        <ImageButton
-            android:id="@+id/favoriteButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:background="@drawable/ic_star_outline_black_24dp"
-            />
+            <TextView
+                android:text="It isn't a very good ku"
+                android:id="@+id/ku_content2_tv"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_below="@id/ku_content1_tv"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"/>
+
+            <TextView
+                android:text="This is a problem"
+                android:id="@+id/ku_content3_tv"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_below="@id/ku_content2_tv"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="24dp"/>
+
+            <ImageButton
+                android:id="@+id/upvoteButton"
+                android:layout_width="48dp"
+                android:layout_height="36dp"
+                android:paddingTop="16dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/ic_arrow_drop_up_black_24dp"/>
+
+            <TextView
+                android:id="@+id/ku_karma_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/upvoteButton"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:paddingRight="20dp"
+                android:paddingEnd="20dp"
+                android:textSize="18sp"/>
+
+            <ImageButton
+                android:id="@+id/downvoteButton"
+                android:layout_width="48dp"
+                android:layout_height="36dp"
+                android:layout_below="@id/ku_karma_tv"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/ic_arrow_drop_down_black_24dp"/>
+
+            <ImageButton
+                android:id="@+id/favoriteButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/ic_star_outline_black_24dp"/>
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/detail_back_button"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:id="@+id/comment_submit_button"
         android:text="Comment"
-        />
+        android:layout_alignTop="@+id/edit_comment_text"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/detail_back_button"
         android:id="@+id/edit_comment_text"
-        android:layout_alignParentStart="true"
+        android:layout_below="@+id/ku_card_detail_view"
         android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@id/comment_submit_button"
-        android:layout_toStartOf="@id/comment_submit_button"
-        />
-
-
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/comment_submit_button"
+        android:layout_toStartOf="@+id/comment_submit_button" />
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/comment_feed_rv"
-        android:layout_below="@+id/edit_comment_text"
         android:paddingTop="30dp"
-        />
-
-
+        android:layout_below="@+id/comment_submit_button" />
 
 </RelativeLayout>
