@@ -1,5 +1,6 @@
 package com.example.keenan.kuky.fragments;
 
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.keenan.kuky.R;
+import com.example.keenan.kuky.activities.LoginActivity;
 import com.example.keenan.kuky.adapters.KuCardAdapter;
 import com.example.keenan.kuky.api.ApiClient;
 import com.example.keenan.kuky.models.Ku;
@@ -86,14 +88,18 @@ public class ProfileFragment extends Fragment {
         mKuRecyclerView.setLayoutManager(mLayoutManager);
 
         mKuCardAdapter = new KuCardAdapter(favoritedKus, getActivity());
-
         mKuRecyclerView.setAdapter(mKuCardAdapter);
 
         return rootView;
     }
 
     public void updateProfile() {
-        ApiClient.getKukyApiClient().getUser("thecardkid")
+        SharedPreferences settings = getContext().getSharedPreferences(LoginActivity.PREFS_NAME, 0);
+
+        ApiClient.getKukyApiClient(
+                settings.getString("username", null),
+                settings.getString("apiKey", null)
+        ).getUser("thecardkid")
             .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<UserProfileResponse>() {
@@ -113,6 +119,7 @@ public class ProfileFragment extends Fragment {
                         processKus(userProfileResponse.getComposedKus(), "composed");
                         processKus(userProfileResponse.getFavoritedKus(), "favorited");
                         processUserInfo(userProfileResponse.getBasicInfo());
+                        mKuCardAdapter.notifyDataSetChanged();
                     }
                 });
     }
@@ -125,13 +132,17 @@ public class ProfileFragment extends Fragment {
             int karma = ku.get("karma").getAsInt();
             double lat = ku.get("lat").getAsDouble();
             double lon = ku.get("lon").getAsDouble();
+            boolean upvoted = ku.get("upvoted").getAsBoolean();
+            boolean downvoted = ku.get("downvoted").getAsBoolean();
+            Ku thisKu = new Ku(id, content, karma, lat, lon, upvoted, downvoted);
             if (type.equals("composed")) {
-                composedKus.add(new Ku(id, content, karma, lat, lon));
+                composedKus.add(thisKu);
+                Log.d(TAG, "COMPOSED " + composedKus.toString());
             } else {
-                favoritedKus.add(new Ku(id, content, karma, lat, lon));
+                favoritedKus.add(thisKu);
+                Log.d(TAG, "FAVORITED " + favoritedKus.toString());
             }
         }
-        Log.d(TAG, "FAVORITED " + favoritedKus.toString());
     }
 
     public void processUserInfo(JsonObject userInfo) {
