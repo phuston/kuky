@@ -3,7 +3,6 @@ package com.example.keenan.kuky.adapters;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -17,6 +16,7 @@ public class KuViewHolder extends RecyclerView.ViewHolder implements View.OnClic
     protected TextView vKuContent3;
     protected TextView vKuKarma;
     protected ImageButton vUpvote, vDownvote, vFavorite;
+    protected boolean vUpvotePressed, vDownvotePressed;
 
     private ClickListener vClickListener;
 
@@ -30,6 +30,8 @@ public class KuViewHolder extends RecyclerView.ViewHolder implements View.OnClic
         vUpvote = (ImageButton) v.findViewById(R.id.upvoteButton);
         vDownvote = (ImageButton) v.findViewById(R.id.downvoteButton);
         vFavorite = (ImageButton) v.findViewById(R.id.favoriteButton);
+        vUpvotePressed = false;
+        vDownvotePressed = false;
 
         v.setOnClickListener(this);
     }
