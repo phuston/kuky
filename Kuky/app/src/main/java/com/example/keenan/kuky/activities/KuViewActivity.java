@@ -50,8 +50,6 @@ public class KuViewActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(getApplicationContext(), KuWriteActivity.class);
                 startActivity(intent);
-//                Snackbar.make(view, "Compose a Ku!", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
             }
         });
     }

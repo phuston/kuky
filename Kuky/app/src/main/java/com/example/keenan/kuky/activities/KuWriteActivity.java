@@ -1,5 +1,6 @@
 package com.example.keenan.kuky.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +24,10 @@ public class KuWriteActivity extends AppCompatActivity {
     @Bind(R.id.ku_line_two) EditText mKuLineTwo;
     @Bind(R.id.ku_line_three) EditText mKuLineThree;
 
+    private String line1;
+    private String line2;
+    private String line3;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,8 @@ public class KuWriteActivity extends AppCompatActivity {
     {
         Snackbar.make(view, "Cancel Ku", Snackbar.LENGTH_LONG)
                 .setAction("Cancel", null).show();
+        Intent intent = new Intent(getApplicationContext(), KuViewActivity.class);
+        startActivity(intent);
     }
 
     @OnClick(R.id.ku_compose_done)
@@ -44,6 +51,26 @@ public class KuWriteActivity extends AppCompatActivity {
     {
         Snackbar.make(view, "Ku Submitted!", Snackbar.LENGTH_LONG)
                 .setAction("Submit", null).show();
+    }
+
+    @OnClick(R.id.ku_line_one)
+    public void onLineOneClick(View view){
+        line1 = mKuLineOne.getText().toString();
+        //TODO: Check syllables? (5)
+    }
+
+    @OnClick(R.id.ku_line_two)
+    public void onLineTwoClick(View view){
+        line2 = mKuLineTwo.getText().toString();
+        //TODO: Check syllables? (7)
+
+    }
+
+    @OnClick(R.id.ku_line_three)
+    public void onLineThreeClick(View view){
+        line3 = mKuLineThree.getText().toString();
+        //TODO: Check syllables? (5)
+
     }
 
     @Override

@@ -65,8 +65,8 @@ public class DetailActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Compose a New Ku!", Snackbar.LENGTH_LONG)
-                        .setAction("New Ku!", null).show();
+                Intent intent = new Intent(getApplicationContext(), KuWriteActivity.class);
+                startActivity(intent);
             }
         });
 
