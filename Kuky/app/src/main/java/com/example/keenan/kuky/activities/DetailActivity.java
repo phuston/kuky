@@ -46,7 +46,7 @@ public class DetailActivity extends AppCompatActivity {
     @Bind(R.id.ku_content2_tv) TextView mKuContent2Tv;
     @Bind(R.id.ku_content3_tv) TextView mKuContent3Tv;
     @Bind(R.id.ku_karma_tv) TextView mKuKarmaTv;
-    @Bind(R.id.detail_back_button) Button mBackButton;
+//    @Bind(R.id.detail_back_button) Button mBackButton;
     @Bind(R.id.ku_card_detail_view) CardView mKuCard;
     @Bind(R.id.comment_submit_button) Button mCommentSubmitButton;
     @Bind(R.id.edit_comment_text) EditText mEditText;
@@ -85,22 +85,19 @@ public class DetailActivity extends AppCompatActivity {
 
         mCommentRecyclerView.setAdapter(mCommentCardAdapter);
     }
-
-    @OnClick(R.id.detail_back_button)
-    public void onDetailBackButtonClick(View view) {
-
-        //TODO: Go back to the FeedFragment
-
-    }
+//
+//    @OnClick(R.id.detail_back_button)
+//    public void onDetailBackButtonClick(View view) {
+//
+//        //TODO: Go back to the FeedFragment
+//
+//    }
 
     @OnClick(R.id.comment_submit_button)
     public void onCommentSubmitButton(View view) {
         Snackbar.make(view, "Your comment is submitted", Snackbar.LENGTH_LONG)
                 .setAction("Submit", null).show();
     }
-
-
-
 
     public void fetchKuInfo(String ku_id){
         ApiClient.getKukyApiClient().getKuDetail(ku_id)

@@ -33,5 +33,9 @@
     </string>
     <string name="title_activity_detail">DetailActivity</string>
 
+    <!--String related to composing a new ku-->
+    <string name="line1">Five (5) syllables</string>
+    <string name="line2">Seven (7) syllables</string>
+    <string name="line3">Five (5) syllables again</string>
 
 </resources>
