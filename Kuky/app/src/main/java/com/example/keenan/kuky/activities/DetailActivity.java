@@ -73,6 +73,8 @@ public class DetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String ku_id = intent.getStringExtra(DetailActivity.KU_ID);
 
+        Log.d(TAG, "DetailActivity received Ku_ID of : " + ku_id);
+
         fetchKuInfo(ku_id);
 
         mCommentRecyclerView.setHasFixedSize(true);

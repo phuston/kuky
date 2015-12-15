@@ -61,6 +61,7 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
             @Override
             public void onClick(View v, int pos) {
                 String id = Integer.toString(mDataset.get(pos).getId());
+                Log.d(TAG, "ID should be " + id);
                 Intent dIntent = new Intent(mContext, DetailActivity.class);
                 dIntent.putExtra(DetailActivity.KU_ID, id);
                 mContext.startActivity(dIntent);

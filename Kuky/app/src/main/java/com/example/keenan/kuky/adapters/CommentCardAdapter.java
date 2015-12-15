@@ -34,6 +34,7 @@ public class CommentCardAdapter extends RecyclerView.Adapter<CommentViewHolder> 
     public CommentCardAdapter(ArrayList<Comment> Comments, Context context, int kuId) {
         mDataset = Comments;
         mContext = context;
+        mku_id = kuId;
     }
 
     @Override
@@ -82,7 +83,7 @@ public class CommentCardAdapter extends RecyclerView.Adapter<CommentViewHolder> 
 
                                 @Override
                                 public void onNext(CommentActionResponse CommentActionResponse) {
-
+                                    Log.d(TAG, CommentActionResponse.getStatus());
                                 }
                             });
                 }
@@ -112,7 +113,7 @@ public class CommentCardAdapter extends RecyclerView.Adapter<CommentViewHolder> 
 
                                 @Override
                                 public void onNext(CommentActionResponse CommentActionResponse) {
-
+                                    Log.d(TAG, CommentActionResponse.getStatus());
                                 }
                             });
                 }
