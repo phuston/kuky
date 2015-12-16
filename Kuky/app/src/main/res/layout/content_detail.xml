@@ -8,15 +8,6 @@
     tools:context="com.example.keenan.kuky.activities.DetailActivity"
     tools:showIn="@layout/activity_detail">
 
-
-    <!--<Button-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentStart="true"-->
-        <!--android:layout_alignParentLeft="true"-->
-        <!--android:text="Back"-->
-        <!--android:id="@+id/detail_back_button" />-->
-
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ku_card_detail_view"
@@ -29,7 +20,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/grey_100">
 
             <TextView
                 android:text="This is a test ku"
@@ -91,6 +83,18 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:background="@drawable/ic_arrow_drop_down_black_24dp"/>
+
+            <ImageButton
+                android:id="@+id/favoriteButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/ic_star_outline_black_24dp"
+                />
             
         </RelativeLayout>
     </android.support.v7.widget.CardView>
@@ -99,6 +103,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/comment_feed_rv"
-        android:paddingTop="150dp" />
+        android:paddingTop="130dp" />
 
 </RelativeLayout>

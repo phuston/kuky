@@ -123,7 +123,6 @@ public class ProfileFragment extends Fragment {
                         processKus(userProfileResponse.getFavoritedKus(), "favorited");
                         processUserInfo(userProfileResponse.getBasicInfo());
                         mKuCardAdapter.notifyDataSetChanged();
-//                        checkForKus(composedKus);
                     }
                 });
     }
