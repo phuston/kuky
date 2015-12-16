@@ -11,21 +11,24 @@
         android:weightSum="2"
         android:id="@+id/ku_choice_feed">
 
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/hot"
+            android:layout_height="52dp"
+            android:src="@drawable/ic_whatshot_black_24dp"
             android:id="@+id/hotButton"
             android:background="@color/grey_100"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:contentDescription="@string/description_hot"/>
 
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="52dp"
             android:background="@color/red_100"
-            android:text="@string/recent"
+            android:src="@drawable/ic_alarm_black_24dp"
             android:id="@+id/recentButton"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:contentDescription="@string/description_recent"
+        />
 
     </LinearLayout>
 

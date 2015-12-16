@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.keenan.kuky.R;
@@ -46,8 +47,8 @@ public class ProfileFragment extends Fragment {
 
     @Bind(R.id.ku_profile_feed) RecyclerView mKuRecyclerView;
     @Bind(R.id.kudos_display) TextView kudosDisplay;
-    @Bind(R.id.favorite_kus_profile) Button favoritesButton;
-    @Bind(R.id.composed_kus_profile) Button composedButton;
+    @Bind(R.id.favorite_kus_profile) ImageButton favoritesButton;
+    @Bind(R.id.composed_kus_profile) ImageButton composedButton;
 
     @OnClick(R.id.favorite_kus_profile)
     public void onFavoritesSelected(View view) {
@@ -155,29 +156,7 @@ public class ProfileFragment extends Fragment {
         kudosDisplay.setText(kudos);
     }
 
-//    // TODO: Rename method, update argument and hook method into UI event
-//    public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//            mListener.onFragmentInteraction(uri);
-//        }
-//    }
-//
-//    @Override
-//    public void onAttach(Activity activity) {
-//        super.onAttach(activity);
-//        try {
-//            mListener = (OnFragmentInteractionListener) activity;
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(activity.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
-//
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//        mListener = null;
-//    }
+
 
     /**
      * This interface must be implemented by activities that contain this
