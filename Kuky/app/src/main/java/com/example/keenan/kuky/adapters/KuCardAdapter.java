@@ -87,21 +87,16 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
             public void onClick(View v) {
                 int userId = getUserId();
                 int kuId = mKu.getId();
-                int karmaIncrement = 0;
 
                 holder.vUpvotePressed = !holder.vUpvotePressed;
-                Log.d(TAG, String.valueOf(holder.vUpvotePressed));
-                if(holder.vUpvotePressed) karmaIncrement = 1;
                 if (userId > 0) {
-                    sendUpvoteRequest(new KuActionRequest(userId, kuId));
+                    sendUpvoteRequest(new KuActionRequest(userId, kuId), mKu, position);
                     if (holder.vDownvotePressed) {
                         holder.vDownvotePressed = false;
-                        sendDownvoteRequest(new KuActionRequest(userId, kuId));
-                        karmaIncrement = 2;
+                        sendDownvoteRequest(new KuActionRequest(userId, kuId), mKu, position);
                     }
                 }
-                mKu.setKarma(mKu.getKarma()+karmaIncrement);
-                notifyItemChanged(position);
+//                notifyItemChanged(position);
             }
         });
 
@@ -110,20 +105,16 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
             public void onClick(View v) {
                 int userId = getUserId();
                 int kuId = mKu.getId();
-                int karmaDecrement = 0;
 
                 holder.vDownvotePressed = !holder.vDownvotePressed;
-                if(holder.vDownvotePressed) karmaDecrement = 1;
                 if (userId > 0) {
-                    sendDownvoteRequest(new KuActionRequest(userId, kuId));
+                    sendDownvoteRequest(new KuActionRequest(userId, kuId), mKu, position);
                     if (holder.vUpvotePressed) {
                         holder.vUpvotePressed = false;
-                        sendUpvoteRequest(new KuActionRequest(userId, kuId));
-                        karmaDecrement = 2;
+                        sendUpvoteRequest(new KuActionRequest(userId, kuId), mKu, position);
                     }
                 }
-                mKu.setKarma(mKu.getKarma()-karmaDecrement);
-                notifyItemChanged(position);
+//                notifyItemChanged(position);
             }
         });
 
@@ -154,7 +145,7 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
         });
     }
 
-    public void sendUpvoteRequest(KuActionRequest request) {
+    public void sendUpvoteRequest(KuActionRequest request, final Ku ku, final int position) {
         ApiClient.getKukyApiClient().upvoteKu(request)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
@@ -167,12 +158,14 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
 
                 @Override
                 public void onNext(KuActionResponse kuActionResponse) {
-                    Log.d(TAG, kuActionResponse.getStatus());
+                    Log.wtf(TAG, kuActionResponse.getStatus());
+                    ku.setKarma(Integer.parseInt(kuActionResponse.getStatus()));
+                    notifyItemChanged(position);
                 }
             });
     }
 
-    public void sendDownvoteRequest(KuActionRequest request) {
+    public void sendDownvoteRequest(KuActionRequest request, final Ku ku, final int position) {
         ApiClient.getKukyApiClient().downvoteKu(request)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
@@ -185,7 +178,9 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
 
                 @Override
                 public void onNext(KuActionResponse kuActionResponse) {
-                    Log.d(TAG, kuActionResponse.getStatus());
+                    Log.wtf(TAG, kuActionResponse.getStatus());
+                    ku.setKarma(Integer.parseInt(kuActionResponse.getStatus()));
+                    notifyItemChanged(position);
                 }
             });
     }
