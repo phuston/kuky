@@ -95,11 +95,12 @@ public class ProfileFragment extends Fragment {
 
     public void updateProfile() {
         SharedPreferences settings = getContext().getSharedPreferences(LoginActivity.PREFS_NAME, 0);
-
+        String uname = settings.getString("username", null);
+        String apiKey = settings.getString("apiKey", null);
         ApiClient.getKukyApiClient(
-                settings.getString("username", null),
-                settings.getString("apiKey", null)
-        ).getUser("thecardkid")
+                uname,
+                apiKey
+        ).getUser(uname)
             .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<UserProfileResponse>() {

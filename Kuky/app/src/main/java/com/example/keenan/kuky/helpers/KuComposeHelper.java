@@ -46,11 +46,9 @@ public class KuComposeHelper {
             return 0;
     }
 
-    public boolean checkKu(Ku ku){
+    public int[] checkKu(Ku ku) {
         String line1 = ku.getContent()[0], line2 = ku.getContent()[1], line3 = ku.getContent()[2];
-        if (getSyllables(line1) == 5 && getSyllables(line2) == 7 && getSyllables(line3) == 5) {
-            return true;
-        } else
-            return false;
+        int[] syllableCounts = {getSyllables(line1), getSyllables(line2), getSyllables(line3)};
+        return syllableCounts;
     }
 }
