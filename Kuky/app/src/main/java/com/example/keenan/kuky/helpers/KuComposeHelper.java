@@ -39,16 +39,17 @@ public class KuComposeHelper {
         reader.close();
     }
 
-    public int getSyllables(String word) {
-        if (mSyllables.get(word) != null) {
-            return mSyllables.get(word);
-        } else
-            return 0;
+    public int getSyllables(String line) {
+        int count = 0;
+        for (String word : line.split("\\s+")) {
+            if (mSyllables.get(word) != null) {
+                count += mSyllables.get(word);
+            }
+        }
+        return count;
     }
 
-    public int[] checkKu(Ku ku) {
-        String line1 = ku.getContent()[0], line2 = ku.getContent()[1], line3 = ku.getContent()[2];
-        int[] syllableCounts = {getSyllables(line1), getSyllables(line2), getSyllables(line3)};
-        return syllableCounts;
+    public int[] checkKu(String line1, String line2, String line3) {
+        return new int[] {getSyllables(line1), getSyllables(line2), getSyllables(line3)};
     }
 }
