@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.example.keenan.kuky.R;
 import com.example.keenan.kuky.adapters.KuCardAdapter;
@@ -39,8 +40,8 @@ public class FeedFragment extends Fragment {
     ArrayList<Ku> mkuList = new ArrayList<>();
 
     @Bind(R.id.ku_feed_rv) RecyclerView mKuRecyclerView;
-    @Bind(R.id.hotButton) Button mHotButton;
-    @Bind(R.id.recentButton) Button mRecentButton;
+    @Bind(R.id.hotButton) ImageButton mHotButton;
+    @Bind(R.id.recentButton) ImageButton mRecentButton;
 
     @OnClick(R.id.hotButton)
     public void onHotButtonClicked(View view) {
