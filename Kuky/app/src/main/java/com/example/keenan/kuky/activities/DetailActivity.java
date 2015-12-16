@@ -1,5 +1,7 @@
 package com.example.keenan.kuky.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -9,6 +11,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -37,6 +40,7 @@ public class DetailActivity extends AppCompatActivity {
 
     public static final String KU_ID = "ku_id";
     private int ku_id;
+    private String mComment = "";
     private Ku mKu;
     private ArrayList<Comment> mCommentList = new ArrayList<Comment>();
     private RecyclerView.LayoutManager mLayoutManager;
@@ -46,10 +50,7 @@ public class DetailActivity extends AppCompatActivity {
     @Bind(R.id.ku_content2_tv) TextView mKuContent2Tv;
     @Bind(R.id.ku_content3_tv) TextView mKuContent3Tv;
     @Bind(R.id.ku_karma_tv) TextView mKuKarmaTv;
-//    @Bind(R.id.detail_back_button) Button mBackButton;
     @Bind(R.id.ku_card_detail_view) CardView mKuCard;
-    @Bind(R.id.comment_submit_button) Button mCommentSubmitButton;
-    @Bind(R.id.edit_comment_text) EditText mEditText;
     @Bind(R.id.comment_feed_rv) RecyclerView mCommentRecyclerView;
 
     @Override
@@ -65,8 +66,30 @@ public class DetailActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), KuWriteActivity.class);
-                startActivity(intent);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(DetailActivity.this);
+                builder.setTitle("Enter Your Comment:");
+
+                final EditText input = new EditText(DetailActivity.this);
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                builder.setView(input);
+
+                builder.setPositiveButton("Comment", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mComment = input.getText().toString();
+
+                        //TODO: Add networking to make this go to database!
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
             }
         });
 
@@ -87,19 +110,12 @@ public class DetailActivity extends AppCompatActivity {
 
         mCommentRecyclerView.setAdapter(mCommentCardAdapter);
     }
-//
-//    @OnClick(R.id.detail_back_button)
-//    public void onDetailBackButtonClick(View view) {
-//
-//        //TODO: Go back to the FeedFragment
-//
-//    }
 
-    @OnClick(R.id.comment_submit_button)
-    public void onCommentSubmitButton(View view) {
-        Snackbar.make(view, "Your comment is submitted", Snackbar.LENGTH_LONG)
-                .setAction("Submit", null).show();
-    }
+//    @OnClick(R.id.comment_submit_button)
+//    public void onCommentSubmitButton(View view) {
+//        Snackbar.make(view, "Your comment is submitted", Snackbar.LENGTH_LONG)
+//                .setAction("Submit", null).show();
+//    }
 
     public void fetchKuInfo(String ku_id){
         ApiClient.getKukyApiClient().getKuDetail(ku_id)
