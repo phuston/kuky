@@ -24,12 +24,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.KuViewActivity" />
-        <activity android:name=".activities.KuWriteActivity" />
+        <activity
+            android:name=".activities.KuViewActivity"
+            android:icon="@drawable/ic_logo_clear"/>
         <activity
             android:name=".activities.DetailActivity"
             android:label="@string/title_activity_detail"
-            android:theme="@style/MyMaterialTheme"></activity>
+            android:icon="@drawable/ic_logo_clear"/>
+        <activity
+            android:name=".activities.KuWriteActivity"
+            android:label="@string/title_activity_compose"
+            android:icon="@drawable/ic_logo_clear"/>
     </application>
 
 </manifest>

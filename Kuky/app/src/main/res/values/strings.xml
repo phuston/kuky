@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Kuky</string>
+    <string name="app_name"> Kuky</string>
     <string name="action_settings">Settings</string>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -34,7 +34,9 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="title_activity_detail">DetailActivity</string>
+    <string name="title_activity_detail"> Ku View</string>
+    <string name="title_activity_compose"> Compose a Ku</string>
+
 
     <!--String related to composing a new ku-->
     <string name="line1">Five (5) syllables</string>

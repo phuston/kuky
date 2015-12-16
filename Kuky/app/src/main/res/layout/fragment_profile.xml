@@ -38,6 +38,17 @@
         android:textSize="36sp"
         />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lack_of_kus"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="120dp"
+        android:textColor="@android:color/holo_red_dark"
+        android:text="@string/no_comment"
+        android:visibility="gone"
+        />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/ku_profile_feed"
         android:layout_below="@+id/kudos_display"

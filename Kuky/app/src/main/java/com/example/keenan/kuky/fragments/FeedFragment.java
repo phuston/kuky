@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.keenan.kuky.R;
 import com.example.keenan.kuky.adapters.KuCardAdapter;
@@ -42,6 +43,7 @@ public class FeedFragment extends Fragment {
     @Bind(R.id.ku_feed_rv) RecyclerView mKuRecyclerView;
     @Bind(R.id.hotButton) ImageButton mHotButton;
     @Bind(R.id.recentButton) ImageButton mRecentButton;
+    @Bind(R.id.lack_of_kus) TextView mNoKusText;
 
     @OnClick(R.id.hotButton)
     public void onHotButtonClicked(View view) {
@@ -113,10 +115,24 @@ public class FeedFragment extends Fragment {
                     @Override
                     public final void onNext(KuListResponse response) {
                         mkuList = response.getKus();
+                        checkForKus(mkuList);
                         mKuCardAdapter.setList(mkuList);
                         mKuCardAdapter.notifyDataSetChanged();
                         Log.d(TAG, "Received data");
                     }
                 });
+    }
+
+    public void checkForKus(ArrayList mkuList)
+    {
+        if (mkuList.isEmpty())
+        {
+            mKuRecyclerView.setVisibility(View.GONE);
+            mNoKusText.setVisibility(View.VISIBLE);
+        }
+        else {
+            mKuRecyclerView.setVisibility(View.VISIBLE);
+            mNoKusText.setVisibility(View.GONE);
+        }
     }
 }

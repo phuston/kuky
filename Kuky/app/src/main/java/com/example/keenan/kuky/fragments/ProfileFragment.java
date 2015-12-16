@@ -49,6 +49,7 @@ public class ProfileFragment extends Fragment {
     @Bind(R.id.kudos_display) TextView kudosDisplay;
     @Bind(R.id.favorite_kus_profile) ImageButton favoritesButton;
     @Bind(R.id.composed_kus_profile) ImageButton composedButton;
+    @Bind(R.id.lack_of_kus) TextView mNoKusTextProfile;
 
     @OnClick(R.id.favorite_kus_profile)
     public void onFavoritesSelected(View view) {
@@ -122,8 +123,22 @@ public class ProfileFragment extends Fragment {
                         processKus(userProfileResponse.getFavoritedKus(), "favorited");
                         processUserInfo(userProfileResponse.getBasicInfo());
                         mKuCardAdapter.notifyDataSetChanged();
+//                        checkForKus(composedKus);
                     }
                 });
+    }
+
+    public void checkForKus(ArrayList mkuList)
+    {
+        if (mkuList.isEmpty())
+        {
+            mKuRecyclerView.setVisibility(View.GONE);
+            mNoKusTextProfile.setVisibility(View.VISIBLE);
+        }
+        else {
+            mKuRecyclerView.setVisibility(View.VISIBLE);
+            mNoKusTextProfile.setVisibility(View.GONE);
+        }
     }
 
     public void processKus(JsonObject composed, String type) {
