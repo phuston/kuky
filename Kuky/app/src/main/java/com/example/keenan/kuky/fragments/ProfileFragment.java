@@ -1,6 +1,6 @@
 package com.example.keenan.kuky.fragments;
 
-import android.net.Uri;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -10,10 +10,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.keenan.kuky.R;
+import com.example.keenan.kuky.activities.LoginActivity;
 import com.example.keenan.kuky.adapters.KuCardAdapter;
 import com.example.keenan.kuky.api.ApiClient;
 import com.example.keenan.kuky.models.Ku;
@@ -38,14 +39,13 @@ public class ProfileFragment extends Fragment {
     private ArrayList<Ku> composedKus = new ArrayList<>();
     private ArrayList<Ku> favoritedKus = new ArrayList<>();
     private User user;
-    private OnFragmentInteractionListener mListener;
     private KuCardAdapter mKuCardAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     @Bind(R.id.ku_profile_feed) RecyclerView mKuRecyclerView;
     @Bind(R.id.kudos_display) TextView kudosDisplay;
-    @Bind(R.id.favorite_kus_profile) Button favoritesButton;
-    @Bind(R.id.composed_kus_profile) Button composedButton;
+    @Bind(R.id.favorite_kus_profile) ImageButton favoritesButton;
+    @Bind(R.id.composed_kus_profile) ImageButton composedButton;
 
     @OnClick(R.id.favorite_kus_profile)
     public void onFavoritesSelected(View view) {
@@ -86,14 +86,19 @@ public class ProfileFragment extends Fragment {
         mKuRecyclerView.setLayoutManager(mLayoutManager);
 
         mKuCardAdapter = new KuCardAdapter(favoritedKus, getActivity());
-
         mKuRecyclerView.setAdapter(mKuCardAdapter);
 
         return rootView;
     }
 
     public void updateProfile() {
-        ApiClient.getKukyApiClient().getUser("thecardkid")
+        SharedPreferences settings = getContext().getSharedPreferences(LoginActivity.PREFS_NAME, 0);
+        String uname = settings.getString("username", null);
+        String apiKey = settings.getString("apiKey", null);
+        ApiClient.getKukyApiClient(
+                uname,
+                apiKey
+        ).getUser(uname)
             .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<UserProfileResponse>() {
@@ -113,6 +118,7 @@ public class ProfileFragment extends Fragment {
                         processKus(userProfileResponse.getComposedKus(), "composed");
                         processKus(userProfileResponse.getFavoritedKus(), "favorited");
                         processUserInfo(userProfileResponse.getBasicInfo());
+                        mKuCardAdapter.notifyDataSetChanged();
                     }
                 });
     }
@@ -125,13 +131,17 @@ public class ProfileFragment extends Fragment {
             int karma = ku.get("karma").getAsInt();
             double lat = ku.get("lat").getAsDouble();
             double lon = ku.get("lon").getAsDouble();
+            boolean upvoted = ku.get("upvoted").getAsBoolean();
+            boolean downvoted = ku.get("downvoted").getAsBoolean();
+            Ku thisKu = new Ku(id, content, karma, lat, lon, upvoted, downvoted);
             if (type.equals("composed")) {
-                composedKus.add(new Ku(id, content, karma, lat, lon));
+                composedKus.add(thisKu);
+                Log.d(TAG, "COMPOSED " + composedKus.toString());
             } else {
-                favoritedKus.add(new Ku(id, content, karma, lat, lon));
+                favoritedKus.add(thisKu);
+                Log.d(TAG, "FAVORITED " + favoritedKus.toString());
             }
         }
-        Log.d(TAG, "FAVORITED " + favoritedKus.toString());
     }
 
     public void processUserInfo(JsonObject userInfo) {
@@ -142,44 +152,4 @@ public class ProfileFragment extends Fragment {
         String kudos = getResources().getString(R.string.kudos) + ' ' + String.valueOf(user.getScore());
         kudosDisplay.setText(kudos);
     }
-
-//    // TODO: Rename method, update argument and hook method into UI event
-//    public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//            mListener.onFragmentInteraction(uri);
-//        }
-//    }
-//
-//    @Override
-//    public void onAttach(Activity activity) {
-//        super.onAttach(activity);
-//        try {
-//            mListener = (OnFragmentInteractionListener) activity;
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(activity.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
-//
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//        mListener = null;
-//    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
-    }
-
 }

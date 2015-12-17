@@ -2,34 +2,19 @@ package com.example.keenan.kuky.models;
 
 public class Ku {
 
-    private Integer id;
+    private Integer id, karma;
     private String content;
-    private Integer upvotes;
-    private Integer downvotes;
-    private Integer karma;
-    private Double lat;
-    private Double lon;
-    private String createdAt;
-    private String updatedAt;
+    private Double lat, lon;
+    private boolean upvoted, downvoted;
 
-    public Ku(Integer id, String content, Integer upvotes, Integer downvotes, Integer karma, Double lat, Double lon, String createdAt, String updatedAt){
-        this.id = id;
-        this.content = content;
-        this.upvotes = upvotes;
-        this.downvotes = downvotes;
-        this.karma = karma;
-        this.lat = lat;
-        this.lon = lon;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
-
-    public Ku(Integer id, String content, Integer karma, Double lat, Double lon) {
+    public Ku(Integer id, String content, Integer karma, Double lat, Double lon, boolean upvoted, boolean downvoted) {
         this.id = id;
         this.content = content;
         this.karma = karma;
         this.lat = lat;
         this.lon = lon;
+        this.upvoted = upvoted;
+        this.downvoted = downvoted;
     }
 
     public Integer getId() {
@@ -40,16 +25,12 @@ public class Ku {
         return content.split(";");
     }
 
-    public Integer getUpvotes() {
-        return upvotes;
-    }
-
-    public Integer getDownvotes() {
-        return downvotes;
-    }
-
     public Integer getKarma() {
         return karma;
+    }
+
+    public void setKarma(Integer karma) {
+        this.karma = karma;
     }
 
     public Double getLat() {
@@ -60,20 +41,22 @@ public class Ku {
         return lon;
     }
 
-    public String getCreatedAt() {
-        return createdAt;
+    public boolean getUpvoted() {
+        return upvoted;
     }
 
-    public String getUpdatedAt() {
-        return updatedAt;
+    public boolean getDownvoted() {
+        return downvoted;
     }
 
     @Override
     public String toString() {
         return "Ku{" +
                 "id=" + id +
-                ", content='" + content + '\'' +
                 ", karma=" + karma +
+                ", upvoted=" + upvoted +
+                ", downvoted=" + downvoted +
+                ", content='" + content + '\'' +
                 '}';
     }
 }

@@ -1,10 +1,15 @@
 package com.example.keenan.kuky.api;
 
+import com.example.keenan.kuky.models.CommentActionRequest;
+import com.example.keenan.kuky.models.CommentActionResponse;
+import com.example.keenan.kuky.models.CommentComposeRequest;
+import com.example.keenan.kuky.models.CommentComposeResponse;
 import com.example.keenan.kuky.models.KuActionRequest;
 import com.example.keenan.kuky.models.KuActionResponse;
 import com.example.keenan.kuky.models.KuComposeResponse;
+import com.example.keenan.kuky.models.KuDetailResponse;
+import com.example.keenan.kuky.models.KuListResponse;
 import com.example.keenan.kuky.models.KuRequest;
-import com.example.keenan.kuky.models.KuResponse;
 import com.example.keenan.kuky.models.UserApiKeyResponse;
 import com.example.keenan.kuky.models.UserProfileResponse;
 import com.example.keenan.kuky.models.UserRequest;
@@ -19,8 +24,13 @@ public interface KukyApiEndpointInterface {
 
     // Kus Endpoints
 
+    @GET("/kus/{id}")
+    Observable<KuDetailResponse> getKuDetail(
+            @Path("id") String id
+    );
+
     @GET("/kus/all/{sort}")
-    Observable<KuResponse> getKus(
+    Observable<KuListResponse> getKus(
             @Path("sort") String sort
     );
 
@@ -60,7 +70,25 @@ public interface KukyApiEndpointInterface {
             @Path("uname") String id
     );
 
-
     // Comments Endpoints
+//    @GET("/comments/{id}")
+//    Observable<CommentListResponse> getComments(
+//            @Path("id") String id
+//    );
+
+    @POST("/comments/upvote")
+    Observable<CommentActionResponse> upvoteComment(
+            @Body CommentActionRequest body
+    );
+
+    @POST("/comments/downvote")
+    Observable<CommentActionResponse> downvoteComment(
+            @Body CommentActionRequest body
+    );
+
+    @POST("/comments/compose")
+    Observable<CommentComposeResponse> postComment (
+            @Body CommentComposeRequest body
+    );
 
 }

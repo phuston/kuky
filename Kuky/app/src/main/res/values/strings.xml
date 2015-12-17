@@ -6,9 +6,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="feed">Feed Tab!</string>
     <string name="profile">Profile Tab!</string>
-    <string name="hot">Hot</string>
-    <string name="top">Top</string>
-    <string name="recent">Recent</string>
+    <string name="description_hot">Hot</string>
+    <string name="description_recent">Recent</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="login">Log In</string>
     <string name="signup">Sign Up</string>
@@ -31,6 +30,11 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="title_activity_detail">DetailActivity</string>
 
+    <!--String related to composing a new ku-->
+    <string name="line1">Five (5) syllables</string>
+    <string name="line2">Seven (7) syllables</string>
+    <string name="line3">Five (5) syllables again</string>
 
 </resources>
