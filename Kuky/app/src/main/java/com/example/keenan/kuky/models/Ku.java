@@ -5,9 +5,9 @@ public class Ku {
     private Integer id, karma;
     private String content;
     private Double lat, lon;
-    private boolean upvoted, downvoted;
+    private boolean upvoted, downvoted, favorited;
 
-    public Ku(Integer id, String content, Integer karma, Double lat, Double lon, boolean upvoted, boolean downvoted) {
+    public Ku(Integer id, String content, Integer karma, Double lat, Double lon, boolean upvoted, boolean downvoted, boolean favorited) {
         this.id = id;
         this.content = content;
         this.karma = karma;
@@ -15,6 +15,7 @@ public class Ku {
         this.lon = lon;
         this.upvoted = upvoted;
         this.downvoted = downvoted;
+        this.favorited = favorited;
     }
 
     public Integer getId() {
@@ -47,6 +48,10 @@ public class Ku {
 
     public boolean getDownvoted() {
         return downvoted;
+    }
+
+    public boolean getFavorited() {
+        return favorited;
     }
 
     @Override

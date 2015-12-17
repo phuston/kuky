@@ -25,6 +25,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -41,6 +42,9 @@ public class ProfileFragment extends Fragment {
     private KuCardAdapter mKuCardAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
+    private static final ArrayList<Ku> localFavoriteKus = new ArrayList<>();
+    private static final ArrayList<Ku> localComposedKus = new ArrayList<>();
+
     @Bind(R.id.ku_profile_feed) RecyclerView mKuRecyclerView;
     @Bind(R.id.kudos_display) TextView kudosDisplay;
     @Bind(R.id.favorite_kus_profile) ImageButton favoritesButton;
@@ -49,16 +53,20 @@ public class ProfileFragment extends Fragment {
 
     @OnClick(R.id.favorite_kus_profile)
     public void onFavoritesSelected(View view) {
-        mKuCardAdapter.setList(user.getFavoritedKus());
-        mKuCardAdapter.notifyDataSetChanged();
+        if (user != null) {
+            mKuCardAdapter.setList(localFavoriteKus);
+            mKuCardAdapter.notifyDataSetChanged();
+        }
         favoritesButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.red_100));
         composedButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.grey_100));
     }
 
     @OnClick(R.id.composed_kus_profile)
     public void onComposedSelected(View view) {
-        mKuCardAdapter.setList(user.getComposedKus());
-        mKuCardAdapter.notifyDataSetChanged();
+        if (user != null) {
+            mKuCardAdapter.setList(user.getComposedKus());
+            mKuCardAdapter.notifyDataSetChanged();
+        }
         composedButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.red_100));
         favoritesButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.grey_100));
     }
@@ -92,34 +100,33 @@ public class ProfileFragment extends Fragment {
         SharedPreferences settings = getContext().getSharedPreferences(LoginActivity.PREFS_NAME, 0);
         String uname = settings.getString("username", null);
         String apiKey = settings.getString("apiKey", null);
-        ApiClient.getKukyApiClient(
-                uname,
-                apiKey
-        ).getUser(uname)
+        ApiClient.getKukyApiClient(uname, apiKey)
+            .getUser(uname)
             .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<User>() {
-                    @Override
-                    public void onCompleted() {
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Subscriber<User>() {
+                @Override
+                public void onCompleted() {
 
-                    }
+                }
 
-                    @Override
-                    public void onError(Throwable e) {
+                @Override
+                public void onError(Throwable e) {
 
-                    }
+                }
 
-                    @Override
-                    public void onNext(User userResponse) {
-                        user = userResponse;
-                        mKuCardAdapter = new KuCardAdapter(user.getFavoritedKus(), getActivity());
-                        mKuRecyclerView.setAdapter(mKuCardAdapter);
-                    }
-                });
+                @Override
+                public void onNext(User userResponse) {
+                    user = userResponse;
+                    localFavoriteKus.addAll(user.getFavoritedKus());
+                    Log.wtf(TAG, user.getFavoritedKus().toString());
+                    mKuCardAdapter = new KuCardAdapter(localFavoriteKus, getActivity());
+                    mKuRecyclerView.setAdapter(mKuCardAdapter);
+                }
+            });
     }
 
-    public void checkForKus(ArrayList mkuList)
-    {
+    public void checkForKus(ArrayList mkuList) {
         if (mkuList.isEmpty())
         {
             mKuRecyclerView.setVisibility(View.GONE);
@@ -130,6 +137,22 @@ public class ProfileFragment extends Fragment {
             mNoKusTextProfile.setVisibility(View.GONE);
         }
     }
+
+    public static void updateFavorite(Ku ku, boolean add) {
+        Log.wtf(TAG, "UPDATING LOCAL FAVORITES " + String.valueOf(add));
+        if (add) {
+            localFavoriteKus.add(ku);
+            Log.wtf(TAG, localFavoriteKus.toString());
+        } else {
+            localFavoriteKus.remove(ku);
+            Log.wtf(TAG, localFavoriteKus.toString());
+        }
+    }
+
+    public static void addToComposed(Ku ku) {
+        localComposedKus.add(ku);
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated

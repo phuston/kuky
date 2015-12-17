@@ -13,6 +13,7 @@ import com.example.keenan.kuky.R;
 import com.example.keenan.kuky.activities.DetailActivity;
 import com.example.keenan.kuky.activities.LoginActivity;
 import com.example.keenan.kuky.api.ApiClient;
+import com.example.keenan.kuky.fragments.ProfileFragment;
 import com.example.keenan.kuky.models.Ku;
 import com.example.keenan.kuky.models.KuActionRequest;
 import com.example.keenan.kuky.models.KuActionResponse;
@@ -57,8 +58,6 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 
-//        String kuContent = mDataset.get(position).getContent();
-
         holder.setClickListener(new KuViewHolder.ClickListener() {
             @Override
             public void onClick(View v, int pos) {
@@ -81,6 +80,7 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
         holder.vKuKarma.setText(String.valueOf(ku_karma));
         holder.vUpvotePressed = mKu.getUpvoted();
         holder.vDownvotePressed = mKu.getDownvoted();
+        holder.vFavoritePressed = mKu.getFavorited();
 
         holder.vUpvote.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +96,6 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
                         sendDownvoteRequest(new KuActionRequest(userId, kuId), mKu, position);
                     }
                 }
-//                notifyItemChanged(position);
             }
         });
 
@@ -114,7 +113,6 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
                         sendUpvoteRequest(new KuActionRequest(userId, kuId), mKu, position);
                     }
                 }
-//                notifyItemChanged(position);
             }
         });
 
@@ -123,7 +121,8 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
             public void onClick(View v) {
                 int userId = getUserId();
                 int kuId = mKu.getId();
-                Log.d(TAG, new KuActionRequest(userId, kuId).toString());
+
+                holder.vFavoritePressed = !holder.vFavoritePressed;
                 if (userId > 0) {
                     ApiClient.getKukyApiClient().favoriteKu(new KuActionRequest(userId, kuId))
                             .subscribeOn(Schedulers.newThread())
@@ -138,6 +137,8 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
                                 @Override
                                 public void onNext(KuActionResponse kuActionResponse) {
                                     Log.d(TAG, kuActionResponse.getStatus());
+                                    Log.d(TAG, String.valueOf(holder.vFavoritePressed));
+                                    ProfileFragment.updateFavorite(mKu, holder.vFavoritePressed);
                                 }
                             });
                 }
