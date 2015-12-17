@@ -1,7 +1,5 @@
 package com.example.keenan.kuky.models;
 
-import android.util.Log;
-
 public class Ku {
 
     private Integer id, karma;
@@ -29,6 +27,10 @@ public class Ku {
 
     public Integer getKarma() {
         return karma;
+    }
+
+    public void setKarma(Integer karma) {
+        this.karma = karma;
     }
 
     public Double getLat() {

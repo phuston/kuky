@@ -2,13 +2,15 @@ package com.example.keenan.kuky.api;
 
 import com.example.keenan.kuky.models.CommentActionRequest;
 import com.example.keenan.kuky.models.CommentActionResponse;
+import com.example.keenan.kuky.models.CommentComposeRequest;
+import com.example.keenan.kuky.models.CommentComposeResponse;
 import com.example.keenan.kuky.models.KuActionRequest;
 import com.example.keenan.kuky.models.KuActionResponse;
 import com.example.keenan.kuky.models.KuComposeResponse;
 import com.example.keenan.kuky.models.KuDetailResponse;
-import com.example.keenan.kuky.models.KuRequest;
 import com.example.keenan.kuky.models.KuListResponse;
 import com.example.keenan.kuky.models.User;
+import com.example.keenan.kuky.models.KuRequest;
 import com.example.keenan.kuky.models.UserApiKeyResponse;
 import com.example.keenan.kuky.models.UserProfileResponse;
 import com.example.keenan.kuky.models.UserRequest;
@@ -83,6 +85,11 @@ public interface KukyApiEndpointInterface {
     @POST("/comments/downvote")
     Observable<CommentActionResponse> downvoteComment(
             @Body CommentActionRequest body
+    );
+
+    @POST("/comments/compose")
+    Observable<CommentComposeResponse> postComment (
+            @Body CommentComposeRequest body
     );
 
 }

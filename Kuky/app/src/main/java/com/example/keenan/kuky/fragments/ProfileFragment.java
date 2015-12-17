@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -39,7 +38,6 @@ public class ProfileFragment extends Fragment {
 
     private static final String TAG = ProfileFragment.class.getSimpleName();
     private User user;
-    private OnFragmentInteractionListener mListener;
     private KuCardAdapter mKuCardAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
@@ -132,7 +130,6 @@ public class ProfileFragment extends Fragment {
             mNoKusTextProfile.setVisibility(View.GONE);
         }
     }
-
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -147,5 +144,4 @@ public class ProfileFragment extends Fragment {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
-
 }

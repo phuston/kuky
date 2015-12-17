@@ -3,27 +3,22 @@ package com.example.keenan.kuky.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.keenan.kuky.R;
 import com.example.keenan.kuky.activities.DetailActivity;
 import com.example.keenan.kuky.activities.LoginActivity;
 import com.example.keenan.kuky.api.ApiClient;
-import com.example.keenan.kuky.fragments.ProfileFragment;
 import com.example.keenan.kuky.models.Ku;
 import com.example.keenan.kuky.models.KuActionRequest;
 import com.example.keenan.kuky.models.KuActionResponse;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -92,14 +87,16 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
             public void onClick(View v) {
                 int userId = getUserId();
                 int kuId = mKu.getId();
+
                 holder.vUpvotePressed = !holder.vUpvotePressed;
                 if (userId > 0) {
-                    sendUpvoteRequest(new KuActionRequest(userId, kuId));
+                    sendUpvoteRequest(new KuActionRequest(userId, kuId), mKu, position);
                     if (holder.vDownvotePressed) {
                         holder.vDownvotePressed = false;
-                        sendDownvoteRequest(new KuActionRequest(userId, kuId));
+                        sendDownvoteRequest(new KuActionRequest(userId, kuId), mKu, position);
                     }
                 }
+//                notifyItemChanged(position);
             }
         });
 
@@ -108,14 +105,16 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
             public void onClick(View v) {
                 int userId = getUserId();
                 int kuId = mKu.getId();
+
                 holder.vDownvotePressed = !holder.vDownvotePressed;
                 if (userId > 0) {
-                    sendDownvoteRequest(new KuActionRequest(userId, kuId));
+                    sendDownvoteRequest(new KuActionRequest(userId, kuId), mKu, position);
                     if (holder.vUpvotePressed) {
                         holder.vUpvotePressed = false;
-                        sendUpvoteRequest(new KuActionRequest(userId, kuId));
+                        sendUpvoteRequest(new KuActionRequest(userId, kuId), mKu, position);
                     }
                 }
+//                notifyItemChanged(position);
             }
         });
 
@@ -146,7 +145,7 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
         });
     }
 
-    public void sendUpvoteRequest(KuActionRequest request) {
+    public void sendUpvoteRequest(KuActionRequest request, final Ku ku, final int position) {
         ApiClient.getKukyApiClient().upvoteKu(request)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
@@ -159,12 +158,14 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
 
                 @Override
                 public void onNext(KuActionResponse kuActionResponse) {
-                    Log.d(TAG, kuActionResponse.getStatus());
+                    Log.wtf(TAG, kuActionResponse.getStatus());
+                    ku.setKarma(Integer.parseInt(kuActionResponse.getStatus()));
+                    notifyItemChanged(position);
                 }
             });
     }
 
-    public void sendDownvoteRequest(KuActionRequest request) {
+    public void sendDownvoteRequest(KuActionRequest request, final Ku ku, final int position) {
         ApiClient.getKukyApiClient().downvoteKu(request)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
@@ -177,7 +178,9 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
 
                 @Override
                 public void onNext(KuActionResponse kuActionResponse) {
-                    Log.d(TAG, kuActionResponse.getStatus());
+                    Log.wtf(TAG, kuActionResponse.getStatus());
+                    ku.setKarma(Integer.parseInt(kuActionResponse.getStatus()));
+                    notifyItemChanged(position);
                 }
             });
     }
