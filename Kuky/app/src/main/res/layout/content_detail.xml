@@ -21,7 +21,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/grey_100">
+            android:background="@color/grey_200">
 
             <TextView
                 android:text="This is a test ku"

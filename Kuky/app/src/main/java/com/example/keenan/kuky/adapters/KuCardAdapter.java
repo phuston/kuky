@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.example.keenan.kuky.R;
 import com.example.keenan.kuky.activities.DetailActivity;
@@ -21,6 +22,7 @@ import com.example.keenan.kuky.models.KuActionResponse;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -34,6 +36,9 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
     private static final String TAG = KuCardAdapter.class.getSimpleName();
     private ArrayList<Ku> mDataset;
     private Context mContext;
+    @Bind(R.id.downvoteButton) ImageButton mDownVoteButton;
+    @Bind(R.id.upvoteButton) ImageButton mUpVoteButton;
+    @Bind(R.id.favoriteButton) ImageButton mFavoriteButton;
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public KuCardAdapter(ArrayList<Ku> Kus, Context context) {
@@ -70,6 +75,7 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
             }
         });
 
+
         final Ku mKu = mDataset.get(position);
 
         Log.i(TAG, mKu.toString());
@@ -85,13 +91,47 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
         holder.vDownvotePressed = mKu.getDownvoted();
         holder.vFavoritePressed = mKu.getFavorited();
 
+        boolean isUpvoted = mKu.getUpvoted();
+        boolean isDownvoted = mKu.getDownvoted();
+        boolean isFavorited = mKu.getFavorited();
+
+        if (isFavorited) {
+            holder.vFavorite.setImageResource(R.drawable.ic_star_yellow_900_24dp);
+        } else {
+            holder.vFavorite.setImageResource(R.drawable.ic_star_outline_black_24dp);
+        }
+
+        if (isUpvoted && !isDownvoted){
+            holder.vUpvote.setBackgroundResource(R.drawable.ic_arrow_drop_up_blue_800_24dp);
+            holder.vDownvote.setBackgroundResource(R.drawable.ic_arrow_drop_down_black_24dp);
+        }
+
+        if (isDownvoted && !isUpvoted){
+            holder.vUpvote.setBackgroundResource(R.drawable.ic_arrow_drop_up_black_24dp);
+            holder.vDownvote.setBackgroundResource(R.drawable.ic_arrow_drop_down_blue_800_24dp);
+        }
+
+        if (!isDownvoted && !isUpvoted)
+        {
+            holder.vUpvote.setBackgroundResource(R.drawable.ic_arrow_drop_up_black_24dp);
+            holder.vDownvote.setBackgroundResource(R.drawable.ic_arrow_drop_down_black_24dp);
+        }
+
+        if (isDownvoted && isFavorited)
+        {
+            holder.vUpvote.setBackgroundResource(R.drawable.ic_arrow_drop_up_black_24dp);
+            holder.vDownvote.setBackgroundResource(R.drawable.ic_arrow_drop_down_black_24dp);
+        }
+
         holder.vUpvote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int userId = getUserId();
                 int kuId = mKu.getId();
 
-                holder.vUpvotePressed = !holder.vUpvotePressed;
+//                holder.vUpvotePressed = !holder.vUpvotePressed;
+                mKu.setUpvoted(!mKu.getUpvoted());
+
                 if (userId > 0) {
                     sendUpvoteRequest(new KuActionRequest(userId, kuId), mKu, position);
                     if (holder.vDownvotePressed) {
@@ -108,7 +148,9 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
                 int userId = getUserId();
                 int kuId = mKu.getId();
 
-                holder.vDownvotePressed = !holder.vDownvotePressed;
+//                holder.vDownvotePressed = !holder.vDownvotePressed;
+                mKu.setDownvoted(!mKu.getDownvoted());
+
                 if (userId > 0) {
                     sendDownvoteRequest(new KuActionRequest(userId, kuId), mKu, position);
                     if (holder.vUpvotePressed) {
@@ -125,7 +167,7 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
                 int userId = getUserId();
                 int kuId = mKu.getId();
 
-                holder.vFavoritePressed = !holder.vFavoritePressed;
+                mKu.setFavorited(!mKu.getFavorited());
                 if (userId > 0) {
                     ApiClient.getKukyApiClient(AuthHelper.getCreds(mContext))
                             .favoriteKu(new KuActionRequest(userId, kuId))
@@ -133,16 +175,19 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Subscriber<KuActionResponse>() {
                                 @Override
-                                public void onCompleted() {}
+                                public void onCompleted() {
+                                }
 
                                 @Override
-                                public void onError(Throwable e) {}
+                                public void onError(Throwable e) {
+                                }
 
                                 @Override
                                 public void onNext(KuActionResponse kuActionResponse) {
                                     Log.d(TAG, kuActionResponse.getStatus());
                                     Log.d(TAG, String.valueOf(holder.vFavoritePressed));
                                     ProfileFragment.updateFavorite(mKu, holder.vFavoritePressed);
+                                    notifyItemChanged(position);
                                 }
                             });
                 }

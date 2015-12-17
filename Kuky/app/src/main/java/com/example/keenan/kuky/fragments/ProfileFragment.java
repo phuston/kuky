@@ -118,6 +118,7 @@ public class ProfileFragment extends Fragment {
                 public void onNext(User userResponse) {
                     user = userResponse;
                     localFavoriteKus.addAll(user.getFavoritedKus());
+                    checkForKus(localFavoriteKus);
                     Log.wtf(TAG, user.getFavoritedKus().toString());
                     mKuCardAdapter = new KuCardAdapter(localFavoriteKus, getActivity());
                     mKuRecyclerView.setAdapter(mKuCardAdapter);
