@@ -74,7 +74,7 @@ public class KuWriteActivity extends AppCompatActivity {
             KuComposeHelper helper = new KuComposeHelper(getBaseContext());
             int[] syllables = helper.checkKu(line1, line2, line3);
             Log.d(TAG, String.valueOf(syllables[0]) + String.valueOf(syllables[1]) + String.valueOf(syllables[2]));
-            // TODO: Make sure check syllable works
+            // TODO: Make sure check syllable works + get location
             if (true) {//(syllables[0] == 5) && (syllables[1] == 7) && (syllables[2] == 5)) {
                 Log.d(TAG, "Ku correct");
                 String kuContent = line1 + ';' + line2 + ';' + line3;
@@ -83,7 +83,6 @@ public class KuWriteActivity extends AppCompatActivity {
                 String apiKey = settings.getString("apiKey", null);
                 int userId = settings.getInt("userId", -1);
                 if ((uname != null) && (apiKey != null) && (userId >= 0)) {
-                    // TODO: Make sure this works on server IP. Localhost works fine
                     KuRequest req = new KuRequest(kuContent, userId, -40, 20);
                     Log.d(TAG, req.toString());
                     ApiClient.getKukyApiClient(
@@ -106,6 +105,7 @@ public class KuWriteActivity extends AppCompatActivity {
                                 @Override
                                 public void onNext(KuComposeResponse kuComposeResponse) {
                                     Log.d(TAG, kuComposeResponse.toString());
+                                    // TODO: Take user back to previous fragment
                                 }
                             });
                 }

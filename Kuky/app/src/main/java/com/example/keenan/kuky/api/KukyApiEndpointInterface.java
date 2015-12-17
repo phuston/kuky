@@ -8,6 +8,7 @@ import com.example.keenan.kuky.models.KuComposeResponse;
 import com.example.keenan.kuky.models.KuDetailResponse;
 import com.example.keenan.kuky.models.KuRequest;
 import com.example.keenan.kuky.models.KuListResponse;
+import com.example.keenan.kuky.models.User;
 import com.example.keenan.kuky.models.UserApiKeyResponse;
 import com.example.keenan.kuky.models.UserProfileResponse;
 import com.example.keenan.kuky.models.UserRequest;
@@ -64,7 +65,7 @@ public interface KukyApiEndpointInterface {
     );
 
     @GET("/users/{uname}")
-    Observable<UserProfileResponse> getUser(
+    Observable<User> getUser(
             @Path("uname") String id
     );
 

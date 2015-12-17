@@ -23,7 +23,7 @@ public class ApiClient {
                             request.addHeader("Accept", "application/json");
                         }
                     })
-                    .setEndpoint("http://104.236.85.252:8080")
+                    .setEndpoint("http://10.0.2.2:3000")//104.236.85.252:8080")
                     .setLogLevel(RestAdapter.LogLevel.FULL)
                     .setLog(new RestAdapter.Log() {
                         @Override
@@ -48,7 +48,7 @@ public class ApiClient {
     public static KukyApiEndpointInterface getKukyApiClient() {
         if ((sKukyApiClient == null)) {
             RestAdapter restAdapter = new RestAdapter.Builder()
-                    .setEndpoint("http://104.236.85.252:8080")
+                    .setEndpoint("http://10.0.2.2:3000")//104.236.85.252:8080")
                     .setLogLevel(RestAdapter.LogLevel.FULL)
                     .setLog(new RestAdapter.Log() {
                         @Override

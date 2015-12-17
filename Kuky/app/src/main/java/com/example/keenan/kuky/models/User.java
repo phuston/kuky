@@ -1,34 +1,43 @@
 package com.example.keenan.kuky.models;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
+
 /**
  * Created by hieunguyen on 12/6/15.
  */
 public class User {
 
-    private int id;
+    @SerializedName("id")
+    private int userId;
+
+    @SerializedName("username")
     private String username;
+
+    @SerializedName("score")
     private int score;
+
+    @SerializedName("radiusLimit")
     private double radiusLimit;
 
-    public User(int id, String username, int score, double radiusLimit) {
-        this.id = id;
-        this.username = username;
+    @SerializedName("composedKus")
+    private ArrayList<Ku> composedKus;
+
+    @SerializedName("favoritedKus")
+    private ArrayList<Ku> favoritedKus;
+
+    public User(int id, String uname, int score, double radiusLimit, ArrayList<Ku> favKus, ArrayList<Ku> compKus) {
+        this.userId = id;
+        this.username = uname;
         this.score = score;
         this.radiusLimit = radiusLimit;
+        this.favoritedKus = favKus;
+        this.composedKus = compKus;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", score=" + score +
-                ", radiusLimit=" + radiusLimit +
-                '}';
-    }
-
-    public int getId() {
-        return id;
+    public int getUserId() {
+        return userId;
     }
 
     public String getUsername() {
@@ -41,5 +50,25 @@ public class User {
 
     public double getRadiusLimit() {
         return radiusLimit;
+    }
+
+    public ArrayList<Ku> getComposedKus() {
+        return composedKus;
+    }
+
+    public ArrayList<Ku> getFavoritedKus() {
+        return favoritedKus;
+    }
+
+    @Override
+    public String toString() {
+        return "UserProfileResponse{" +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
+                ", score=" + score +
+                ", radiusLimit=" + radiusLimit +
+                ", composedKus=" + composedKus +
+                ", favoritedKus=" + favoritedKus +
+                '}';
     }
 }

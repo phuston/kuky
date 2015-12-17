@@ -1,43 +1,71 @@
 package com.example.keenan.kuky.models;
 
-import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
 
 /**
  * Created by hieunguyen on 12/6/15.
  */
 public class UserProfileResponse {
-    @SerializedName("basicInfo")
-    private JsonObject basicInfo;
+    @SerializedName("id")
+    private int userId;
+
+    @SerializedName("username")
+    private String username;
+
+    @SerializedName("score")
+    private int score;
+
+    @SerializedName("radiusLimit")
+    private double radiusLimit;
 
     @SerializedName("composedKus")
-    private JsonObject composedKus;
+    private ArrayList<Ku> composedKus;
 
     @SerializedName("favoritedKus")
-    private JsonObject favoritedKus;
+    private ArrayList<Ku> favoritedKus;
 
-    public UserProfileResponse(JsonObject basicInfo, JsonObject composedKus, JsonObject favoritedKus) {
-        this.basicInfo = basicInfo;
-        this.composedKus = composedKus;
-        this.favoritedKus = favoritedKus;
+    public UserProfileResponse(int id, String uname, int score, double radiusLimit, ArrayList<Ku> favKus, ArrayList<Ku> compKus) {
+        this.userId = id;
+        this.username = uname;
+        this.score = score;
+        this.radiusLimit = radiusLimit;
+        this.favoritedKus = favKus;
+        this.composedKus = compKus;
     }
 
-    public JsonObject getBasicInfo() {
-        return basicInfo;
+    public int getUserId() {
+        return userId;
     }
 
-    public JsonObject getComposedKus() {
+    public String getUsername() {
+        return username;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public double getRadiusLimit() {
+        return radiusLimit;
+    }
+
+    public ArrayList<Ku> getComposedKus() {
         return composedKus;
     }
 
-    public JsonObject getFavoritedKus() {
+    public ArrayList<Ku> getFavoritedKus() {
         return favoritedKus;
     }
 
     @Override
     public String toString() {
         return "UserProfileResponse{" +
-                "basicInfo=" + basicInfo +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
+                ", score=" + score +
+                ", radiusLimit=" + radiusLimit +
                 ", composedKus=" + composedKus +
                 ", favoritedKus=" + favoritedKus +
                 '}';
