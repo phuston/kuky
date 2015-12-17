@@ -18,6 +18,7 @@ import com.example.keenan.kuky.R;
 import com.example.keenan.kuky.activities.LoginActivity;
 import com.example.keenan.kuky.adapters.KuCardAdapter;
 import com.example.keenan.kuky.api.ApiClient;
+import com.example.keenan.kuky.helpers.AuthHelper;
 import com.example.keenan.kuky.models.Ku;
 import com.example.keenan.kuky.models.User;
 import com.example.keenan.kuky.models.UserProfileResponse;
@@ -97,11 +98,9 @@ public class ProfileFragment extends Fragment {
     }
 
     public void updateProfile() {
-        SharedPreferences settings = getContext().getSharedPreferences(LoginActivity.PREFS_NAME, 0);
-        String uname = settings.getString("username", null);
-        String apiKey = settings.getString("apiKey", null);
-        ApiClient.getKukyApiClient(uname, apiKey)
-            .getUser(uname)
+        String[] creds = AuthHelper.getCreds(getContext());
+        ApiClient.getKukyApiClient(creds)
+            .getUser(creds[0])
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(new Subscriber<User>() {

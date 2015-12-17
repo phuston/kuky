@@ -14,6 +14,7 @@ import com.example.keenan.kuky.activities.DetailActivity;
 import com.example.keenan.kuky.activities.LoginActivity;
 import com.example.keenan.kuky.api.ApiClient;
 import com.example.keenan.kuky.fragments.ProfileFragment;
+import com.example.keenan.kuky.helpers.AuthHelper;
 import com.example.keenan.kuky.models.Ku;
 import com.example.keenan.kuky.models.KuActionRequest;
 import com.example.keenan.kuky.models.KuActionResponse;
@@ -71,6 +72,8 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
 
         final Ku mKu = mDataset.get(position);
 
+        Log.i(TAG, mKu.toString());
+
         String[] lines = mKu.getContent();
         Integer ku_karma = mKu.getKarma();
 
@@ -124,7 +127,8 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
 
                 holder.vFavoritePressed = !holder.vFavoritePressed;
                 if (userId > 0) {
-                    ApiClient.getKukyApiClient().favoriteKu(new KuActionRequest(userId, kuId))
+                    ApiClient.getKukyApiClient(AuthHelper.getCreds(mContext))
+                            .favoriteKu(new KuActionRequest(userId, kuId))
                             .subscribeOn(Schedulers.newThread())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Subscriber<KuActionResponse>() {
@@ -147,7 +151,8 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
     }
 
     public void sendUpvoteRequest(KuActionRequest request, final Ku ku, final int position) {
-        ApiClient.getKukyApiClient().upvoteKu(request)
+        ApiClient.getKukyApiClient(AuthHelper.getCreds(mContext))
+            .upvoteKu(request)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(new Subscriber<KuActionResponse>() {
@@ -167,7 +172,8 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
     }
 
     public void sendDownvoteRequest(KuActionRequest request, final Ku ku, final int position) {
-        ApiClient.getKukyApiClient().downvoteKu(request)
+        ApiClient.getKukyApiClient(AuthHelper.getCreds(mContext))
+            .downvoteKu(request)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(new Subscriber<KuActionResponse>() {

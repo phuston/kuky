@@ -9,11 +9,10 @@ import retrofit.RestAdapter;
 public class ApiClient {
     private static KukyApiEndpointInterface sKukyApiClient;
 
-    public static KukyApiEndpointInterface getKukyApiClient(String username, String apiKey) {
-        Log.wtf("API CLIENT", sKukyApiClient.toString() + ' ' + username + ' ' + apiKey);
-        if ((username != null) && (apiKey != null)) {
-            String creds = username + ":" + apiKey;
-            final String basic = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.NO_WRAP);
+    public static KukyApiEndpointInterface getKukyApiClient(String[] creds) {
+        if (creds != null) {
+            String authHeader = creds[0] + ":" + creds[1];
+            final String basic = "Basic " + Base64.encodeToString(authHeader.getBytes(), Base64.NO_WRAP);
             Log.wtf("API CLIENT", basic);
             RestAdapter restAdapter = new RestAdapter.Builder()
                     .setRequestInterceptor(new RequestInterceptor() {
