@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.example.keenan.kuky.R;
 import com.example.keenan.kuky.adapters.CommentCardAdapter;
 import com.example.keenan.kuky.api.ApiClient;
+import com.example.keenan.kuky.helpers.AuthHelper;
 import com.example.keenan.kuky.models.Comment;
 import com.example.keenan.kuky.models.CommentComposeRequest;
 import com.example.keenan.kuky.models.CommentComposeResponse;
@@ -90,7 +91,7 @@ public class DetailActivity extends AppCompatActivity {
 
                         CommentComposeRequest mCommentRequest = new CommentComposeRequest(mComment, userId, Integer.parseInt(ku_id));
 
-                        ApiClient.getKukyApiClient().postComment(mCommentRequest)
+                        ApiClient.getKukyApiClient(AuthHelper.getCreds(DetailActivity.this)).postComment(mCommentRequest)
                                 .subscribeOn(Schedulers.newThread())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(new Subscriber<CommentComposeResponse>() {
