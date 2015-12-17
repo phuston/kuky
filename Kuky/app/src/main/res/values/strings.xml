@@ -1,20 +1,23 @@
 <resources>
-    <string name="app_name">Kuky</string>
+    <string name="app_name"> Kuky</string>
     <string name="action_settings">Settings</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="feed">Feed Tab!</string>
     <string name="profile">Profile Tab!</string>
-    <string name="hot">Hot</string>
-    <string name="top">Top</string>
-    <string name="recent">Recent</string>
+    <string name="description_hot">Hot</string>
+    <string name="description_recent">Recent</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="login">Log In</string>
     <string name="signup">Sign Up</string>
     <string name="my_profile">Me</string>
     <string name="my_kus">My Kus</string>
     <string name="kudos">Your Kudos:</string>
+    <string name="no_comment">Sorry, there are no comments right now</string>
+    <string name="no_ku">Sorry, there are no kus right now</string>
+    <string name="login_title">Log in to your Kuky account</string>
+
 
     <string name="hello_world">Hello world!</string>
     <string name="favorites">Favorites</string>
@@ -31,6 +34,13 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="title_activity_detail"> Ku View</string>
+    <string name="title_activity_compose"> Compose a Ku</string>
 
+
+    <!--String related to composing a new ku-->
+    <string name="line1">Five (5) syllables</string>
+    <string name="line2">Seven (7) syllables</string>
+    <string name="line3">Five (5) syllables again</string>
 
 </resources>

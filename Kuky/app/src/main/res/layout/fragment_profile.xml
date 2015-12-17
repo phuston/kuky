@@ -11,20 +11,20 @@
         android:weightSum="2"
         android:id="@+id/ku_choice">
 
-        <Button
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="@string/my_kus"
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="52dp"
             android:id="@+id/composed_kus_profile"
             android:background="@color/grey_100"
+            android:src="@drawable/ic_person_black_24dp"
             android:layout_weight="1" />
 
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/favorites"
+            android:layout_height="52dp"
             android:id="@+id/favorite_kus_profile"
             android:background="@color/red_100"
+            android:src="@drawable/ic_star_black_24dp"
             android:layout_weight="1" />
 
     </LinearLayout>
@@ -36,6 +36,17 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/ku_choice"
         android:textSize="36sp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lack_of_kus"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="120dp"
+        android:textColor="@android:color/holo_red_dark"
+        android:text="@string/no_comment"
+        android:visibility="gone"
         />
 
     <android.support.v7.widget.RecyclerView

@@ -1,5 +1,6 @@
 package com.example.keenan.kuky.fragments;
 
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,9 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.keenan.kuky.R;
+import com.example.keenan.kuky.activities.LoginActivity;
 import com.example.keenan.kuky.adapters.KuCardAdapter;
 import com.example.keenan.kuky.api.ApiClient;
 import com.example.keenan.kuky.models.Ku;
@@ -35,8 +38,6 @@ import rx.schedulers.Schedulers;
 public class ProfileFragment extends Fragment {
 
     private static final String TAG = ProfileFragment.class.getSimpleName();
-    private ArrayList<Ku> composedKus = new ArrayList<>();
-    private ArrayList<Ku> favoritedKus = new ArrayList<>();
     private User user;
     private OnFragmentInteractionListener mListener;
     private KuCardAdapter mKuCardAdapter;
@@ -44,12 +45,13 @@ public class ProfileFragment extends Fragment {
 
     @Bind(R.id.ku_profile_feed) RecyclerView mKuRecyclerView;
     @Bind(R.id.kudos_display) TextView kudosDisplay;
-    @Bind(R.id.favorite_kus_profile) Button favoritesButton;
-    @Bind(R.id.composed_kus_profile) Button composedButton;
+    @Bind(R.id.favorite_kus_profile) ImageButton favoritesButton;
+    @Bind(R.id.composed_kus_profile) ImageButton composedButton;
+    @Bind(R.id.lack_of_kus) TextView mNoKusTextProfile;
 
     @OnClick(R.id.favorite_kus_profile)
     public void onFavoritesSelected(View view) {
-        mKuCardAdapter.setList(favoritedKus);
+        mKuCardAdapter.setList(user.getFavoritedKus());
         mKuCardAdapter.notifyDataSetChanged();
         favoritesButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.red_100));
         composedButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.grey_100));
@@ -57,7 +59,7 @@ public class ProfileFragment extends Fragment {
 
     @OnClick(R.id.composed_kus_profile)
     public void onComposedSelected(View view) {
-        mKuCardAdapter.setList(composedKus);
+        mKuCardAdapter.setList(user.getComposedKus());
         mKuCardAdapter.notifyDataSetChanged();
         composedButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.red_100));
         favoritesButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.grey_100));
@@ -85,18 +87,20 @@ public class ProfileFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         mKuRecyclerView.setLayoutManager(mLayoutManager);
 
-        mKuCardAdapter = new KuCardAdapter(favoritedKus, getActivity());
-
-        mKuRecyclerView.setAdapter(mKuCardAdapter);
-
         return rootView;
     }
 
     public void updateProfile() {
-        ApiClient.getKukyApiClient().getUser("thecardkid")
+        SharedPreferences settings = getContext().getSharedPreferences(LoginActivity.PREFS_NAME, 0);
+        String uname = settings.getString("username", null);
+        String apiKey = settings.getString("apiKey", null);
+        ApiClient.getKukyApiClient(
+                uname,
+                apiKey
+        ).getUser(uname)
             .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<UserProfileResponse>() {
+                .subscribe(new Subscriber<User>() {
                     @Override
                     public void onCompleted() {
 
@@ -108,64 +112,26 @@ public class ProfileFragment extends Fragment {
                     }
 
                     @Override
-                    public void onNext(UserProfileResponse userProfileResponse) {
-                        Log.d(TAG, userProfileResponse.toString());
-                        processKus(userProfileResponse.getComposedKus(), "composed");
-                        processKus(userProfileResponse.getFavoritedKus(), "favorited");
-                        processUserInfo(userProfileResponse.getBasicInfo());
+                    public void onNext(User userResponse) {
+                        user = userResponse;
+                        mKuCardAdapter = new KuCardAdapter(user.getFavoritedKus(), getActivity());
+                        mKuRecyclerView.setAdapter(mKuCardAdapter);
                     }
                 });
     }
 
-    public void processKus(JsonObject composed, String type) {
-        for (Map.Entry<String, JsonElement> entry: composed.entrySet()) {
-            JsonObject ku = entry.getValue().getAsJsonObject();
-            int id = ku.get("id").getAsInt();
-            String content = ku.get("content").getAsString();
-            int karma = ku.get("karma").getAsInt();
-            double lat = ku.get("lat").getAsDouble();
-            double lon = ku.get("lon").getAsDouble();
-            if (type.equals("composed")) {
-                composedKus.add(new Ku(id, content, karma, lat, lon));
-            } else {
-                favoritedKus.add(new Ku(id, content, karma, lat, lon));
-            }
+    public void checkForKus(ArrayList mkuList)
+    {
+        if (mkuList.isEmpty())
+        {
+            mKuRecyclerView.setVisibility(View.GONE);
+            mNoKusTextProfile.setVisibility(View.VISIBLE);
         }
-        Log.d(TAG, "FAVORITED " + favoritedKus.toString());
+        else {
+            mKuRecyclerView.setVisibility(View.VISIBLE);
+            mNoKusTextProfile.setVisibility(View.GONE);
+        }
     }
-
-    public void processUserInfo(JsonObject userInfo) {
-        user = new User(userInfo.get("id").getAsInt(),
-                userInfo.get("username").getAsString(),
-                userInfo.get("score").getAsInt(),
-                userInfo.get("radiusLimit").getAsDouble());
-        String kudos = getResources().getString(R.string.kudos) + ' ' + String.valueOf(user.getScore());
-        kudosDisplay.setText(kudos);
-    }
-
-//    // TODO: Rename method, update argument and hook method into UI event
-//    public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//            mListener.onFragmentInteraction(uri);
-//        }
-//    }
-//
-//    @Override
-//    public void onAttach(Activity activity) {
-//        super.onAttach(activity);
-//        try {
-//            mListener = (OnFragmentInteractionListener) activity;
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(activity.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
-//
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//        mListener = null;
-//    }
 
     /**
      * This interface must be implemented by activities that contain this

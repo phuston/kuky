@@ -15,12 +15,8 @@ import android.widget.TextView;
 
 import com.example.keenan.kuky.R;
 import com.example.keenan.kuky.api.ApiClient;
-import com.example.keenan.kuky.api.KukyApiEndpointInterface;
-import com.example.keenan.kuky.models.KuResponse;
 import com.example.keenan.kuky.models.UserApiKeyResponse;
 import com.example.keenan.kuky.models.UserRequest;
-
-import java.util.Observable;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -49,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         uname = username.getText().toString();
         pw = password.getText().toString();
         // Makes call to attempt to log in with info provided
-        ApiClient.getKukyApiClient().login(new UserRequest("thecardkid", "kukyserver"))//uname, pw))
+        ApiClient.getKukyApiClient().login(new UserRequest(uname, pw))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<UserApiKeyResponse>() {
