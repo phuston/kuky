@@ -45,7 +45,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="120dp"
         android:textColor="@android:color/holo_red_dark"
-        android:text="@string/no_comment"
+        android:text="@string/no_ku"
         android:visibility="gone"
         />
 

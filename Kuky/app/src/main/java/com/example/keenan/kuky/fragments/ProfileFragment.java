@@ -40,6 +40,7 @@ public class ProfileFragment extends Fragment {
 
     private static final String TAG = ProfileFragment.class.getSimpleName();
     private User user;
+    private String kudos;
     private KuCardAdapter mKuCardAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
@@ -118,6 +119,8 @@ public class ProfileFragment extends Fragment {
                 public void onNext(User userResponse) {
                     user = userResponse;
                     localFavoriteKus.addAll(user.getFavoritedKus());
+                    kudos = "Your Kudos: " + String.valueOf(user.getScore());
+                    kudosDisplay.setText(kudos);
                     checkForKus(localFavoriteKus);
                     Log.wtf(TAG, user.getFavoritedKus().toString());
                     mKuCardAdapter = new KuCardAdapter(localFavoriteKus, getActivity());
