@@ -29,6 +29,11 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+/**
+ * Ku Write Activity is handles when the floating action button for composing a new Ku
+ * It checks for syllables, making sure the Ku is a valid haiku, or at least to our algorithm.
+ * Also handles the API calls to post the ku.
+ */
 public class KuWriteActivity extends AppCompatActivity {
 
     @Bind(R.id.ku_compose_cancel) ImageButton mComposeCancel;
@@ -45,6 +50,10 @@ public class KuWriteActivity extends AppCompatActivity {
     private String line2;
     private String line3;
 
+    /**
+     * The OnCreate sets up the view of the page
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +71,10 @@ public class KuWriteActivity extends AppCompatActivity {
         getSupportActionBar().setIcon(R.drawable.ic_logo_clear);
     }
 
+    /**
+     * Button handle for the cancel button, goes back to the Ku View activity
+     * @param view the current view of the screen
+     */
     @OnClick(R.id.ku_compose_cancel)
     public void onComposeCancelClick(View view) {
         Snackbar.make(view, "Cancel Ku", Snackbar.LENGTH_LONG)
@@ -70,6 +83,11 @@ public class KuWriteActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * Button handle for when the done button is clicked, checks if the submitted text is a haiku
+     * then makes an API call to post the haiku and updates in the view
+     * @param view the current view of the screen
+     */
     @OnClick(R.id.ku_compose_done)
     public void onComposeDoneClick(View view) {
         Snackbar.make(view, "Ku Submitted!", Snackbar.LENGTH_LONG)
@@ -132,11 +150,16 @@ public class KuWriteActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Handle action bar item clicks here. The action bar will
+     * automatically handle clicks on the Home/Up button, so long
+     * as you specify a parent activity in AndroidManifest.xml.
+     * @param item MenuItem object
+     * @return boolean true
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
