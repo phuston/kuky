@@ -23,9 +23,6 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-/**
- * Created by patrick on 12/9/15.
- */
 public class CommentCardAdapter extends RecyclerView.Adapter<CommentViewHolder> {
     private static final String TAG = CommentCardAdapter.class.getSimpleName();
     private ArrayList<Comment> mDataset;

@@ -127,9 +127,7 @@ public class DetailActivity extends AppCompatActivity {
                                     @Override
                                     public void onNext(CommentComposeResponse commentComposeResponse) {
                                         Log.wtf(TAG, commentComposeResponse.getComment().getContent());
-                                        mCommentList.add(commentComposeResponse.getComment());
-                                        mCommentCardAdapter.setList(mCommentList);
-                                        mCommentCardAdapter.notifyDataSetChanged();
+                                        fetchKuInfo(ku_id);
                                     }
                                 });
                     }
