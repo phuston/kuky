@@ -172,8 +172,13 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
 
                                 @Override
                                 public void onNext(KuActionResponse kuActionResponse) {
-                                    ProfileFragment.updateFavorite(mKu, mKu.getFavorited());
                                     notifyItemChanged(position);
+                                    ProfileFragment.updateFavorite(mKu, mKu.getFavorited());
+//                                    if (mKu.getFavorited()) {
+//                                        notifyItemChanged(position);
+//                                    } else {
+//                                        notifyItemRemoved(position);
+//                                    }
                                 }
                             });
                 }

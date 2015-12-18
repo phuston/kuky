@@ -25,15 +25,16 @@ public interface KukyApiEndpointInterface {
 
     // Kus Endpoints
 
-    @GET("/kus/single/{kuId}/{userId}")
+    @GET("/kus/{kuId}/{userId}")
     Observable<KuDetailResponse> getKuDetail(
             @Path("kuId") String kuId,
             @Path("userId") String userId
     );
 
-    @GET("/kus/all/{sort}")
+    @GET("/kus/all/{sort}/{userId}")
     Observable<KuListResponse> getKus(
-            @Path("sort") String sort
+            @Path("sort") String sort,
+            @Path("userId") String userId
     );
 
     @POST("/kus/compose")

@@ -1,5 +1,6 @@
 package com.example.keenan.kuky.fragments;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.keenan.kuky.R;
+import com.example.keenan.kuky.activities.LoginActivity;
 import com.example.keenan.kuky.adapters.KuCardAdapter;
 import com.example.keenan.kuky.api.ApiClient;
 import com.example.keenan.kuky.helpers.AuthHelper;
@@ -100,7 +102,7 @@ public class FeedFragment extends Fragment {
 
     public void UpdateKus(String sort) {
         ApiClient.getKukyApiClient(AuthHelper.getCreds(getContext()))
-                .getKus(sort)
+                .getKus(sort, String.valueOf(getUserId()))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<KuListResponse>() {
@@ -125,8 +127,7 @@ public class FeedFragment extends Fragment {
                 });
     }
 
-    public void checkForKus(ArrayList mkuList)
-    {
+    public void checkForKus(ArrayList mkuList) {
         if (mkuList.isEmpty())
         {
             mKuRecyclerView.setVisibility(View.GONE);
@@ -136,5 +137,10 @@ public class FeedFragment extends Fragment {
             mKuRecyclerView.setVisibility(View.VISIBLE);
             mNoKusText.setVisibility(View.GONE);
         }
+    }
+
+    public int getUserId() {
+        SharedPreferences settings = getContext().getSharedPreferences(LoginActivity.PREFS_NAME, 0);
+        return settings.getInt("userId", -1);
     }
 }
