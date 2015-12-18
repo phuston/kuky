@@ -109,6 +109,9 @@ public class KuWriteActivity extends AppCompatActivity {
         } catch (IOException e) {
             Log.wtf(TAG, "Could not create Ku Helper");
         }
+
+        Intent intent = new Intent(getApplicationContext(), KuViewActivity.class);
+        startActivity(intent);
     }
 
 //    @OnClick(R.id.ku_line_one)

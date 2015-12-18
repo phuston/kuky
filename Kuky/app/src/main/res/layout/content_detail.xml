@@ -55,7 +55,7 @@
                 android:paddingBottom="24dp"/>
 
             <ImageButton
-                android:id="@+id/upvoteButton"
+                android:id="@+id/upvoteButtonDetail"
                 android:layout_width="48dp"
                 android:layout_height="36dp"
                 android:paddingTop="16dp"
@@ -68,7 +68,7 @@
                 android:id="@+id/ku_karma_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/upvoteButton"
+                android:layout_below="@id/upvoteButtonDetail"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:paddingRight="20dp"
@@ -76,7 +76,7 @@
                 android:textSize="18sp"/>
 
             <ImageButton
-                android:id="@+id/downvoteButton"
+                android:id="@+id/downvoteButtonDetail"
                 android:layout_width="48dp"
                 android:layout_height="36dp"
                 android:layout_below="@id/ku_karma_tv"
@@ -85,7 +85,7 @@
                 android:background="@drawable/ic_arrow_drop_down_black_24dp"/>
 
             <ImageButton
-                android:id="@+id/favoriteButton"
+                android:id="@+id/favoriteButtonDetail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
