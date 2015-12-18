@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.example.keenan.kuky.R;
 import com.example.keenan.kuky.activities.LoginActivity;
 import com.example.keenan.kuky.api.ApiClient;
+import com.example.keenan.kuky.helpers.AuthHelper;
 import com.example.keenan.kuky.models.Comment;
 import com.example.keenan.kuky.models.CommentActionRequest;
 import com.example.keenan.kuky.models.CommentActionResponse;
@@ -56,36 +57,39 @@ public class CommentCardAdapter extends RecyclerView.Adapter<CommentViewHolder> 
         final Comment mComment = mDataset.get(position);
 
         String content = mComment.getContent();
-        // TODO: Get other relevant shit on the comment
+        int kudos = mComment.getKudos();
 
         holder.vCommentContent.setText(content);
+        holder.vCommentKarma.setText(String.valueOf(kudos));
+
+        if (mComment.isUpvoted()) {
+            holder.vUpvote.setBackgroundResource(R.drawable.ic_arrow_drop_up_blue_800_24dp);
+        } else {
+            holder.vUpvote.setBackgroundResource(R.drawable.ic_arrow_drop_up_black_24dp);
+        }
+
+        if (mComment.isDownvoted()) {
+            holder.vDownvote.setBackgroundResource(R.drawable.ic_arrow_drop_down_blue_800_24dp);
+        } else {
+            holder.vDownvote.setBackgroundResource(R.drawable.ic_arrow_drop_down_black_24dp);
+        }
 
         holder.vUpvote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int userId = getUserId();
                 int commentId = mComment.getId();
-                Log.d(TAG, new CommentActionRequest(userId, mku_id, commentId).toString());
+                CommentActionRequest req = new CommentActionRequest(userId, mku_id, commentId);
+                Log.d(TAG, req.toString());
+
+                mComment.setUpvoted(!mComment.isUpvoted());
+
                 if (userId > 0) {
-                    ApiClient.getKukyApiClient().upvoteComment(new CommentActionRequest(userId, mku_id, commentId))
-                            .subscribeOn(Schedulers.newThread())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Subscriber<CommentActionResponse>() {
-                                @Override
-                                public void onCompleted() {
-
-                                }
-
-                                @Override
-                                public void onError(Throwable e) {
-
-                                }
-
-                                @Override
-                                public void onNext(CommentActionResponse CommentActionResponse) {
-                                    Log.d(TAG, CommentActionResponse.getStatus());
-                                }
-                            });
+                    sendUpvoteRequest(req, mComment, position);
+                    if (mComment.isDownvoted()) {
+                        mComment.setDownvoted(false);
+                        sendDownvoteRequest(req, mComment, position);
+                    }
                 }
             }
         });
@@ -95,30 +99,76 @@ public class CommentCardAdapter extends RecyclerView.Adapter<CommentViewHolder> 
             public void onClick(View v) {
                 int userId = getUserId();
                 int commentId = mComment.getId();
-                Log.d(TAG, new CommentActionRequest(userId, mku_id, commentId).toString());
+                CommentActionRequest req = new CommentActionRequest(userId, mku_id, commentId);
+                Log.d(TAG, req.toString());
+
+                mComment.setDownvoted(!mComment.isDownvoted());
+
                 if (userId > 0) {
-                    ApiClient.getKukyApiClient().downvoteComment(new CommentActionRequest(userId, mku_id, commentId))
-                            .subscribeOn(Schedulers.newThread())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Subscriber<CommentActionResponse>() {
-                                @Override
-                                public void onCompleted() {
-
-                                }
-
-                                @Override
-                                public void onError(Throwable e) {
-
-                                }
-
-                                @Override
-                                public void onNext(CommentActionResponse CommentActionResponse) {
-                                    Log.d(TAG, CommentActionResponse.getStatus());
-                                }
-                            });
+                    sendDownvoteRequest(req, mComment, position);
+                    if (mComment.isUpvoted()) {
+                        mComment.setUpvoted(false);
+                        sendUpvoteRequest(req, mComment, position);
+                    }
                 }
             }
         });
+    }
+
+    private void sendUpvoteRequest(CommentActionRequest request, final Comment comment, final int position) {
+        String[] creds = AuthHelper.getCreds(mContext);
+        if (creds != null) {
+            ApiClient.getKukyApiClient(creds)
+                    .upvoteComment(request)
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<CommentActionResponse>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(CommentActionResponse CommentActionResponse) {
+                            Log.d(TAG, CommentActionResponse.getStatus());
+                            comment.setKudos(Integer.parseInt(CommentActionResponse.getStatus()));
+                            notifyItemChanged(position);
+                        }
+                    });
+        }
+    }
+
+    private void sendDownvoteRequest(CommentActionRequest request, final Comment comment, final int position) {
+        String[] creds = AuthHelper.getCreds(mContext);
+        if (creds != null) {
+            ApiClient.getKukyApiClient(creds)
+                    .downvoteComment(request)
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<CommentActionResponse>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(CommentActionResponse CommentActionResponse) {
+                            Log.d(TAG, CommentActionResponse.getStatus());
+                            comment.setKudos(Integer.parseInt(CommentActionResponse.getStatus()));
+                            notifyItemChanged(position);
+                        }
+                    });
+        }
     }
 
     public int getUserId() {
