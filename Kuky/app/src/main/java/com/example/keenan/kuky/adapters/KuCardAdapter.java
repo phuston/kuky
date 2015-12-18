@@ -101,25 +101,15 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
             holder.vFavorite.setImageResource(R.drawable.ic_star_outline_black_24dp);
         }
 
-        if (isUpvoted && !isDownvoted){
+        if (isUpvoted) {
             holder.vUpvote.setBackgroundResource(R.drawable.ic_arrow_drop_up_blue_800_24dp);
-            holder.vDownvote.setBackgroundResource(R.drawable.ic_arrow_drop_down_black_24dp);
+        } else {
+            holder.vUpvote.setBackgroundResource(R.drawable.ic_arrow_drop_up_black_24dp);
         }
 
-        if (isDownvoted && !isUpvoted){
-            holder.vUpvote.setBackgroundResource(R.drawable.ic_arrow_drop_up_black_24dp);
+        if (isDownvoted) {
             holder.vDownvote.setBackgroundResource(R.drawable.ic_arrow_drop_down_blue_800_24dp);
-        }
-
-        if (!isDownvoted && !isUpvoted)
-        {
-            holder.vUpvote.setBackgroundResource(R.drawable.ic_arrow_drop_up_black_24dp);
-            holder.vDownvote.setBackgroundResource(R.drawable.ic_arrow_drop_down_black_24dp);
-        }
-
-        if (isDownvoted && isFavorited)
-        {
-            holder.vUpvote.setBackgroundResource(R.drawable.ic_arrow_drop_up_black_24dp);
+        } else {
             holder.vDownvote.setBackgroundResource(R.drawable.ic_arrow_drop_down_black_24dp);
         }
 
@@ -129,13 +119,12 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
                 int userId = getUserId();
                 int kuId = mKu.getId();
 
-//                holder.vUpvotePressed = !holder.vUpvotePressed;
                 mKu.setUpvoted(!mKu.getUpvoted());
 
                 if (userId > 0) {
                     sendUpvoteRequest(new KuActionRequest(userId, kuId), mKu, position);
-                    if (holder.vDownvotePressed) {
-                        holder.vDownvotePressed = false;
+                    if (mKu.getDownvoted()) {
+                        mKu.setDownvoted(false);
                         sendDownvoteRequest(new KuActionRequest(userId, kuId), mKu, position);
                     }
                 }
@@ -153,8 +142,8 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
 
                 if (userId > 0) {
                     sendDownvoteRequest(new KuActionRequest(userId, kuId), mKu, position);
-                    if (holder.vUpvotePressed) {
-                        holder.vUpvotePressed = false;
+                    if (mKu.getUpvoted()) {
+                        mKu.setUpvoted(false);
                         sendUpvoteRequest(new KuActionRequest(userId, kuId), mKu, position);
                     }
                 }
