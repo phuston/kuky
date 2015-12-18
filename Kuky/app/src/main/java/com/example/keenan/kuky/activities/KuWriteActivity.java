@@ -110,7 +110,7 @@ public class KuWriteActivity extends AppCompatActivity {
                             });
                 }
             } else {
-                Toast.makeText(this, "Your Ku is shit. Sorry", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Your haiku does not meet the requirement", Toast.LENGTH_LONG).show();
             }
         } catch (IOException e) {
             Log.wtf(TAG, "Could not create Ku Helper");
