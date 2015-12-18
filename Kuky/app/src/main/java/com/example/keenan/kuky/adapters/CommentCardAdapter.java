@@ -134,7 +134,7 @@ public class CommentCardAdapter extends RecyclerView.Adapter<CommentViewHolder> 
 
                         @Override
                         public void onError(Throwable e) {
-
+                            Log.e(TAG + ": Retrofit Error - ", e.toString());
                         }
 
                         @Override
@@ -172,7 +172,7 @@ public class CommentCardAdapter extends RecyclerView.Adapter<CommentViewHolder> 
 
                         @Override
                         public void onError(Throwable e) {
-
+                            Log.e(TAG + ": Retrofit Error - ", e.toString());
                         }
 
                         @Override

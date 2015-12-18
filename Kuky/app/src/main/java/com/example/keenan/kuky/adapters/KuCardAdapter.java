@@ -168,6 +168,7 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
 
                                 @Override
                                 public void onError(Throwable e) {
+                                    Log.e(TAG + ": Retrofit Error - ", e.toString());
                                 }
 
                                 @Override
@@ -198,7 +199,9 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
                 public void onCompleted() {}
 
                 @Override
-                public void onError(Throwable e) {}
+                public void onError(Throwable e) {
+                    Log.e(TAG + ": Retrofit Error - ", e.toString());
+                }
 
                 @Override
                 public void onNext(KuActionResponse kuActionResponse) {
@@ -231,7 +234,9 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
                 public void onCompleted() {}
 
                 @Override
-                public void onError(Throwable e) {}
+                public void onError(Throwable e) {
+                    Log.e(TAG + ": Retrofit Error - ", e.toString());
+                }
 
                 @Override
                 public void onNext(KuActionResponse kuActionResponse) {

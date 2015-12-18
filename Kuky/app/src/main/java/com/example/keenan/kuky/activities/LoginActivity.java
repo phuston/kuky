@@ -62,7 +62,9 @@ public class LoginActivity extends AppCompatActivity {
                     public void onCompleted() {}
 
                     @Override
-                    public void onError(Throwable e) {}
+                    public void onError(Throwable e) {
+                        Log.e(TAG + ": Retrofit Error - ", e.toString());
+                    }
 
                     @Override
                     public void onNext(UserApiKeyResponse apiKeyResponse) {
@@ -105,7 +107,9 @@ public class LoginActivity extends AppCompatActivity {
                     public void onCompleted() {}
 
                     @Override
-                    public void onError(Throwable e) {}
+                    public void onError(Throwable e) {
+                        Log.e(TAG + ": Retrofit Error - ", e.toString());
+                    }
 
                     @Override
                     public void onNext(UserApiKeyResponse apiKeyResponse) {

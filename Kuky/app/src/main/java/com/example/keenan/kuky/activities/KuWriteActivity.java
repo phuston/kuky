@@ -121,7 +121,7 @@ public class KuWriteActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onError(Throwable e) {
-                                    Log.wtf(TAG, e);
+                                    Log.e(TAG + ": Retrofit Error - ", e.toString());
                                 }
 
                                 @Override

@@ -136,7 +136,7 @@ public class ProfileFragment extends Fragment {
 
                 @Override
                 public void onError(Throwable e) {
-
+                    Log.e(TAG + ": Retrofit Error - ", e.toString());
                 }
 
                 @Override
