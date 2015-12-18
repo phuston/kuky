@@ -1,5 +1,8 @@
 package com.example.keenan.kuky.models;
 
+/**
+ * Model for comment posting requests
+ */
 public class CommentComposeRequest {
 
     private String comment;

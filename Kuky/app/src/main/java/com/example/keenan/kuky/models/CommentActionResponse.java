@@ -2,6 +2,9 @@ package com.example.keenan.kuky.models;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Model for response to comment upvote/downvote requests
+ */
 public class CommentActionResponse {
     @SerializedName("Status")
     public String status;

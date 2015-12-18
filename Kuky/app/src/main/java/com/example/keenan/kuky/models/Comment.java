@@ -1,6 +1,8 @@
 package com.example.keenan.kuky.models;
 
-
+/**
+ *  Model for comments on kus
+ */
 public class Comment {
 
     private Integer id;

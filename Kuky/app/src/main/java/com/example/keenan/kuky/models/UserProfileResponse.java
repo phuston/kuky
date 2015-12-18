@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 
 /**
- * Created by hieunguyen on 12/6/15.
+ * Model for response from user login/register before API keys were implemented
  */
 public class UserProfileResponse {
     @SerializedName("id")
