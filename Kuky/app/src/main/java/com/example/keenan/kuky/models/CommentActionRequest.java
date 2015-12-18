@@ -1,6 +1,8 @@
 package com.example.keenan.kuky.models;
 
-
+/**
+ * Model for comment upvote/downvote requests
+ */
 public class CommentActionRequest {
     private int userId, kuId, commentId;
 

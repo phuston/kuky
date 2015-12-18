@@ -3,7 +3,7 @@ package com.example.keenan.kuky.models;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by hieunguyen on 12/7/15.
+ * Model for response from ku upvote/downvote requests
  */
 public class KuActionResponse {
 
