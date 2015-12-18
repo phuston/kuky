@@ -54,6 +54,18 @@ public class Ku {
         return favorited;
     }
 
+    public void setUpvoted(boolean upvoted) {
+        this.upvoted = upvoted;
+    }
+
+    public void setDownvoted(boolean downvoted) {
+        this.downvoted = downvoted;
+    }
+
+    public void setFavorited(boolean favorited) {
+        this.favorited = favorited;
+    }
+
     @Override
     public String toString() {
         return "Ku{" +

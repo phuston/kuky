@@ -109,7 +109,6 @@ public class KuWriteActivity extends AppCompatActivity {
         } catch (IOException e) {
             Log.wtf(TAG, "Could not create Ku Helper");
         }
-
     }
 
 //    @OnClick(R.id.ku_line_one)
