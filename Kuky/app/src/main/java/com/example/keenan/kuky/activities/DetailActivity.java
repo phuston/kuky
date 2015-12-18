@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.example.keenan.kuky.R;
 import com.example.keenan.kuky.adapters.CommentCardAdapter;
 import com.example.keenan.kuky.api.ApiClient;
+import com.example.keenan.kuky.helpers.AuthHelper;
 import com.example.keenan.kuky.models.Comment;
 import com.example.keenan.kuky.models.CommentComposeRequest;
 import com.example.keenan.kuky.models.CommentComposeResponse;
@@ -52,6 +53,7 @@ public class DetailActivity extends AppCompatActivity {
     @Bind(R.id.ku_karma_tv) TextView mKuKarmaTv;
     @Bind(R.id.ku_card_detail_view) CardView mKuCard;
     @Bind(R.id.comment_feed_rv) RecyclerView mCommentRecyclerView;
+    @Bind(R.id.lack_of_comments) TextView mNoCommentsText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +71,16 @@ public class DetailActivity extends AppCompatActivity {
         Log.d(TAG, "DetailActivity received Ku_ID of : " + ku_id);
 
         fetchKuInfo(ku_id);
+
+        mCommentRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(this);
+        mCommentRecyclerView.setLayoutManager(mLayoutManager);
+
+        Log.d(TAG, Integer.toString(mCommentList.size()));
+
+        mCommentCardAdapter = new CommentCardAdapter(mCommentList, this, Integer.parseInt(ku_id));
+
+        mCommentRecyclerView.setAdapter(mCommentCardAdapter);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -88,9 +100,9 @@ public class DetailActivity extends AppCompatActivity {
                         mComment = input.getText().toString();
                         int userId = getUserId();
 
-                        CommentComposeRequest mCommentRequest = new CommentComposeRequest(mComment, userId, Integer.parseInt(ku_id));
+                        CommentComposeRequest mCommentRequest = new CommentComposeRequest(mComment, Integer.parseInt(ku_id), userId);
 
-                        ApiClient.getKukyApiClient().postComment(mCommentRequest)
+                        ApiClient.getKukyApiClient(AuthHelper.getCreds(DetailActivity.this)).postComment(mCommentRequest)
                                 .subscribeOn(Schedulers.newThread())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(new Subscriber<CommentComposeResponse>() {
@@ -101,12 +113,15 @@ public class DetailActivity extends AppCompatActivity {
 
                                     @Override
                                     public void onError(Throwable e) {
-
+                                        Log.e(TAG + ": Retrofit Error - ", e.toString());
                                     }
 
                                     @Override
                                     public void onNext(CommentComposeResponse commentComposeResponse) {
-                                        Log.d(TAG, commentComposeResponse.getComment().getContent());
+                                        Log.wtf(TAG, commentComposeResponse.getComment().getContent());
+                                        mCommentList.add(commentComposeResponse.getComment());
+                                        mCommentCardAdapter.setList(mCommentList);
+                                        mCommentCardAdapter.notifyDataSetChanged();
                                     }
                                 });
                     }
@@ -121,16 +136,6 @@ public class DetailActivity extends AppCompatActivity {
                 builder.show();
             }
         });
-
-        mCommentRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
-        mCommentRecyclerView.setLayoutManager(mLayoutManager);
-
-        Log.d(TAG, Integer.toString(mCommentList.size()));
-
-        mCommentCardAdapter = new CommentCardAdapter(mCommentList, this, Integer.parseInt(ku_id));
-
-        mCommentRecyclerView.setAdapter(mCommentCardAdapter);
     }
 
     public void fetchKuInfo(String ku_id){
@@ -153,6 +158,7 @@ public class DetailActivity extends AppCompatActivity {
                                    mCommentList = kuDetailResponse.getComments();
                                    mCommentCardAdapter.setList(mCommentList);
                                    mCommentCardAdapter.notifyDataSetChanged();
+                                   checkForComments(mCommentList);
                                    mKu = kuDetailResponse.getKu();
                                    setKuCardViewContent(mKu);
                                }
@@ -166,6 +172,18 @@ public class DetailActivity extends AppCompatActivity {
         mKuContent2Tv.setText(ku_content[1]);
         mKuContent3Tv.setText(ku_content[2]);
         mKuKarmaTv.setText(ku.getKarma());
+    }
+
+    public void checkForComments(ArrayList mCommentList) {
+        if (mCommentList.isEmpty())
+        {
+            mCommentRecyclerView.setVisibility(View.GONE);
+            mNoCommentsText.setVisibility(View.VISIBLE);
+        }
+        else {
+            mCommentRecyclerView.setVisibility(View.VISIBLE);
+            mNoCommentsText.setVisibility(View.GONE);
+        }
     }
 
     public int getUserId() {

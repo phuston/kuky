@@ -8,17 +8,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.example.keenan.kuky.R;
 import com.example.keenan.kuky.activities.DetailActivity;
 import com.example.keenan.kuky.activities.LoginActivity;
 import com.example.keenan.kuky.api.ApiClient;
+import com.example.keenan.kuky.fragments.ProfileFragment;
+import com.example.keenan.kuky.helpers.AuthHelper;
 import com.example.keenan.kuky.models.Ku;
 import com.example.keenan.kuky.models.KuActionRequest;
 import com.example.keenan.kuky.models.KuActionResponse;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -32,6 +36,9 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
     private static final String TAG = KuCardAdapter.class.getSimpleName();
     private ArrayList<Ku> mDataset;
     private Context mContext;
+    @Bind(R.id.downvoteButton) ImageButton mDownVoteButton;
+    @Bind(R.id.upvoteButton) ImageButton mUpVoteButton;
+    @Bind(R.id.favoriteButton) ImageButton mFavoriteButton;
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public KuCardAdapter(ArrayList<Ku> Kus, Context context) {
@@ -57,8 +64,6 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 
-//        String kuContent = mDataset.get(position).getContent();
-
         holder.setClickListener(new KuViewHolder.ClickListener() {
             @Override
             public void onClick(View v, int pos) {
@@ -70,7 +75,10 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
             }
         });
 
+
         final Ku mKu = mDataset.get(position);
+
+        Log.i(TAG, mKu.toString());
 
         String[] lines = mKu.getContent();
         Integer ku_karma = mKu.getKarma();
@@ -81,6 +89,29 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
         holder.vKuKarma.setText(String.valueOf(ku_karma));
         holder.vUpvotePressed = mKu.getUpvoted();
         holder.vDownvotePressed = mKu.getDownvoted();
+        holder.vFavoritePressed = mKu.getFavorited();
+
+        boolean isUpvoted = mKu.getUpvoted();
+        boolean isDownvoted = mKu.getDownvoted();
+        boolean isFavorited = mKu.getFavorited();
+
+        if (isFavorited) {
+            holder.vFavorite.setImageResource(R.drawable.ic_star_yellow_900_24dp);
+        } else {
+            holder.vFavorite.setImageResource(R.drawable.ic_star_outline_black_24dp);
+        }
+
+        if (isUpvoted) {
+            holder.vUpvote.setBackgroundResource(R.drawable.ic_arrow_drop_up_blue_800_24dp);
+        } else {
+            holder.vUpvote.setBackgroundResource(R.drawable.ic_arrow_drop_up_black_24dp);
+        }
+
+        if (isDownvoted) {
+            holder.vDownvote.setBackgroundResource(R.drawable.ic_arrow_drop_down_blue_800_24dp);
+        } else {
+            holder.vDownvote.setBackgroundResource(R.drawable.ic_arrow_drop_down_black_24dp);
+        }
 
         holder.vUpvote.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,15 +119,15 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
                 int userId = getUserId();
                 int kuId = mKu.getId();
 
-                holder.vUpvotePressed = !holder.vUpvotePressed;
+                mKu.setUpvoted(!mKu.getUpvoted());
+
                 if (userId > 0) {
                     sendUpvoteRequest(new KuActionRequest(userId, kuId), mKu, position);
-                    if (holder.vDownvotePressed) {
-                        holder.vDownvotePressed = false;
+                    if (mKu.getDownvoted()) {
+                        mKu.setDownvoted(false);
                         sendDownvoteRequest(new KuActionRequest(userId, kuId), mKu, position);
                     }
                 }
-//                notifyItemChanged(position);
             }
         });
 
@@ -106,15 +137,15 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
                 int userId = getUserId();
                 int kuId = mKu.getId();
 
-                holder.vDownvotePressed = !holder.vDownvotePressed;
+                mKu.setDownvoted(!mKu.getDownvoted());
+
                 if (userId > 0) {
                     sendDownvoteRequest(new KuActionRequest(userId, kuId), mKu, position);
-                    if (holder.vUpvotePressed) {
-                        holder.vUpvotePressed = false;
+                    if (mKu.getUpvoted()) {
+                        mKu.setUpvoted(false);
                         sendUpvoteRequest(new KuActionRequest(userId, kuId), mKu, position);
                     }
                 }
-//                notifyItemChanged(position);
             }
         });
 
@@ -123,21 +154,28 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
             public void onClick(View v) {
                 int userId = getUserId();
                 int kuId = mKu.getId();
-                Log.d(TAG, new KuActionRequest(userId, kuId).toString());
+
+                mKu.setFavorited(!mKu.getFavorited());
                 if (userId > 0) {
-                    ApiClient.getKukyApiClient().favoriteKu(new KuActionRequest(userId, kuId))
+                    ApiClient.getKukyApiClient(AuthHelper.getCreds(mContext))
+                            .favoriteKu(new KuActionRequest(userId, kuId))
                             .subscribeOn(Schedulers.newThread())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Subscriber<KuActionResponse>() {
                                 @Override
-                                public void onCompleted() {}
+                                public void onCompleted() {
+                                }
 
                                 @Override
-                                public void onError(Throwable e) {}
+                                public void onError(Throwable e) {
+                                }
 
                                 @Override
                                 public void onNext(KuActionResponse kuActionResponse) {
                                     Log.d(TAG, kuActionResponse.getStatus());
+                                    Log.d(TAG, String.valueOf(holder.vFavoritePressed));
+                                    ProfileFragment.updateFavorite(mKu, mKu.getFavorited());
+                                    notifyItemChanged(position);
                                 }
                             });
                 }
@@ -146,7 +184,8 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
     }
 
     public void sendUpvoteRequest(KuActionRequest request, final Ku ku, final int position) {
-        ApiClient.getKukyApiClient().upvoteKu(request)
+        ApiClient.getKukyApiClient(AuthHelper.getCreds(mContext))
+            .upvoteKu(request)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(new Subscriber<KuActionResponse>() {
@@ -166,7 +205,8 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
     }
 
     public void sendDownvoteRequest(KuActionRequest request, final Ku ku, final int position) {
-        ApiClient.getKukyApiClient().downvoteKu(request)
+        ApiClient.getKukyApiClient(AuthHelper.getCreds(mContext))
+            .downvoteKu(request)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(new Subscriber<KuActionResponse>() {

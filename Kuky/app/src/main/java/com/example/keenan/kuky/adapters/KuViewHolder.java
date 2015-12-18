@@ -16,7 +16,7 @@ public class KuViewHolder extends RecyclerView.ViewHolder implements View.OnClic
     protected TextView vKuContent3;
     protected TextView vKuKarma;
     protected ImageButton vUpvote, vDownvote, vFavorite;
-    protected boolean vUpvotePressed, vDownvotePressed;
+    protected boolean vUpvotePressed, vDownvotePressed, vFavoritePressed;
 
     private ClickListener vClickListener;
 
@@ -32,6 +32,7 @@ public class KuViewHolder extends RecyclerView.ViewHolder implements View.OnClic
         vFavorite = (ImageButton) v.findViewById(R.id.favoriteButton);
         vUpvotePressed = false;
         vDownvotePressed = false;
+        vFavoritePressed = false;
 
         v.setOnClickListener(this);
     }

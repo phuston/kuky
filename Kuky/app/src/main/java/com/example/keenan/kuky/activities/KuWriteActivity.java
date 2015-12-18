@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 
 import com.example.keenan.kuky.R;
 import com.example.keenan.kuky.api.ApiClient;
+import com.example.keenan.kuky.helpers.AuthHelper;
 import com.example.keenan.kuky.helpers.KuComposeHelper;
 import com.example.keenan.kuky.models.KuComposeResponse;
 import com.example.keenan.kuky.models.KuRequest;
@@ -78,17 +79,12 @@ public class KuWriteActivity extends AppCompatActivity {
             if (true) {//(syllables[0] == 5) && (syllables[1] == 7) && (syllables[2] == 5)) {
                 Log.d(TAG, "Ku correct");
                 String kuContent = line1 + ';' + line2 + ';' + line3;
-                SharedPreferences settings = this.getSharedPreferences(LoginActivity.PREFS_NAME, 0);
-                String uname = settings.getString("username", null);
-                String apiKey = settings.getString("apiKey", null);
-                int userId = settings.getInt("userId", -1);
-                if ((uname != null) && (apiKey != null) && (userId >= 0)) {
-                    KuRequest req = new KuRequest(kuContent, userId, -40, 20);
+                String[] creds = AuthHelper.getCreds(getBaseContext());
+                if (creds != null) {
+                    KuRequest req = new KuRequest(kuContent, Integer.parseInt(creds[2]), -40, 20);
                     Log.d(TAG, req.toString());
-                    ApiClient.getKukyApiClient(
-                            uname,
-                            apiKey
-                    ).postKu(req)
+                    ApiClient.getKukyApiClient(creds)
+                            .postKu(req)
                             .subscribeOn(Schedulers.newThread())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new Subscriber<KuComposeResponse>() {
@@ -113,7 +109,6 @@ public class KuWriteActivity extends AppCompatActivity {
         } catch (IOException e) {
             Log.wtf(TAG, "Could not create Ku Helper");
         }
-
     }
 
 //    @OnClick(R.id.ku_line_one)
