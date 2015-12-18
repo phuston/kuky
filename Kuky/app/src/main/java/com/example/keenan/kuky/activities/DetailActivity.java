@@ -185,7 +185,7 @@ public class DetailActivity extends AppCompatActivity {
 
                                @Override
                                public void onError(Throwable e) {
-
+                                   Log.e(TAG + ": Retrofit Error - ", e.toString());
                                }
 
                                @Override
@@ -343,6 +343,7 @@ public class DetailActivity extends AppCompatActivity {
 
                         @Override
                         public void onError(Throwable e) {
+                            Log.e(TAG + ": Retrofit Error - ", e.toString());
                         }
 
                         @Override
@@ -374,6 +375,7 @@ public class DetailActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
+                        Log.e(TAG + ": Retrofit Error - ", e.toString());
                     }
 
                     @Override
@@ -405,7 +407,9 @@ public class DetailActivity extends AppCompatActivity {
                     public void onCompleted() {}
 
                     @Override
-                    public void onError(Throwable e) {}
+                    public void onError(Throwable e) {
+                        Log.e(TAG + ": Retrofit Error - ", e.toString());
+                    }
 
                     @Override
                     public void onNext(KuActionResponse kuActionResponse) {
