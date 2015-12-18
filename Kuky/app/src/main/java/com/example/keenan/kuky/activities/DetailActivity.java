@@ -52,6 +52,7 @@ public class DetailActivity extends AppCompatActivity {
     @Bind(R.id.ku_karma_tv) TextView mKuKarmaTv;
     @Bind(R.id.ku_card_detail_view) CardView mKuCard;
     @Bind(R.id.comment_feed_rv) RecyclerView mCommentRecyclerView;
+    @Bind(R.id.lack_of_comments) TextView mNoCommentsText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,6 +154,7 @@ public class DetailActivity extends AppCompatActivity {
                                    mCommentList = kuDetailResponse.getComments();
                                    mCommentCardAdapter.setList(mCommentList);
                                    mCommentCardAdapter.notifyDataSetChanged();
+                                   checkForComments(mCommentList);
                                    mKu = kuDetailResponse.getKu();
                                    setKuCardViewContent(mKu);
                                }
@@ -166,6 +168,18 @@ public class DetailActivity extends AppCompatActivity {
         mKuContent2Tv.setText(ku_content[1]);
         mKuContent3Tv.setText(ku_content[2]);
         mKuKarmaTv.setText(ku.getKarma());
+    }
+
+    public void checkForComments(ArrayList mCommentList) {
+        if (mCommentList.isEmpty())
+        {
+            mCommentRecyclerView.setVisibility(View.GONE);
+            mNoCommentsText.setVisibility(View.VISIBLE);
+        }
+        else {
+            mCommentRecyclerView.setVisibility(View.VISIBLE);
+            mNoCommentsText.setVisibility(View.GONE);
+        }
     }
 
     public int getUserId() {

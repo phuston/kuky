@@ -129,7 +129,6 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
                 int userId = getUserId();
                 int kuId = mKu.getId();
 
-//                holder.vUpvotePressed = !holder.vUpvotePressed;
                 mKu.setUpvoted(!mKu.getUpvoted());
 
                 if (userId > 0) {
@@ -148,7 +147,6 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
                 int userId = getUserId();
                 int kuId = mKu.getId();
 
-//                holder.vDownvotePressed = !holder.vDownvotePressed;
                 mKu.setDownvoted(!mKu.getDownvoted());
 
                 if (userId > 0) {
