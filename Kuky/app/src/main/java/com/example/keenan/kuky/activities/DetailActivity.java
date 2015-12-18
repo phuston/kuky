@@ -72,6 +72,16 @@ public class DetailActivity extends AppCompatActivity {
 
         fetchKuInfo(ku_id);
 
+        mCommentRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(this);
+        mCommentRecyclerView.setLayoutManager(mLayoutManager);
+
+        Log.d(TAG, Integer.toString(mCommentList.size()));
+
+        mCommentCardAdapter = new CommentCardAdapter(mCommentList, this, Integer.parseInt(ku_id));
+
+        mCommentRecyclerView.setAdapter(mCommentCardAdapter);
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,6 +119,9 @@ public class DetailActivity extends AppCompatActivity {
                                     @Override
                                     public void onNext(CommentComposeResponse commentComposeResponse) {
                                         Log.wtf(TAG, commentComposeResponse.getComment().getContent());
+                                        mCommentList.add(commentComposeResponse.getComment());
+                                        mCommentCardAdapter.setList(mCommentList);
+                                        mCommentCardAdapter.notifyDataSetChanged();
                                     }
                                 });
                     }
@@ -123,16 +136,6 @@ public class DetailActivity extends AppCompatActivity {
                 builder.show();
             }
         });
-
-        mCommentRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
-        mCommentRecyclerView.setLayoutManager(mLayoutManager);
-
-        Log.d(TAG, Integer.toString(mCommentList.size()));
-
-        mCommentCardAdapter = new CommentCardAdapter(mCommentList, this, Integer.parseInt(ku_id));
-
-        mCommentRecyclerView.setAdapter(mCommentCardAdapter);
     }
 
     public void fetchKuInfo(String ku_id){
