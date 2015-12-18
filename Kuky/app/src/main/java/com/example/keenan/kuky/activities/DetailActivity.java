@@ -102,12 +102,12 @@ public class DetailActivity extends AppCompatActivity {
 
                                     @Override
                                     public void onError(Throwable e) {
-
+                                        Log.e(TAG + ": Retrofit Error - ", e.toString());
                                     }
 
                                     @Override
                                     public void onNext(CommentComposeResponse commentComposeResponse) {
-                                        Log.d(TAG, commentComposeResponse.getComment().getContent());
+                                        Log.wtf(TAG, commentComposeResponse.getComment().getContent());
                                     }
                                 });
                     }
