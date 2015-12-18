@@ -89,7 +89,7 @@ public class DetailActivity extends AppCompatActivity {
                         mComment = input.getText().toString();
                         int userId = getUserId();
 
-                        CommentComposeRequest mCommentRequest = new CommentComposeRequest(mComment, userId, Integer.parseInt(ku_id));
+                        CommentComposeRequest mCommentRequest = new CommentComposeRequest(mComment, Integer.parseInt(ku_id), userId);
 
                         ApiClient.getKukyApiClient(AuthHelper.getCreds(DetailActivity.this)).postComment(mCommentRequest)
                                 .subscribeOn(Schedulers.newThread())
