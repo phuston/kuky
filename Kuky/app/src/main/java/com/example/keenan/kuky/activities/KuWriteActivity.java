@@ -1,7 +1,10 @@
 package com.example.keenan.kuky.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,6 +23,7 @@ import com.example.keenan.kuky.models.KuComposeResponse;
 import com.example.keenan.kuky.models.KuRequest;
 
 import java.io.IOException;
+import java.util.logging.Handler;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -42,6 +46,7 @@ public class KuWriteActivity extends AppCompatActivity {
     private String line1;
     private String line2;
     private String line3;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,8 +116,17 @@ public class KuWriteActivity extends AppCompatActivity {
             Log.wtf(TAG, "Could not create Ku Helper");
         }
 
-        Intent intent = new Intent(getApplicationContext(), KuViewActivity.class);
-        startActivity(intent);
+        new CountDownTimer(1000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+            }
+
+            public void onFinish() {
+                Intent intent = new Intent(getApplicationContext(), KuViewActivity.class);
+                startActivity(intent);
+            }
+        }.start();
+
     }
 
 //    @OnClick(R.id.ku_line_one)
