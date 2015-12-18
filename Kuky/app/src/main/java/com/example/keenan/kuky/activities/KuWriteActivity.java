@@ -39,6 +39,8 @@ public class KuWriteActivity extends AppCompatActivity {
 
     private static final String TAG = KuWriteActivity.class.getSimpleName();
 
+    private KuComposeHelper mComposeHelper;
+
     private String line1;
     private String line2;
     private String line3;
@@ -48,6 +50,12 @@ public class KuWriteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ku_write);
         ButterKnife.bind(this);
+
+        try {
+            mComposeHelper = new KuComposeHelper(getBaseContext());
+        } catch (IOException err){
+            Log.e(TAG, err.toString());
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
