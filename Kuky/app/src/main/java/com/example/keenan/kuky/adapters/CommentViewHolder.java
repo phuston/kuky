@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.example.keenan.kuky.R;
 
 /**
- * aServes as an interface between the Comment view and the CommentCardAdapter
+ * Serves as an interface between the Comment view and the CommentCardAdapter
  */
 public class CommentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
     protected CardView vCardView;
