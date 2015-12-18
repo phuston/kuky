@@ -23,7 +23,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="52dp"
-            android:background="@color/red_100"
+            android:background="@color/cyan_A700"
             android:src="@drawable/ic_alarm_black_24dp"
             android:id="@+id/recentButton"
             android:layout_weight="1"

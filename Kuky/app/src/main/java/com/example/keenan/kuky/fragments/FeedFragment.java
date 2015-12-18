@@ -48,7 +48,7 @@ public class FeedFragment extends Fragment {
     @OnClick(R.id.hotButton)
     public void onHotButtonClicked(View view) {
         UpdateKus(KuRequest.KU_SORT_HOT);
-        mHotButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.red_100));
+        mHotButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.cyan_A700));
         mRecentButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.grey_100));
         Snackbar.make(view, "Showing hottest Kus!", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
@@ -58,7 +58,7 @@ public class FeedFragment extends Fragment {
     public void onRecentButtonClicked(View view) {
         UpdateKus(KuRequest.KU_SORT_RECENT);
         mHotButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.grey_100));
-        mRecentButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.red_100));
+        mRecentButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.cyan_A700));
         Snackbar.make(view, "Showing recent Kus!", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
     }
