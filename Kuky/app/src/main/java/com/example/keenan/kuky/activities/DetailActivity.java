@@ -142,8 +142,6 @@ public class DetailActivity extends AppCompatActivity {
                 builder.show();
             }
         });
-
-
     }
 
     public void fetchKuInfo(String ku_id){
@@ -163,14 +161,15 @@ public class DetailActivity extends AppCompatActivity {
 
                                @Override
                                public void onNext(KuDetailResponse kuDetailResponse) {
+                                   mKu = kuDetailResponse.getKu();
+                                   Log.d(TAG, mKu.toString() + "KEENAN HERE");
+                                   setKuCardViewContent(mKu);
+
                                    mCommentList = kuDetailResponse.getComments();
                                    mCommentCardAdapter.setList(mCommentList);
                                    mCommentCardAdapter.notifyDataSetChanged();
                                    checkForComments(mCommentList);
-                                   mKu = kuDetailResponse.getKu();
                                    Log.d(TAG, mCommentList.get(0).toString());
-                                   Log.d(TAG, mKu.toString());
-                                   setKuCardViewContent(mKu);
                                }
                            }
                 );
