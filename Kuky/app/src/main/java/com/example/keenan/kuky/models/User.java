@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 
 /**
- * Created by hieunguyen on 12/6/15.
+ * Model for user
  */
 public class User {
 

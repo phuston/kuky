@@ -1,5 +1,8 @@
 package com.example.keenan.kuky.models;
 
+/**
+ * Model for response from ku compose requests
+ */
 public class KuComposeResponse {
 
     private Ku ku;
