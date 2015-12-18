@@ -24,7 +24,6 @@
             android:background="@color/grey_200">
 
             <TextView
-                android:text="This is a test ku"
                 android:id="@+id/ku_content1_tv"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -34,7 +33,6 @@
                 android:paddingRight="16dp"/>
 
             <TextView
-                android:text="It isn't a very good ku"
                 android:id="@+id/ku_content2_tv"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -44,7 +42,6 @@
                 android:paddingRight="16dp"/>
 
             <TextView
-                android:text="This is a problem"
                 android:id="@+id/ku_content3_tv"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

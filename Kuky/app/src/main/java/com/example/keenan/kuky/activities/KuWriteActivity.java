@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.keenan.kuky.R;
 import com.example.keenan.kuky.api.ApiClient;
+import com.example.keenan.kuky.fragments.ProfileFragment;
 import com.example.keenan.kuky.helpers.AuthHelper;
 import com.example.keenan.kuky.helpers.KuComposeHelper;
 import com.example.keenan.kuky.models.KuComposeResponse;
@@ -106,6 +107,7 @@ public class KuWriteActivity extends AppCompatActivity {
                                 public void onNext(KuComposeResponse kuComposeResponse) {
                                     Log.d(TAG, kuComposeResponse.toString());
                                     // TODO: Take user back to previous fragment
+                                    ProfileFragment.updateScore(ProfileFragment.KU_COMPOSING_SCORE);
                                 }
                             });
                 }

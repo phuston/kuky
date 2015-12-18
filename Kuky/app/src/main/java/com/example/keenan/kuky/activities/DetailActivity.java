@@ -45,9 +45,15 @@ public class DetailActivity extends AppCompatActivity {
     public static final String TAG = DetailActivity.class.getSimpleName();
 
     public static final String KU_ID = "ku_id";
-    private int ku_id;
-    private String mComment = "";
+    public static final String KU_UPVOTED = "ku_upvoted";
+    public static final String KU_DOWNVOTED = "ku_downvoted";
+    public static final String KU_FAVORITED = "ku_favorited";
+
+    private String ku_id;
+    private boolean upvoted, downvoted, favorited;
     private Ku mKu;
+
+    private String mComment = "";
     private ArrayList<Comment> mCommentList = new ArrayList<Comment>();
     private RecyclerView.LayoutManager mLayoutManager;
     private CommentCardAdapter mCommentCardAdapter;
@@ -74,7 +80,10 @@ public class DetailActivity extends AppCompatActivity {
         getSupportActionBar().setIcon(R.drawable.ic_logo_clear);
 
         Intent intent = getIntent();
-        final String ku_id = intent.getStringExtra(DetailActivity.KU_ID);
+        ku_id = intent.getStringExtra(DetailActivity.KU_ID);
+        upvoted = Boolean.valueOf(intent.getStringExtra(DetailActivity.KU_UPVOTED));
+        downvoted = Boolean.valueOf(intent.getStringExtra(DetailActivity.KU_DOWNVOTED));
+        favorited = Boolean.valueOf(intent.getStringExtra(DetailActivity.KU_FAVORITED));
 
         Log.d(TAG, "DetailActivity received Ku_ID of : " + ku_id);
 
@@ -130,6 +139,7 @@ public class DetailActivity extends AppCompatActivity {
                                         mCommentList.add(commentComposeResponse.getComment());
                                         mCommentCardAdapter.setList(mCommentList);
                                         mCommentCardAdapter.notifyDataSetChanged();
+                                        ProfileFragment.updateScore(ProfileFragment.COMMENTING_SCORE);
                                     }
                                 });
                     }
@@ -164,6 +174,9 @@ public class DetailActivity extends AppCompatActivity {
                                @Override
                                public void onNext(KuDetailResponse kuDetailResponse) {
                                    mKu = kuDetailResponse.getKu();
+                                   mKu.setUpvoted(upvoted);
+                                   mKu.setDownvoted(downvoted);
+                                   mKu.setFavorited(favorited);
                                    Log.d(TAG, mKu.toString());
                                    setKuCardViewContent(mKu);
                                    updateButtons(mKu);
@@ -318,6 +331,11 @@ public class DetailActivity extends AppCompatActivity {
                         Log.wtf(TAG, kuActionResponse.getStatus());
                         ku.setKarma(Integer.parseInt(kuActionResponse.getStatus()));
                         notify();
+                        if (ku.getUpvoted()) {
+                            ProfileFragment.updateScore(ProfileFragment.VOTING_SCORE);
+                        } else {
+                            ProfileFragment.updateScore(-ProfileFragment.VOTING_SCORE);
+                        }
                     }
                 });
     }
@@ -339,6 +357,11 @@ public class DetailActivity extends AppCompatActivity {
                         Log.wtf(TAG, kuActionResponse.getStatus());
                         ku.setKarma(Integer.parseInt(kuActionResponse.getStatus()));
                         notify();
+                        if (ku.getDownvoted()) {
+                            ProfileFragment.updateScore(ProfileFragment.VOTING_SCORE);
+                        } else {
+                            ProfileFragment.updateScore(-ProfileFragment.VOTING_SCORE);
+                        }
                     }
                 });
     }

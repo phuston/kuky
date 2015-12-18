@@ -38,14 +38,17 @@ import rx.schedulers.Schedulers;
 
 public class ProfileFragment extends Fragment {
 
+    public static final int VOTING_SCORE = 5;
+    public static final int KU_COMPOSING_SCORE = 20;
+    public static final int COMMENTING_SCORE = 10;
+
     private static final String TAG = ProfileFragment.class.getSimpleName();
     private User user;
-    private String kudos;
-    private KuCardAdapter mKuCardAdapter;
+    private static KuCardAdapter mKuCardAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     private static final ArrayList<Ku> localFavoriteKus = new ArrayList<>();
-    private static final ArrayList<Ku> localComposedKus = new ArrayList<>();
+    private static int localScore = 0;
 
     @Bind(R.id.ku_profile_feed) RecyclerView mKuRecyclerView;
     @Bind(R.id.kudos_display) TextView kudosDisplay;
@@ -59,6 +62,7 @@ public class ProfileFragment extends Fragment {
             mKuCardAdapter.setList(localFavoriteKus);
             mKuCardAdapter.notifyDataSetChanged();
         }
+        kudosDisplay.setText("Your Kudos: " + String.valueOf(localScore));
         favoritesButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.cyan_A700));
         composedButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.grey_100));
     }
@@ -69,6 +73,7 @@ public class ProfileFragment extends Fragment {
             mKuCardAdapter.setList(user.getComposedKus());
             mKuCardAdapter.notifyDataSetChanged();
         }
+        kudosDisplay.setText("Your Kudos: " + String.valueOf(localScore));
         composedButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.cyan_A700));
         favoritesButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.grey_100));
     }
@@ -119,8 +124,8 @@ public class ProfileFragment extends Fragment {
                 public void onNext(User userResponse) {
                     user = userResponse;
                     localFavoriteKus.addAll(user.getFavoritedKus());
-                    kudos = "Your Kudos: " + String.valueOf(user.getScore());
-                    kudosDisplay.setText(kudos);
+                    updateScore(user.getScore());
+                    kudosDisplay.setText("Your Kudos: " + String.valueOf(localScore));
                     checkForKus(localFavoriteKus);
                     Log.wtf(TAG, user.getFavoritedKus().toString());
                     mKuCardAdapter = new KuCardAdapter(localFavoriteKus, getActivity());
@@ -130,8 +135,7 @@ public class ProfileFragment extends Fragment {
     }
 
     public void checkForKus(ArrayList mkuList) {
-        if (mkuList.isEmpty())
-        {
+        if (mkuList.isEmpty()) {
             mKuRecyclerView.setVisibility(View.GONE);
             mNoKusTextProfile.setVisibility(View.VISIBLE);
         }
@@ -145,11 +149,17 @@ public class ProfileFragment extends Fragment {
         Log.wtf(TAG, "UPDATING LOCAL FAVORITES " + String.valueOf(add));
         if (add) {
             localFavoriteKus.add(ku);
+            mKuCardAdapter.notifyDataSetChanged();
             Log.wtf(TAG, localFavoriteKus.toString());
         } else {
             localFavoriteKus.remove(ku);
+            mKuCardAdapter.notifyDataSetChanged();
             Log.wtf(TAG, localFavoriteKus.toString());
         }
+    }
+
+    public static void updateScore(int delta) {
+        localScore += delta;
     }
 
     /**

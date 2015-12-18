@@ -67,10 +67,13 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
         holder.setClickListener(new KuViewHolder.ClickListener() {
             @Override
             public void onClick(View v, int pos) {
-                String id = Integer.toString(mDataset.get(pos).getId());
-                Log.d(TAG, "ID should be " + id);
+                Ku ku = mDataset.get(pos);
                 Intent dIntent = new Intent(mContext, DetailActivity.class);
-                dIntent.putExtra(DetailActivity.KU_ID, id);
+                Log.d(TAG, ku.toString());
+                dIntent.putExtra(DetailActivity.KU_ID, String.valueOf(ku.getId()));
+                dIntent.putExtra(DetailActivity.KU_UPVOTED, String.valueOf(ku.getUpvoted()));
+                dIntent.putExtra(DetailActivity.KU_DOWNVOTED, String.valueOf(ku.getDownvoted()));
+                dIntent.putExtra(DetailActivity.KU_FAVORITED, String.valueOf(ku.getFavorited()));
                 mContext.startActivity(dIntent);
             }
         });
@@ -203,6 +206,11 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
                     Log.wtf(TAG, kuActionResponse.getStatus());
                     ku.setKarma(Integer.parseInt(kuActionResponse.getStatus()));
                     notifyItemChanged(position);
+                    if (ku.getUpvoted()) {
+                        ProfileFragment.updateScore(ProfileFragment.VOTING_SCORE);
+                    } else {
+                        ProfileFragment.updateScore(-ProfileFragment.VOTING_SCORE);
+                    }
                 }
             });
     }
@@ -224,6 +232,11 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
                     Log.wtf(TAG, kuActionResponse.getStatus());
                     ku.setKarma(Integer.parseInt(kuActionResponse.getStatus()));
                     notifyItemChanged(position);
+                    if (ku.getDownvoted()) {
+                        ProfileFragment.updateScore(ProfileFragment.VOTING_SCORE);
+                    } else {
+                        ProfileFragment.updateScore(-ProfileFragment.VOTING_SCORE);
+                    }
                 }
             });
     }
