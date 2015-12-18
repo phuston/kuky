@@ -40,6 +40,12 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+/**
+ * The Detail Activity is shown when a Ku is pressed for more information, or detail
+ * It shows the list of comments through a recycler view, as well as a floating action button
+ * to submit a new comment, which is displayed through an AlertDialog. Also makes all of the API calls
+ * when upvote/downvote/favorite buttons are clicked.
+ */
 public class DetailActivity extends AppCompatActivity {
 
     public static final String TAG = DetailActivity.class.getSimpleName();
@@ -63,6 +69,11 @@ public class DetailActivity extends AppCompatActivity {
     @Bind(R.id.upvoteButtonDetail) ImageButton mUpVoteButton;
     @Bind(R.id.favoriteButtonDetail) ImageButton mFavoriteButton;
 
+    /**
+     * OnCreate sets the content of the screen, including the floating action button for commenting
+     * Commenting button makes an API call and displays an AlertDialog to type the comment.
+     * @param savedInstanceState if non-null, this fragment is being re-constructed from a previous saved state as given here.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -145,6 +156,11 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Updating the Comments that are displayed in the Detail View. Makes an API call to grab the
+     * information. Also checks for empty data sets
+     * @param ku_id the ID for the ku that needs to be grabbed
+     */
     public void fetchKuInfo(String ku_id){
         ApiClient.getKukyApiClient().getKuDetail(ku_id, String.valueOf(getUserId()))
                 .subscribeOn(Schedulers.newThread())
@@ -177,6 +193,10 @@ public class DetailActivity extends AppCompatActivity {
                 );
     }
 
+    /**
+     * Sets the card views content from the API call
+     * @param ku the Ku object
+     */
     public void setKuCardViewContent(Ku ku){
         String[] ku_content = ku.getContent();
         mKuContent1Tv.setText(ku_content[0]);
@@ -185,6 +205,11 @@ public class DetailActivity extends AppCompatActivity {
         mKuKarmaTv.setText(String.valueOf(ku.getKarma()));
 
     }
+
+    /**
+     * Checks for an empty set and handles it by showing a 'sorry' message if empty
+     * @param mCommentList ArrayList of the comments
+     */
     public void checkForComments(ArrayList mCommentList) {
 
         if (mCommentList.isEmpty())
@@ -200,6 +225,10 @@ public class DetailActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Updates the view of the ImageButtons if they are pressed
+     * @param ku the Ku Object
+     */
     public void updateButtons(Ku ku)
     {
         if (ku.getUpvoted()) {
@@ -224,11 +253,19 @@ public class DetailActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Returns the ID of the user in shared preferences
+     * @return the UserId
+     */
     public int getUserId() {
         SharedPreferences settings = this.getSharedPreferences(LoginActivity.PREFS_NAME, 0);
         return settings.getInt("userId", -1);
     }
 
+    /**
+     * Makes an API call if the Upvote button is clicked
+     * @param view the current screen view
+     */
     @OnClick(R.id.upvoteButtonDetail)
     public void onUpvoteClick(View view)
     {
@@ -246,6 +283,10 @@ public class DetailActivity extends AppCompatActivity {
         updateButtons(mKu);
 
     }
+    /**
+     * Makes an API call if the Downvote button is clicked
+     * @param view the current screen view
+     */
     @OnClick(R.id.downvoteButtonDetail)
     public void onDownvoteClick(View view)
     {
@@ -264,6 +305,10 @@ public class DetailActivity extends AppCompatActivity {
         updateButtons(mKu);
     }
 
+    /**
+     * Makes an API call if the Favorite button is clicked
+     * @param view the current screen view
+     */
     @OnClick(R.id.favoriteButtonDetail)
     public void onFavoriteClick(View view)
     {
@@ -297,7 +342,11 @@ public class DetailActivity extends AppCompatActivity {
 
     }
 
-
+    /**
+     * The API call for when the Upvote Button is pressed.
+     * @param request the Action Request object from the API call
+     * @param ku the Ku Object
+     */
     public void sendUpvoteRequest(KuActionRequest request, final Ku ku) {
         ApiClient.getKukyApiClient(AuthHelper.getCreds(getApplicationContext()))
                 .upvoteKu(request)
@@ -321,6 +370,11 @@ public class DetailActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * The API call for when the Downvote Button is pressed.
+     * @param request the Action Request object from the API call
+     * @param ku the Ku Object
+     */
     public void sendDownvoteRequest(KuActionRequest request, final Ku ku) {
         ApiClient.getKukyApiClient(AuthHelper.getCreds(getApplicationContext()))
                 .downvoteKu(request)
