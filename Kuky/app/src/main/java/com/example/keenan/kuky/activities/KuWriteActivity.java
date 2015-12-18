@@ -1,7 +1,6 @@
 package com.example.keenan.kuky.activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -9,9 +8,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.example.keenan.kuky.R;
 import com.example.keenan.kuky.api.ApiClient;
@@ -74,9 +73,9 @@ public class KuWriteActivity extends AppCompatActivity {
         try {
             KuComposeHelper helper = new KuComposeHelper(getBaseContext());
             int[] syllables = helper.checkKu(line1, line2, line3);
-            Log.d(TAG, String.valueOf(syllables[0]) + String.valueOf(syllables[1]) + String.valueOf(syllables[2]));
+            Log.wtf(TAG, String.valueOf(syllables[0]) + String.valueOf(syllables[1]) + String.valueOf(syllables[2]));
             // TODO: Make sure check syllable works + get location
-            if (true) {//(syllables[0] == 5) && (syllables[1] == 7) && (syllables[2] == 5)) {
+            if ((syllables[0] == 5) && (syllables[1] == 7) && (syllables[2] == 5)) {
                 Log.d(TAG, "Ku correct");
                 String kuContent = line1 + ';' + line2 + ';' + line3;
                 String[] creds = AuthHelper.getCreds(getBaseContext());
@@ -105,6 +104,8 @@ public class KuWriteActivity extends AppCompatActivity {
                                 }
                             });
                 }
+            } else {
+                Toast.makeText(this, "Your Ku is shit. Sorry", Toast.LENGTH_LONG).show();
             }
         } catch (IOException e) {
             Log.wtf(TAG, "Could not create Ku Helper");
