@@ -89,6 +89,7 @@ public class DetailActivity extends AppCompatActivity {
         mCommentCardAdapter = new CommentCardAdapter(mCommentList, this, Integer.parseInt(ku_id));
         mCommentRecyclerView.setAdapter(mCommentCardAdapter);
 
+        // Set FAB to add new post new comments through alertdialog
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,10 +127,8 @@ public class DetailActivity extends AppCompatActivity {
 
                                     @Override
                                     public void onNext(CommentComposeResponse commentComposeResponse) {
-                                        Log.wtf(TAG, commentComposeResponse.getComment().getContent());
-                                        mCommentList.add(commentComposeResponse.getComment());
-                                        mCommentCardAdapter.setList(mCommentList);
-                                        mCommentCardAdapter.notifyDataSetChanged();
+                                        Log.d(TAG, commentComposeResponse.getComment().getContent());
+                                        fetchKuInfo(ku_id);
                                     }
                                 });
                     }

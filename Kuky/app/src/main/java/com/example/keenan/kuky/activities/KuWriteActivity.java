@@ -1,8 +1,6 @@
 package com.example.keenan.kuky.activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.Snackbar;
@@ -23,7 +21,6 @@ import com.example.keenan.kuky.models.KuComposeResponse;
 import com.example.keenan.kuky.models.KuRequest;
 
 import java.io.IOException;
-import java.util.logging.Handler;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -31,7 +28,6 @@ import butterknife.OnClick;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-
 
 public class KuWriteActivity extends AppCompatActivity {
 
@@ -43,16 +39,23 @@ public class KuWriteActivity extends AppCompatActivity {
 
     private static final String TAG = KuWriteActivity.class.getSimpleName();
 
+    private KuComposeHelper mComposeHelper;
+
     private String line1;
     private String line2;
     private String line3;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ku_write);
         ButterKnife.bind(this);
+
+        try {
+            mComposeHelper = new KuComposeHelper(getBaseContext());
+        } catch (IOException err){
+            Log.e(TAG, err.toString());
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -128,26 +131,6 @@ public class KuWriteActivity extends AppCompatActivity {
         }.start();
 
     }
-
-//    @OnClick(R.id.ku_line_one)
-//    public void onLineOneClick(View view) {
-//        line1 = mKuLineOne.getText().toString();
-//        //TODO: Check syllables? (5)
-//    }
-//
-//    @OnClick(R.id.ku_line_two)
-//    public void onLineTwoClick(View view) {
-//        line2 = mKuLineTwo.getText().toString();
-//        //TODO: Check syllables? (7)
-//
-//    }
-//
-//    @OnClick(R.id.ku_line_three)
-//    public void onLineThreeClick(View view) {
-//        line3 = mKuLineThree.getText().toString();
-//        //TODO: Check syllables? (5)
-//
-//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
