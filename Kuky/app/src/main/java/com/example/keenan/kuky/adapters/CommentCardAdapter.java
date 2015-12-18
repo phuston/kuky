@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.example.keenan.kuky.R;
 import com.example.keenan.kuky.activities.LoginActivity;
 import com.example.keenan.kuky.api.ApiClient;
+import com.example.keenan.kuky.fragments.ProfileFragment;
 import com.example.keenan.kuky.helpers.AuthHelper;
 import com.example.keenan.kuky.models.Comment;
 import com.example.keenan.kuky.models.CommentActionRequest;
@@ -139,6 +140,11 @@ public class CommentCardAdapter extends RecyclerView.Adapter<CommentViewHolder> 
                         @Override
                         public void onNext(CommentActionResponse CommentActionResponse) {
                             updateItem(comment, Integer.parseInt(CommentActionResponse.getStatus()), position);
+                            if (comment.isUpvoted()) {
+                                ProfileFragment.updateScore(ProfileFragment.VOTING_SCORE);
+                            } else {
+                                ProfileFragment.updateScore(-ProfileFragment.VOTING_SCORE);
+                            }
                         }
                     });
         // }
@@ -172,6 +178,11 @@ public class CommentCardAdapter extends RecyclerView.Adapter<CommentViewHolder> 
                         @Override
                         public void onNext(CommentActionResponse CommentActionResponse) {
                             updateItem(comment, Integer.parseInt(CommentActionResponse.getStatus()), position);
+                            if (comment.isDownvoted()) {
+                                ProfileFragment.updateScore(ProfileFragment.VOTING_SCORE);
+                            } else {
+                                ProfileFragment.updateScore(-ProfileFragment.VOTING_SCORE);
+                            }
                         }
                     });
         // }
