@@ -1,6 +1,8 @@
 package com.example.keenan.kuky.models;
 
-
+/**
+ * Model for ku compose requests
+ */
 public class KuRequest {
     public static final String KU_SORT_HOT = "hot";
     public static final String KU_SORT_RECENT = "recent";

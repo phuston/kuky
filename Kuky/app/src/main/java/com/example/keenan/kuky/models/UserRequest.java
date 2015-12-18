@@ -1,7 +1,7 @@
 package com.example.keenan.kuky.models;
 
 /**
- * Created by hieunguyen on 12/3/15.
+ * Model for logging in and registering a user
  */
 public class UserRequest {
     private String username;

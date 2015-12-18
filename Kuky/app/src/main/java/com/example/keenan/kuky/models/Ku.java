@@ -1,5 +1,8 @@
 package com.example.keenan.kuky.models;
 
+/**
+ * Model for kus
+ */
 public class Ku {
 
     private Integer id, karma;

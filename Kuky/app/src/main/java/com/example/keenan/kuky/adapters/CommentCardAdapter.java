@@ -24,9 +24,6 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-/**
- * Created by patrick on 12/9/15.
- */
 public class CommentCardAdapter extends RecyclerView.Adapter<CommentViewHolder> {
     private static final String TAG = CommentCardAdapter.class.getSimpleName();
     private ArrayList<Comment> mDataset;
@@ -47,6 +44,11 @@ public class CommentCardAdapter extends RecyclerView.Adapter<CommentViewHolder> 
         return new CommentViewHolder(v);
     }
 
+    /**
+     * Handles all view creation for comments
+     * @param holder CommentViewHolder object
+     * @param position Position to be inflated
+     */
     public void onBindViewHolder(CommentViewHolder holder, final int position) {
 
         final Comment mComment = mDataset.get(position);
@@ -110,6 +112,13 @@ public class CommentCardAdapter extends RecyclerView.Adapter<CommentViewHolder> 
         });
     }
 
+    /**
+     * Sends an upvote request to the server for the given comment
+     * Then updates the view for the profile
+     * @param request CommentActionRequest object representing the upvote request
+     * @param comment The Comment item being updated
+     * @param position The position of the comment object being updated
+     */
     public void sendUpvoteRequest(CommentActionRequest request, final Comment comment, final int position) {
         String[] creds = AuthHelper.getCreds(mContext);
         // if (creds != null) {
@@ -141,6 +150,13 @@ public class CommentCardAdapter extends RecyclerView.Adapter<CommentViewHolder> 
         // }
     }
 
+    /**
+     * Sends a downvote request to the server for the given comment
+     * Then updates the view for the profile
+     * @param request CommentActionRequest object representing the downvote request
+     * @param comment The Comment item being updated
+     * @param position The position of the comment object being updated
+     */
     public void sendDownvoteRequest(CommentActionRequest request, final Comment comment, final int position) {
         String[] creds = AuthHelper.getCreds(mContext);
         // if (creds != null) {
@@ -172,16 +188,30 @@ public class CommentCardAdapter extends RecyclerView.Adapter<CommentViewHolder> 
         // }
     }
 
+    /**
+     * Updates an individual item in the recyclerview at given position
+     * @param comment The comment object to be updated
+     * @param karma New Karma updated after server request
+     * @param pos Position of the Comment in the recyclerview
+     */
     public void updateItem(Comment comment, int karma, int pos) {
         comment.setKudos(karma);
         notifyItemChanged(pos);
     }
 
+    /**
+     * Get the UserId from SharedPreferences
+     * @return int UserId
+     */
     public int getUserId() {
         SharedPreferences settings = mContext.getSharedPreferences(LoginActivity.PREFS_NAME, 0);
         return settings.getInt("userId", -1);
     }
 
+    /**
+     * OVerride getItemCount for recyclerview use
+     * @return int size
+     */
     @Override
     public int getItemCount() {
         return mDataset.size();
@@ -192,6 +222,10 @@ public class CommentCardAdapter extends RecyclerView.Adapter<CommentViewHolder> 
         super.onAttachedToRecyclerView(recyclerView);
     }
 
+    /**
+     * Set the dataset remotely from user class DetailActivity
+     * @param newList
+     */
     public void setList(ArrayList<Comment> newList) {
         mDataset = newList;
     }
