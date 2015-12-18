@@ -1,5 +1,6 @@
 package com.example.keenan.kuky.fragments;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.keenan.kuky.R;
+import com.example.keenan.kuky.activities.LoginActivity;
 import com.example.keenan.kuky.adapters.KuCardAdapter;
 import com.example.keenan.kuky.api.ApiClient;
 import com.example.keenan.kuky.helpers.AuthHelper;
@@ -48,7 +50,7 @@ public class FeedFragment extends Fragment {
     @OnClick(R.id.hotButton)
     public void onHotButtonClicked(View view) {
         UpdateKus(KuRequest.KU_SORT_HOT);
-        mHotButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.red_100));
+        mHotButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.cyan_A700));
         mRecentButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.grey_100));
         Snackbar.make(view, "Showing hottest Kus!", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
@@ -58,7 +60,7 @@ public class FeedFragment extends Fragment {
     public void onRecentButtonClicked(View view) {
         UpdateKus(KuRequest.KU_SORT_RECENT);
         mHotButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.grey_100));
-        mRecentButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.red_100));
+        mRecentButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.cyan_A700));
         Snackbar.make(view, "Showing recent Kus!", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
     }
@@ -100,7 +102,7 @@ public class FeedFragment extends Fragment {
 
     public void UpdateKus(String sort) {
         ApiClient.getKukyApiClient(AuthHelper.getCreds(getContext()))
-                .getKus(sort)
+                .getKus(sort, String.valueOf(getUserId()))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<KuListResponse>() {
@@ -125,8 +127,7 @@ public class FeedFragment extends Fragment {
                 });
     }
 
-    public void checkForKus(ArrayList mkuList)
-    {
+    public void checkForKus(ArrayList mkuList) {
         if (mkuList.isEmpty())
         {
             mKuRecyclerView.setVisibility(View.GONE);
@@ -136,5 +137,10 @@ public class FeedFragment extends Fragment {
             mKuRecyclerView.setVisibility(View.VISIBLE);
             mNoKusText.setVisibility(View.GONE);
         }
+    }
+
+    public int getUserId() {
+        SharedPreferences settings = getContext().getSharedPreferences(LoginActivity.PREFS_NAME, 0);
+        return settings.getInt("userId", -1);
     }
 }

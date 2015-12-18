@@ -53,39 +53,41 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:paddingBottom="24dp"/>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            >
+                <ImageButton
+                    android:id="@+id/upvoteButtonDetail"
+                    android:layout_width="48dp"
+                    android:layout_height="36dp"
+                    android:paddingTop="16dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/ic_arrow_drop_up_black_24dp"/>
+
+                <TextView
+                    android:id="@+id/ku_karma_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/upvoteButtonDetail"
+                    android:layout_centerInParent="true"
+                    android:textSize="18sp"/>
+
+                <ImageButton
+                    android:id="@+id/downvoteButtonDetail"
+                    android:layout_width="48dp"
+                    android:layout_height="36dp"
+                    android:layout_below="@id/ku_karma_tv"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/ic_arrow_drop_down_black_24dp"/>
+            </RelativeLayout>
 
             <ImageButton
-                android:id="@+id/upvoteButton"
-                android:layout_width="48dp"
-                android:layout_height="36dp"
-                android:paddingTop="16dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:background="@drawable/ic_arrow_drop_up_black_24dp"/>
-
-            <TextView
-                android:id="@+id/ku_karma_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/upvoteButton"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:paddingRight="20dp"
-                android:paddingEnd="20dp"
-                android:textSize="18sp"/>
-
-            <ImageButton
-                android:id="@+id/downvoteButton"
-                android:layout_width="48dp"
-                android:layout_height="36dp"
-                android:layout_below="@id/ku_karma_tv"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:background="@drawable/ic_arrow_drop_down_black_24dp"/>
-
-            <ImageButton
-                android:id="@+id/favoriteButton"
+                android:id="@+id/favoriteButtonDetail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
