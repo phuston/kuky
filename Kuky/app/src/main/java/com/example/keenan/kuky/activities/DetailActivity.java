@@ -107,7 +107,8 @@ public class DetailActivity extends AppCompatActivity {
 
                         CommentComposeRequest mCommentRequest = new CommentComposeRequest(mComment, Integer.parseInt(ku_id), userId);
 
-                        ApiClient.getKukyApiClient(AuthHelper.getCreds(DetailActivity.this)).postComment(mCommentRequest)
+                        ApiClient.getKukyApiClient(AuthHelper.getCreds(DetailActivity.this))
+                                .postComment(mCommentRequest)
                                 .subscribeOn(Schedulers.newThread())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(new Subscriber<CommentComposeResponse>() {
@@ -146,7 +147,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public void fetchKuInfo(String ku_id){
-        ApiClient.getKukyApiClient().getKuDetail(ku_id)
+        ApiClient.getKukyApiClient().getKuDetail(ku_id, String.valueOf(getUserId()))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<KuDetailResponse>() {
@@ -167,6 +168,8 @@ public class DetailActivity extends AppCompatActivity {
                                    mCommentCardAdapter.notifyDataSetChanged();
                                    checkForComments(mCommentList);
                                    mKu = kuDetailResponse.getKu();
+                                   Log.d(TAG, mCommentList.get(0).toString());
+                                   Log.d(TAG, mKu.toString());
                                    setKuCardViewContent(mKu);
                                }
                            }
