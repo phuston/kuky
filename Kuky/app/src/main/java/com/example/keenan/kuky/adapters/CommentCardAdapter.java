@@ -47,12 +47,6 @@ public class CommentCardAdapter extends RecyclerView.Adapter<CommentViewHolder> 
     }
 
     public void onBindViewHolder(CommentViewHolder holder, final int position) {
-        holder.setClickListener(new CommentViewHolder.ClickListener() {
-            @Override
-            public void onClick(View v, int position) {
-                // TODO: Do something here? Maybe not actually, idk what it would do
-            }
-        });
 
         final Comment mComment = mDataset.get(position);
 
@@ -115,9 +109,9 @@ public class CommentCardAdapter extends RecyclerView.Adapter<CommentViewHolder> 
         });
     }
 
-    private void sendUpvoteRequest(CommentActionRequest request, final Comment comment, final int position) {
+    public void sendUpvoteRequest(CommentActionRequest request, final Comment comment, final int position) {
         String[] creds = AuthHelper.getCreds(mContext);
-        if (creds != null) {
+        // if (creds != null) {
             ApiClient.getKukyApiClient(creds)
                     .upvoteComment(request)
                     .subscribeOn(Schedulers.newThread())
@@ -135,17 +129,15 @@ public class CommentCardAdapter extends RecyclerView.Adapter<CommentViewHolder> 
 
                         @Override
                         public void onNext(CommentActionResponse CommentActionResponse) {
-                            Log.d(TAG, CommentActionResponse.getStatus());
-                            comment.setKudos(Integer.parseInt(CommentActionResponse.getStatus()));
-                            notifyItemChanged(position);
+                            updateItem(comment, Integer.parseInt(CommentActionResponse.getStatus()), position);
                         }
                     });
-        }
+        // }
     }
 
-    private void sendDownvoteRequest(CommentActionRequest request, final Comment comment, final int position) {
+    public void sendDownvoteRequest(CommentActionRequest request, final Comment comment, final int position) {
         String[] creds = AuthHelper.getCreds(mContext);
-        if (creds != null) {
+        // if (creds != null) {
             ApiClient.getKukyApiClient(creds)
                     .downvoteComment(request)
                     .subscribeOn(Schedulers.newThread())
@@ -163,12 +155,15 @@ public class CommentCardAdapter extends RecyclerView.Adapter<CommentViewHolder> 
 
                         @Override
                         public void onNext(CommentActionResponse CommentActionResponse) {
-                            Log.d(TAG, CommentActionResponse.getStatus());
-                            comment.setKudos(Integer.parseInt(CommentActionResponse.getStatus()));
-                            notifyItemChanged(position);
+                            updateItem(comment, Integer.parseInt(CommentActionResponse.getStatus()), position);
                         }
                     });
-        }
+        // }
+    }
+
+    public void updateItem(Comment comment, int karma, int pos) {
+        comment.setKudos(karma);
+        notifyItemChanged(pos);
     }
 
     public int getUserId() {
