@@ -8,6 +8,10 @@ import android.widget.TextView;
 
 import com.example.keenan.kuky.R;
 
+
+/**
+ * Serves as an interface between the Ku view and the KuCardAdapter
+ */
 public class KuViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
     protected CardView vCardView;
