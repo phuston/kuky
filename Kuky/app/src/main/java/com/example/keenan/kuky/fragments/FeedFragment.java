@@ -1,6 +1,5 @@
 package com.example.keenan.kuky.fragments;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -11,18 +10,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.keenan.kuky.R;
-import com.example.keenan.kuky.activities.LoginActivity;
 import com.example.keenan.kuky.adapters.KuCardAdapter;
 import com.example.keenan.kuky.api.ApiClient;
 import com.example.keenan.kuky.helpers.AuthHelper;
 import com.example.keenan.kuky.models.Ku;
-import com.example.keenan.kuky.models.KuRequest;
 import com.example.keenan.kuky.models.KuListResponse;
+import com.example.keenan.kuky.models.KuRequest;
 
 import java.util.ArrayList;
 
@@ -73,7 +70,6 @@ public class FeedFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        UpdateKus(KuRequest.KU_SORT_RECENT);
     }
 
     @Override
@@ -90,6 +86,8 @@ public class FeedFragment extends Fragment {
         mKuCardAdapter = new KuCardAdapter(mkuList, getActivity());
 
         mKuRecyclerView.setAdapter(mKuCardAdapter);
+
+        UpdateKus(KuRequest.KU_SORT_RECENT);
 
         return rootView;
     }
