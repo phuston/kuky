@@ -9,6 +9,11 @@ import retrofit.RestAdapter;
 public class ApiClient {
     private static KukyApiEndpointInterface sKukyApiClient;
 
+    /**
+     * Return an API endpoint client using credentials for all authenticated endpoints
+     * @param creds user credentials
+     * @return sKukyApiClient - authorized API client
+     */
     public static KukyApiEndpointInterface getKukyApiClient(String[] creds) {
         if (creds != null) {
             String authHeader = creds[0] + ":" + creds[1];
@@ -44,6 +49,10 @@ public class ApiClient {
         return sKukyApiClient;
     }
 
+    /**
+     * Returns and API endpoint client for use with all unauthorized endpoints
+     * @return sKukyApiClient - unauthorized API client
+     */
     public static KukyApiEndpointInterface getKukyApiClient() {
         if ((sKukyApiClient == null)) {
             RestAdapter restAdapter = new RestAdapter.Builder()

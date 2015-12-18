@@ -20,7 +20,11 @@ public class KuComposeHelper {
     private Map<String, Integer> mSyllables = new HashMap<String, Integer>();
     private Context context;
 
-
+    /**
+     * Used to validate Kus
+     * @param context
+     * @throws IOException
+     */
     public KuComposeHelper(Context context) throws IOException {
         this.context = context;
 
@@ -28,6 +32,10 @@ public class KuComposeHelper {
         loadSyllableDict();
     }
 
+    /**
+     * Loads the syllable dictionary from syllables.txt raw file
+     * @throws IOException
+     */
     private void loadSyllableDict() throws IOException {
         InputStream raw = context.getResources().openRawResource(R.raw.syllables);
         InputStreamReader streamReader = new InputStreamReader(raw);
@@ -41,6 +49,11 @@ public class KuComposeHelper {
         reader.close();
     }
 
+    /**
+     * Counts the number of syllables in a word algorithmically
+     * @param word Input words
+     * @return number of syllables
+     */
     public int countSyllables(String word) {
         Pattern pattern1 = Pattern.compile("[eaoui][eaoui]");
         Pattern pattern2 = Pattern.compile("[eaoui][^eaoui]");
@@ -63,10 +76,10 @@ public class KuComposeHelper {
         }
 
         if (word.endsWith("es") || word.endsWith("ed")) {
-            int doubleAndtripple_1 = 0;
+            int doubleAndtriple_1 = 0;
             Matcher matcher1 = pattern1.matcher(word);
             while (matcher1.find()) {
-                doubleAndtripple_1++;
+                doubleAndtriple_1++;
             }
 
             int theothercount = 0;
@@ -74,7 +87,7 @@ public class KuComposeHelper {
             while (matcher2.find()){
                 theothercount++;
             }
-            if (doubleAndtripple_1 > 1 || theothercount > 1) {
+            if (doubleAndtriple_1 > 1 || theothercount > 1) {
                 if (!(word.endsWith("ted") || word.endsWith("tes") || word.endsWith("ses") || word.endsWith("ied") || word.endsWith("ies"))) {
                     disc++;
                 }
@@ -91,19 +104,19 @@ public class KuComposeHelper {
             }
         }
 
-        int doubleAndtripple = 0;
+        int doubleAndtriple = 0;
         Matcher matcher3 = pattern1.matcher(word);
         while (matcher3.find()) {
-            doubleAndtripple ++;
+            doubleAndtriple ++;
         }
 
-        int tripple = 0;
+        int triple = 0;
         Matcher matcher4 = pattern3.matcher(word);
         while (matcher4.find()) {
-            tripple++;
+            triple++;
         }
 
-        disc += doubleAndtripple+tripple;
+        disc += doubleAndtriple+triple;
 
         int numVowels = 0;
         Matcher matcher5 = pattern4.matcher(word);
@@ -179,6 +192,12 @@ public class KuComposeHelper {
         return numVowels - disc + syls;
     }
 
+    /**
+     * Gets the number of syllables for a given line. Starts by checking the dictionary
+     * If the word doesn't exist in the dictionary, check it algorithmically
+     * @param line
+     * @return number of syllables in the line
+     */
     public int getSyllables(String line) {
         int count = 0;
         for (String word : cleanLine(line)) {
@@ -193,10 +212,22 @@ public class KuComposeHelper {
         return count;
     }
 
+    /**
+     * Checks the total number of Kus in a given line
+     * @param line1 line one of the ku
+     * @param line2 line two of the ku
+     * @param line3 line three of the ku
+     * @return an array of the number of syllables in each line
+     */
     public int[] checkKu(String line1, String line2, String line3) {
         return new int[] {getSyllables(line1), getSyllables(line2), getSyllables(line3)};
     }
 
+    /**
+     * Cleans the line by stripping punctuation, making lowercase, removing whitespace, etc.
+     * @param line
+     * @return
+     */
     public String[] cleanLine(String line){
         line = line.toLowerCase().replaceAll("[^a-z-' ]","");
         return line.split("\\s+");
