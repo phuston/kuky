@@ -1,7 +1,7 @@
 package com.example.keenan.kuky.models;
 
 /**
- * Created by hieunguyen on 12/7/15.
+ * Model for ku upvote/downvote requests
  */
 public class KuActionRequest {
 

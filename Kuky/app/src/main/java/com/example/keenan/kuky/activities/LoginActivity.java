@@ -25,6 +25,11 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+/**
+ * Login Activity is the first view when the app is opened. It has two text fields, a username and
+ * a password. It handles the authentication of the existing user, or the creation of a new user. Once
+ * a valid user exits, then it goes to the Ku View activity to enter the app
+ */
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = LoginActivity.class.getSimpleName();
@@ -40,6 +45,10 @@ public class LoginActivity extends AppCompatActivity {
     @Bind(R.id.login_action) Button loginAction;
     @Bind(R.id.login_error) TextView loginError;
 
+    /**
+     * Button handle when the Login button is clicked, makes and API call to check authentication
+     * @param view the current screen view
+     */
     @OnClick(R.id.login_action)
     public void onLoginClicked(View view) {
         uname = username.getText().toString();
@@ -58,10 +67,11 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onCompleted() {
                         }
-
-                        @Override
-                        public void onError(Throwable e) {
-                        }
+                        
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG + ": Retrofit Error - ", e.toString());
+                    }
 
                         @Override
                         public void onNext(UserApiKeyResponse apiKeyResponse) {
@@ -86,6 +96,11 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Button handle when the Sign Up button is clicked, makes and API call to check authentication
+     * and create a new user
+     * @param view the current screen view
+     */
     @OnClick(R.id.register_action)
     public void onRegisterClicked(View view) {
         uname = username.getText().toString();
@@ -100,7 +115,9 @@ public class LoginActivity extends AppCompatActivity {
                     public void onCompleted() {}
 
                     @Override
-                    public void onError(Throwable e) {}
+                    public void onError(Throwable e) {
+                        Log.e(TAG + ": Retrofit Error - ", e.toString());
+                    }
 
                     @Override
                     public void onNext(UserApiKeyResponse apiKeyResponse) {
@@ -127,12 +144,19 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Starts the Ku View activity when the user is verified into the app
+     */
     public void changeActivity() {
         Log.d(TAG, "CHANGING ACTIVITIES");
         Intent intent = new Intent(LoginActivity.this, KuViewActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Sets up the view of the activity
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,18 +164,27 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
+    /**
+     * Inflate the menu; this adds items to the action bar if it is present.
+     * @param menu Menu object
+     * @return boolean true
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_login, menu);
         return true;
     }
 
+    /**
+     * Handle action bar item clicks here. The action bar will
+     * automatically handle clicks on the Home/Up button, so long
+     * as you specify a parent activity in AndroidManifest.xml.
+     * @param item MenuItem object
+     * @return boolean true
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement

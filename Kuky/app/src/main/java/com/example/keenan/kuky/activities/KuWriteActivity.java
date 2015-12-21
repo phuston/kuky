@@ -1,8 +1,6 @@
 package com.example.keenan.kuky.activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.Snackbar;
@@ -24,7 +22,6 @@ import com.example.keenan.kuky.models.KuComposeResponse;
 import com.example.keenan.kuky.models.KuRequest;
 
 import java.io.IOException;
-import java.util.logging.Handler;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -33,7 +30,11 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-
+/**
+ * Ku Write Activity is handles when the floating action button for composing a new Ku
+ * It checks for syllables, making sure the Ku is a valid haiku, or at least to our algorithm.
+ * Also handles the API calls to post the ku.
+ */
 public class KuWriteActivity extends AppCompatActivity {
 
     @Bind(R.id.ku_compose_cancel) ImageButton mComposeCancel;
@@ -44,22 +45,37 @@ public class KuWriteActivity extends AppCompatActivity {
 
     private static final String TAG = KuWriteActivity.class.getSimpleName();
 
+    private KuComposeHelper mComposeHelper;
+
     private String line1;
     private String line2;
     private String line3;
 
-
+    /**
+     * The OnCreate sets up the view of the page
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ku_write);
         ButterKnife.bind(this);
 
+        try {
+            mComposeHelper = new KuComposeHelper(getBaseContext());
+        } catch (IOException err){
+            Log.e(TAG, err.toString());
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setIcon(R.drawable.ic_logo_clear);
     }
 
+    /**
+     * Button handle for the cancel button, goes back to the Ku View activity
+     * @param view the current view of the screen
+     */
     @OnClick(R.id.ku_compose_cancel)
     public void onComposeCancelClick(View view) {
         Snackbar.make(view, "Cancel Ku", Snackbar.LENGTH_LONG)
@@ -68,6 +84,11 @@ public class KuWriteActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * Button handle for when the done button is clicked, checks if the submitted text is a haiku
+     * then makes an API call to post the haiku and updates in the view
+     * @param view the current view of the screen
+     */
     @OnClick(R.id.ku_compose_done)
     public void onComposeDoneClick(View view) {
         Snackbar.make(view, "Ku Submitted!", Snackbar.LENGTH_LONG)
@@ -100,7 +121,7 @@ public class KuWriteActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onError(Throwable e) {
-                                    Log.wtf(TAG, e);
+                                    Log.e(TAG + ": Retrofit Error - ", e.toString());
                                 }
 
                                 @Override
@@ -112,7 +133,7 @@ public class KuWriteActivity extends AppCompatActivity {
                             });
                 }
             } else {
-                Toast.makeText(this, "Your Ku is shit. Sorry", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Your haiku does not meet the requirement", Toast.LENGTH_LONG).show();
             }
         } catch (IOException e) {
             Log.wtf(TAG, "Could not create Ku Helper");
@@ -131,31 +152,16 @@ public class KuWriteActivity extends AppCompatActivity {
 
     }
 
-//    @OnClick(R.id.ku_line_one)
-//    public void onLineOneClick(View view) {
-//        line1 = mKuLineOne.getText().toString();
-//        //TODO: Check syllables? (5)
-//    }
-//
-//    @OnClick(R.id.ku_line_two)
-//    public void onLineTwoClick(View view) {
-//        line2 = mKuLineTwo.getText().toString();
-//        //TODO: Check syllables? (7)
-//
-//    }
-//
-//    @OnClick(R.id.ku_line_three)
-//    public void onLineThreeClick(View view) {
-//        line3 = mKuLineThree.getText().toString();
-//        //TODO: Check syllables? (5)
-//
-//    }
-
+    /**
+     * Handle action bar item clicks here. The action bar will
+     * automatically handle clicks on the Home/Up button, so long
+     * as you specify a parent activity in AndroidManifest.xml.
+     * @param item MenuItem object
+     * @return boolean true
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement

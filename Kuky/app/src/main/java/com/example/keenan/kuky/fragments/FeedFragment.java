@@ -32,7 +32,11 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-
+/**\
+ * Feed Fragment is one of the tabs of the KuView activity. It has two tabs within it as well,
+ * the recent kus and the hot kus. This is the screen shown after the user logs in.
+ * It holds a Recycler view of cards, which can be upvoted, downvoted, or favorited.
+ */
 public class FeedFragment extends Fragment {
 
     private static final String TAG = FeedFragment.class.getSimpleName();
@@ -47,6 +51,10 @@ public class FeedFragment extends Fragment {
     @Bind(R.id.recentButton) ImageButton mRecentButton;
     @Bind(R.id.lack_of_kus) TextView mNoKusText;
 
+    /**
+     * One of the tabs for KuView, reorganizes the ku list to show the 'hot' haikus
+     * @param view the screen view
+     */
     @OnClick(R.id.hotButton)
     public void onHotButtonClicked(View view) {
         UpdateKus(KuRequest.KU_SORT_HOT);
@@ -56,6 +64,10 @@ public class FeedFragment extends Fragment {
                 .setAction("Action", null).show();
     }
 
+    /**
+     * One of the tabs for KuView, reorganizes the ku list to show the 'recent' haikus
+     * @param view the screen view
+     */
     @OnClick(R.id.recentButton)
     public void onRecentButtonClicked(View view) {
         UpdateKus(KuRequest.KU_SORT_RECENT);
@@ -69,11 +81,23 @@ public class FeedFragment extends Fragment {
         // Required empty public constructor
     }
 
+    /**
+     * calls the super oncreate
+     * @param savedInstanceState a previous saved state that can be reconstructed
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * Sets up the view of the fragment as well as the recycler view. Calls the
+     * updateKus() method to load data into the view
+     * @param inflater inflates the view to the fragment
+     * @param container the parent view that the UI should be attached to
+     * @param savedInstanceState a previous saved state that can be attached to
+     * @return the rootView of the the fragments view
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -94,12 +118,11 @@ public class FeedFragment extends Fragment {
         return rootView;
     }
 
-    @Override
-    public void onViewCreated(final View view, Bundle savedInstanceState)
-    {
-
-    }
-
+    /**
+     * Makes an API call to get the top or recent Kus. Checks that it isn't an empty dataset
+     * and updates the view
+     * Uses the KuCardAdapter class for button functionality and loading data
+     */
     public void UpdateKus(String sort) {
         ApiClient.getKukyApiClient(AuthHelper.getCreds(getContext()))
                 .getKus(sort, String.valueOf(getUserId()))
@@ -126,7 +149,10 @@ public class FeedFragment extends Fragment {
                     }
                 });
     }
-
+    /**
+     * Checks for empty list of kus, if so, handles empty set by showing 'sorry' text
+     * @param mkuList List of haikus
+     */
     public void checkForKus(ArrayList mkuList) {
         if (mkuList.isEmpty())
         {
@@ -139,6 +165,10 @@ public class FeedFragment extends Fragment {
         }
     }
 
+    /**
+     * Get method for the UserID
+     * @return the user's ID
+     */
     public int getUserId() {
         SharedPreferences settings = getContext().getSharedPreferences(LoginActivity.PREFS_NAME, 0);
         return settings.getInt("userId", -1);

@@ -1,7 +1,5 @@
 package com.example.keenan.kuky.fragments;
 
-import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -13,21 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import com.example.keenan.kuky.R;
-import com.example.keenan.kuky.activities.LoginActivity;
 import com.example.keenan.kuky.adapters.KuCardAdapter;
 import com.example.keenan.kuky.api.ApiClient;
 import com.example.keenan.kuky.helpers.AuthHelper;
 import com.example.keenan.kuky.models.Ku;
 import com.example.keenan.kuky.models.User;
-import com.example.keenan.kuky.models.UserProfileResponse;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -36,6 +26,11 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+/**
+ * Profile Fragment is one tab of the KuView activity. It holds information about the user, such as
+ * their 'kudos' or score. There are two lists of kus under this view, the users generated kus,
+ * as well as the ones that the user favorited.
+ */
 public class ProfileFragment extends Fragment {
 
     public static final int VOTING_SCORE = 5;
@@ -56,6 +51,10 @@ public class ProfileFragment extends Fragment {
     @Bind(R.id.composed_kus_profile) ImageButton composedButton;
     @Bind(R.id.lack_of_kus) TextView mNoKusTextProfile;
 
+    /**
+     * Clicking the tab at the top of the screen, updates UI and datasets
+     * @param view the current screen view
+     */
     @OnClick(R.id.favorite_kus_profile)
     public void onFavoritesSelected(View view) {
         if (user != null) {
@@ -67,6 +66,10 @@ public class ProfileFragment extends Fragment {
         composedButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.grey_100));
     }
 
+    /**
+     * Clicking the tab at the top of the view, switches datasets and UI
+     * @param view the current screen view
+     */
     @OnClick(R.id.composed_kus_profile)
     public void onComposedSelected(View view) {
         if (user != null) {
@@ -82,11 +85,23 @@ public class ProfileFragment extends Fragment {
         // Required empty public constructor
     }
 
+    /**
+     * calls the super oncreate
+     * @param savedInstanceState a previous saved state that can be reconstructed
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * Sets up the view of the fragment as well as the recycler view. Calls the
+     * updateProfile() method to load data into the view
+     * @param inflater inflates the view to the fragment
+     * @param container the parent view that the UI should be attached to
+     * @param savedInstanceState a previous saved state that can be attached to
+     * @return the rootView of the the fragments view
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -103,6 +118,10 @@ public class ProfileFragment extends Fragment {
         return rootView;
     }
 
+    /**
+     * Makes an API call to pull the favorited kus as well as setting the users 'kudos' or score
+     * Uses the KuCardAdapter class for button functionality and loading data
+     */
     public void updateProfile() {
         String[] creds = AuthHelper.getCreds(getContext());
         ApiClient.getKukyApiClient(creds)
@@ -117,7 +136,7 @@ public class ProfileFragment extends Fragment {
 
                 @Override
                 public void onError(Throwable e) {
-
+                    Log.e(TAG + ": Retrofit Error - ", e.toString());
                 }
 
                 @Override
@@ -134,6 +153,10 @@ public class ProfileFragment extends Fragment {
             });
     }
 
+    /**
+     * Checks for empty list of kus, if so, handles empty set by showing 'sorry' text
+     * @param mkuList List of haikus
+     */
     public void checkForKus(ArrayList mkuList) {
         if (mkuList.isEmpty()) {
             mKuRecyclerView.setVisibility(View.GONE);
@@ -145,6 +168,11 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    /**
+     * Updates the favorited kus into the dataset list
+     * @param ku Ku Object
+     * @param add Boolean function if adding to ku list
+     */
     public static void updateFavorite(Ku ku, boolean add) {
         Log.wtf(TAG, "UPDATING LOCAL FAVORITES " + String.valueOf(add));
         if (add) {
@@ -160,20 +188,5 @@ public class ProfileFragment extends Fragment {
 
     public static void updateScore(int delta) {
         localScore += delta;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
     }
 }

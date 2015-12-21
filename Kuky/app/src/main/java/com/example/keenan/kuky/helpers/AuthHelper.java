@@ -10,6 +10,11 @@ import com.example.keenan.kuky.activities.LoginActivity;
  */
 public class AuthHelper {
 
+    /**
+     * AuthHelper gets the user's auth information from sharedpreferences
+     * @param context
+     * @return
+     */
     public static String[] getCreds(Context context) {
         SharedPreferences settings = context.getSharedPreferences(LoginActivity.PREFS_NAME, 0);
         String uname = settings.getString("username", null);

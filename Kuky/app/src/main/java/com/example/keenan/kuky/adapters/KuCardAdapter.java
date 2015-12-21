@@ -30,9 +30,6 @@ import rx.schedulers.Schedulers;
 
 
 public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
-
-    //TODO: Update view whenever upvote/downvote/favorite request is sent
-
     private static final String TAG = KuCardAdapter.class.getSimpleName();
     private ArrayList<Ku> mDataset;
     private Context mContext;
@@ -171,17 +168,13 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
 
                                 @Override
                                 public void onError(Throwable e) {
+                                    Log.e(TAG + ": Retrofit Error - ", e.toString());
                                 }
 
                                 @Override
                                 public void onNext(KuActionResponse kuActionResponse) {
                                     notifyItemChanged(position);
                                     ProfileFragment.updateFavorite(mKu, mKu.getFavorited());
-//                                    if (mKu.getFavorited()) {
-//                                        notifyItemChanged(position);
-//                                    } else {
-//                                        notifyItemRemoved(position);
-//                                    }
                                 }
                             });
                 }
@@ -189,6 +182,13 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
         });
     }
 
+    /**
+     * Sends an upvote request to the server for the given ku
+     * Then updates the view for the ku feed
+     * @param request KuActionRequest object representing the upvote request
+     * @param ku The ku item being updated
+     * @param position The position of the ku object being updated
+     */
     public void sendUpvoteRequest(KuActionRequest request, final Ku ku, final int position) {
         ApiClient.getKukyApiClient(AuthHelper.getCreds(mContext))
             .upvoteKu(request)
@@ -199,7 +199,9 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
                 public void onCompleted() {}
 
                 @Override
-                public void onError(Throwable e) {}
+                public void onError(Throwable e) {
+                    Log.e(TAG + ": Retrofit Error - ", e.toString());
+                }
 
                 @Override
                 public void onNext(KuActionResponse kuActionResponse) {
@@ -215,6 +217,13 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
             });
     }
 
+    /**
+     * Sends a downvote request to the server for the given ku
+     * Then updates the view for the ku feed
+     * @param request KuActionRequest object representing the downvote request
+     * @param ku The ku item being updated
+     * @param position The position of the ku object being updated
+     */
     public void sendDownvoteRequest(KuActionRequest request, final Ku ku, final int position) {
         ApiClient.getKukyApiClient(AuthHelper.getCreds(mContext))
             .downvoteKu(request)
@@ -225,7 +234,9 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
                 public void onCompleted() {}
 
                 @Override
-                public void onError(Throwable e) {}
+                public void onError(Throwable e) {
+                    Log.e(TAG + ": Retrofit Error - ", e.toString());
+                }
 
                 @Override
                 public void onNext(KuActionResponse kuActionResponse) {
@@ -241,6 +252,10 @@ public class KuCardAdapter extends RecyclerView.Adapter<KuViewHolder>{
             });
     }
 
+    /**
+     * Get the UserId from SharedPreferences
+     * @return int UserId
+     */
     public int getUserId() {
         SharedPreferences settings = mContext.getSharedPreferences(LoginActivity.PREFS_NAME, 0);
         return settings.getInt("userId", -1);

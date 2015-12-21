@@ -1,12 +1,9 @@
 package com.example.keenan.kuky.models;
 
-import android.util.Log;
-
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by hieunguyen on 12/3/15.
+ * Model for response from user login/register request
  */
 public class UserApiKeyResponse {
     @SerializedName("newKey")
