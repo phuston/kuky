@@ -18,6 +18,8 @@
     <string name="no_ku">Sorry, there are no kus right now</string>
     <string name="login_title">Log in to your Kuky account</string>
 
+    <string name="empty_uname">Username cannot be empty</string>
+    <string name="empty_pw">Password cannot be empty</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="favorites">Favorites</string>

@@ -54,38 +54,46 @@ public class LoginActivity extends AppCompatActivity {
         uname = username.getText().toString();
         pw = password.getText().toString();
         // Makes call to attempt to log in with info provided
-        ApiClient.getKukyApiClient().login(new UserRequest(uname, pw))
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<UserApiKeyResponse>() {
-                    @Override
-                    public void onCompleted() {}
-
+        Log.d(TAG, String.valueOf(uname.matches("")));
+        if (uname.matches("")) {
+            loginError.setText(getResources().getString(R.string.empty_uname));
+        } else if (pw.matches("")) {
+            loginError.setText(getResources().getString(R.string.empty_pw));
+        } else {
+            ApiClient.getKukyApiClient().login(new UserRequest(uname, pw))
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<UserApiKeyResponse>() {
+                        @Override
+                        public void onCompleted() {
+                        }
+                        
                     @Override
                     public void onError(Throwable e) {
                         Log.e(TAG + ": Retrofit Error - ", e.toString());
                     }
 
-                    @Override
-                    public void onNext(UserApiKeyResponse apiKeyResponse) {
-                        Log.d(TAG, apiKeyResponse.toString());
-                        apiKey = apiKeyResponse.getNewKey();
-                        userId = apiKeyResponse.getUserId();
-                        errorMessage = apiKeyResponse.getErrorMessage();
-                        if (errorMessage != null) {
-                            // If error exists, displays it
-                            loginError.setText(errorMessage);
-                        } else {
-                            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-                            SharedPreferences.Editor editor = settings.edit();
-                            editor.putString("username", username.getText().toString());
-                            editor.putInt("userId", userId);
-                            editor.putString("apiKey", apiKey);
-                            editor.apply();
-                            changeActivity();
+                        @Override
+                        public void onNext(UserApiKeyResponse apiKeyResponse) {
+                            Log.d(TAG, apiKeyResponse.toString());
+                            apiKey = apiKeyResponse.getNewKey();
+                            userId = apiKeyResponse.getUserId();
+                            errorMessage = apiKeyResponse.getErrorMessage();
+                            if (errorMessage != null) {
+                                // If error exists, displays it
+                                loginError.setText(errorMessage);
+                            } else {
+                                SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                                SharedPreferences.Editor editor = settings.edit();
+                                editor.putString("username", username.getText().toString());
+                                editor.putInt("userId", userId);
+                                editor.putString("apiKey", apiKey);
+                                editor.apply();
+                                changeActivity();
+                            }
                         }
-                    }
-                });
+                    });
+        }
     }
 
     /**
