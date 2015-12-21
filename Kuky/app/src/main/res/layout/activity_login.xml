@@ -4,7 +4,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.example.keenan.kuky.activities.LoginActivity">
+    tools:context="com.mobproto.keenan.kuky.activities.LoginActivity">
 
     <ImageView
         android:layout_marginTop="30dp"

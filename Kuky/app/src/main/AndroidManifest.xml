@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/MyMaterialTheme">
         <activity
-            android:name=".activities.LoginActivity"
+            android:name="com.mobproto.keenan.kuky.activities.LoginActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,14 +25,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.KuViewActivity"
+            android:name="com.mobproto.keenan.kuky.activities.KuViewActivity"
             android:icon="@drawable/ic_logo_clear"/>
         <activity
-            android:name=".activities.DetailActivity"
+            android:name="com.mobproto.keenan.kuky.activities.DetailActivity"
             android:label="@string/title_activity_detail"
             android:icon="@drawable/ic_logo_clear"/>
         <activity
-            android:name=".activities.KuWriteActivity"
+            android:name="com.mobproto.keenan.kuky.activities.KuWriteActivity"
             android:label="@string/title_activity_compose"
             android:icon="@drawable/ic_logo_clear"/>
     </application>
