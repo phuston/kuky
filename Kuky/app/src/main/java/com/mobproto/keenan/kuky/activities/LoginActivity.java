@@ -17,6 +17,8 @@ import com.example.keenan.kuky.R;
 import com.mobproto.keenan.kuky.api.ApiClient;
 import com.mobproto.keenan.kuky.models.UserApiKeyResponse;
 import com.mobproto.keenan.kuky.models.UserRequest;
+import com.mobproto.keenan.kuky.validators.PasswordValidator;
+import com.mobproto.keenan.kuky.validators.UsernameValidator;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,11 +36,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = LoginActivity.class.getSimpleName();
     public static final String PREFS_NAME = "UserData";
-    private String uname;
-    private String pw;
-    private String apiKey;
-    private int userId;
-    private String errorMessage;
+
+    private UsernameValidator usernameValidator = new UsernameValidator();
+    private PasswordValidator passwordValidator = new PasswordValidator();
 
     @Bind(R.id.login_username) EditText username;
     @Bind(R.id.login_password) EditText password;
@@ -51,15 +51,12 @@ public class LoginActivity extends AppCompatActivity {
      */
     @OnClick(R.id.login_action)
     public void onLoginClicked(View view) {
-        uname = username.getText().toString();
-        pw = password.getText().toString();
+        String uname = username.getText().toString();
+        String pw = password.getText().toString();
         // Makes call to attempt to log in with info provided
-        Log.d(TAG, String.valueOf(uname.matches("")));
-        if (uname.matches("")) {
-            loginError.setText(getResources().getString(R.string.empty_uname));
-        } else if (pw.matches("")) {
-            loginError.setText(getResources().getString(R.string.empty_pw));
-        } else {
+        try {
+            usernameValidator.validate(uname);
+            passwordValidator.validate(pw);
             ApiClient.getKukyApiClient().login(new UserRequest(uname, pw))
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -75,24 +72,19 @@ public class LoginActivity extends AppCompatActivity {
 
                         @Override
                         public void onNext(UserApiKeyResponse apiKeyResponse) {
-                            Log.d(TAG, apiKeyResponse.toString());
-                            apiKey = apiKeyResponse.getNewKey();
-                            userId = apiKeyResponse.getUserId();
-                            errorMessage = apiKeyResponse.getErrorMessage();
+                            String errorMessage = apiKeyResponse.getErrorMessage();
                             if (errorMessage != null) {
                                 // If error exists, displays it
-                                loginError.setText(errorMessage);
+                                handleApiError(errorMessage);
                             } else {
-                                SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-                                SharedPreferences.Editor editor = settings.edit();
-                                editor.putString("username", username.getText().toString());
-                                editor.putInt("userId", userId);
-                                editor.putString("apiKey", apiKey);
-                                editor.apply();
-                                changeActivity();
+                                changeActivity(username.getText().toString(), apiKeyResponse.getNewKey(), apiKeyResponse.getUserId());
                             }
                         }
                     });
+        } catch (UsernameValidator.UsernameException e) {
+            loginError.setText(e.getMessage());
+        } catch (PasswordValidator.PasswordException e) {
+            loginError.setText(e.getMessage());
         }
     }
 
@@ -103,54 +95,61 @@ public class LoginActivity extends AppCompatActivity {
      */
     @OnClick(R.id.register_action)
     public void onRegisterClicked(View view) {
-        uname = username.getText().toString();
-        pw = password.getText().toString();
-        Snackbar.make(view, "uname: " + uname + " | pw: " + pw, Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
-        ApiClient.getKukyApiClient().register(new UserRequest(uname, pw))
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<UserApiKeyResponse>() {
-                    @Override
-                    public void onCompleted() {}
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e(TAG + ": Retrofit Error - ", e.toString());
-                    }
-
-                    @Override
-                    public void onNext(UserApiKeyResponse apiKeyResponse) {
-                        Log.d(TAG, apiKeyResponse.toString());
-                        apiKey = apiKeyResponse.getNewKey();
-                        userId = apiKeyResponse.getUserId();
-                        errorMessage = apiKeyResponse.getErrorMessage();
-                        if (errorMessage != null) {
-                            if (errorMessage.equals("SequelizeUniqueConstraintError")) {
-                                loginError.setText("This username is already taken.");
-                            } else {
-                                loginError.setText(errorMessage);
-                            }
-                        } else {
-                            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-                            SharedPreferences.Editor editor = settings.edit();
-                            editor.putString("username", username.getText().toString());
-                            editor.putInt("userId", userId);
-                            editor.putString("apiKey", apiKey);
-                            editor.apply();
-                            changeActivity();
+        String uname = username.getText().toString();
+        String pw = password.getText().toString();
+        try {
+            usernameValidator.validate(uname);
+            passwordValidator.validate(pw);
+            ApiClient.getKukyApiClient().register(new UserRequest(uname, pw))
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<UserApiKeyResponse>() {
+                        @Override
+                        public void onCompleted() {
                         }
-                    }
-                });
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.e(TAG + ": Retrofit Error - ", e.toString());
+                        }
+
+                        @Override
+                        public void onNext(UserApiKeyResponse apiKeyResponse) {
+                            String errorMessage = apiKeyResponse.getErrorMessage();
+                            if (errorMessage != null) {
+                                handleApiError(errorMessage);
+                            } else {
+                                changeActivity(username.getText().toString(), apiKeyResponse.getNewKey(), apiKeyResponse.getUserId());
+                            }
+                        }
+                    });
+        } catch (UsernameValidator.UsernameException e) {
+            loginError.setText(e.getMessage());
+        } catch (PasswordValidator.PasswordException e) {
+            loginError.setText(e.getMessage());
+        }
     }
 
     /**
      * Starts the Ku View activity when the user is verified into the app
-     */
-    public void changeActivity() {
-        Log.d(TAG, "CHANGING ACTIVITIES");
+     **/
+    public void changeActivity(String username, String apiKey, int userId) {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("username", username);
+        editor.putInt("userId", userId);
+        editor.putString("apiKey", apiKey);
+        editor.apply();
         Intent intent = new Intent(LoginActivity.this, KuViewActivity.class);
         startActivity(intent);
+    }
+
+    public void handleApiError(String message) {
+        if (message.equals("SequelizeUniqueConstraintError")) {
+            loginError.setText("This username is already taken.");
+        } else {
+            loginError.setText(message);
+        }
     }
 
     /**
@@ -194,4 +193,6 @@ public class LoginActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }
