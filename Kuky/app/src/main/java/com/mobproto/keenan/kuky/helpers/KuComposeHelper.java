@@ -1,6 +1,8 @@
 package com.mobproto.keenan.kuky.helpers;
 
 import android.content.Context;
+import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.keenan.kuky.R;
 import com.opencsv.CSVReader;
@@ -20,6 +22,8 @@ public class KuComposeHelper {
     private Map<String, Integer> mSyllables = new HashMap<String, Integer>();
     private Context context;
 
+    private final String TAG = KuComposeHelper.class.getSimpleName();
+
     /**
      * Used to validate Kus
      * @param context
@@ -29,24 +33,15 @@ public class KuComposeHelper {
         this.context = context;
 
         // Load syllable dictionary to save time on loading it again.
-        loadSyllableDict();
+        new LoadSyllablesTask(this).execute();
     }
 
     /**
      * Loads the syllable dictionary from syllables.txt raw file
      * @throws IOException
      */
-    private void loadSyllableDict() throws IOException {
-        InputStream raw = context.getResources().openRawResource(R.raw.syllables);
-        InputStreamReader streamReader = new InputStreamReader(raw);
-        BufferedReader bufferedReader = new BufferedReader(streamReader);
-
-        CSVReader reader = new CSVReader(bufferedReader);
-        String[] nextLine;
-        while((nextLine = reader.readNext()) != null) {
-            mSyllables.put(nextLine[0], Integer.parseInt(nextLine[1]));
-        }
-        reader.close();
+    private void setDict(HashMap<String, Integer> dict) {
+        mSyllables = dict;
     }
 
     /**
@@ -231,5 +226,36 @@ public class KuComposeHelper {
     public String[] cleanLine(String line){
         line = line.toLowerCase().replaceAll("[^a-z-' ]","");
         return line.split("\\s+");
+    }
+
+    private class LoadSyllablesTask extends AsyncTask<Void, Integer, HashMap<String, Integer>> {
+        KuComposeHelper caller;
+
+        LoadSyllablesTask(KuComposeHelper caller) {
+            this.caller = caller;
+        }
+
+        protected HashMap<String, Integer> doInBackground(Void... params){
+            HashMap<String, Integer> syllableDict = new HashMap<>();
+            try {
+                InputStream raw = context.getResources().openRawResource(R.raw.syllables);
+                InputStreamReader streamReader = new InputStreamReader(raw);
+                BufferedReader bufferedReader = new BufferedReader(streamReader);
+
+                CSVReader reader = new CSVReader(bufferedReader);
+                String[] nextLine;
+                while((nextLine = reader.readNext()) != null) {
+                    syllableDict.put(nextLine[0], Integer.parseInt(nextLine[1]));
+                }
+                reader.close();
+            } catch (IOException e) {
+                Log.e(TAG, "IOException encountered in loading syllable dictionary.");
+            }
+            return syllableDict;
+        }
+
+        protected void onPostExecute(HashMap<String, Integer> result){
+            caller.setDict(result);
+        }
     }
 }
